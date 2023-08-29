@@ -1,0 +1,153 @@
+
+
+@import url('https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@10..48,600&family=M+PLUS+1:wght@400;500&family=Sora:wght@400;700&display=swap');
+
+
+
+.container {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    border: 6px solid #000000;
+    border-radius: 8px;
+  }
+  .logo-container {
+    display: grid;
+    margin-bottom: 20px;
+    justify-content: center;
+    align-items: start;
+    justify-items: end;
+}
+  
+  
+  
+  
+  .signup-form-container {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .section {
+    margin-bottom: 20px;
+  }
+  
+  h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    font-family: 'Bricolage Grotesque', sans-serif;
+font-family: 'M PLUS 1', sans-serif;
+font-family: 'Sora', sans-serif;
+  }
+  
+  h5 {
+    margin-bottom: 10px;
+    font-family: 'Bricolage Grotesque', sans-serif;
+    font-family: 'M PLUS 1', sans-serif;
+    font-family: 'Sora', sans-serif;
+  }
+  
+  label {
+    font-weight: bold;
+    margin-bottom: 5px;
+    font-family: 'Bricolage Grotesque', sans-serif;
+    font-family: 'M PLUS 1', sans-serif;
+    font-family: 'Sora', sans-serif;
+  }
+
+
+
+  
+  .choose {
+    display: inline-block;
+    padding: 6px 12px;
+    background-color: #007bff;
+    height: 8rem;
+    color: #fff;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+  }
+  
+  .choose:hover {
+    background-color: #0056b3;
+  }
+  
+  .inputfile {
+    display: none;
+  }
+  
+  .vehicle-details {
+    display: flex;
+    align-items: center;
+  }
+  
+  .vehicle-info {
+    flex: 1;
+    margin-left: 20px;
+  }
+
+.driver-details{
+    display: flex;
+  
+    align-items: center;
+
+}
+.driver-info {
+    flex: 1;
+    margin-left: 20px;
+  }
+
+
+
+
+
+
+
+  
+  input[type='text'],
+  input[type='email'],
+  input[type='tel'],
+  input[type='password']  {
+    width: 95%;
+    padding: 8px;
+    margin-bottom: 10px;
+    border: 1px solid #0c0b0b;
+    border-radius: 4px;
+  }
+  
+  button[type='submit'] {
+    align-self: center;
+    padding: 10px 20px;
+    background-color: #000000;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  button[type='submit']:hover {
+    background-color: #0056b3;
+  }
+  
+  .inputfile {
+	width: 0.1px;
+	height: 2rem;
+	opacity: 0;
+	overflow: hidden;
+	position: absolute;
+	z-index: -1;
+}
+.inputfile + label {
+    font-size: 1.25em;
+    font-weight: 700;
+    color: white;
+    background-color: rgb(139, 131, 131);
+    display: inline-block;
+}
+
+
+
+.inputfile + label {
+	cursor: pointer; /* "hand" cursor */
+}

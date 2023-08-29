@@ -1,0 +1,81 @@
+/* UserLogin.css */
+
+
+  @import url('https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@10..48,600&family=M+PLUS+1:wght@400;500&family=Sora:wght@400;700&display=swap');
+
+/* Styles for the outer container */
+.login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+   
+    background-color: #f2f2f2;
+  }
+  .head{
+    text-align: center;
+ font-family: 'Bricolage Grotesque', sans-serif;
+font-family: 'M PLUS 1', sans-serif;
+font-family: 'Sora', sans-serif;
+  }
+  
+  /* Styles for the form */
+  .login-form {
+    background-color: white;
+    padding: 20px;
+    border: 5px solid #0c0202e1;
+    border-radius: 8px;
+    box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.1);
+    width: 90%;
+    height: 60%;
+    display: flex;
+    max-width: 400px;
+    display: flex;
+    flex-direction: column; /* Stack child elements vertically */
+    justify-content: center; /* Center vertically */
+    align-items: center; /* Center horizontally */
+    margin: 0 auto;
+    
+  }
+  .logo{
+    margin-left: 30%;
+    
+  }
+  
+  /* Styles for form inputs */
+  .input-container {
+    margin-bottom: 15px;
+    width: 20rem;
+ 
+  
+  }
+
+
+
+  
+  /* Styles for the login button */
+  .button-container {
+    text-align: center;
+    
+  }
+  .button{
+    background-color: black;
+  }
+  
+  /* Styles for links */
+  .links-container {
+    padding-bottom: 10px;
+    display: flex;
+    justify-content: center;
+   align-items: center;
+    font-size: 14px;
+    margin-top: 10px;
+  }
+  
+  /* Media queries for responsiveness */
+  @media screen and (max-width: 600px) {
+    .login-form {
+      width: 90%;
+    }
+  }
+  
