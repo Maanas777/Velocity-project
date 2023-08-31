@@ -4,13 +4,16 @@ interface IDriver extends Document {
     Drivername?: string;
     email: string;
     phone: number;
-    DrivingId: string;
+    licenseno: string;
+    DriverPhoto:string
+    vehiclePhoto:string
     VehicleModel: string;
     vehicleNo: string;
     RCNo: string;
     isavailable: boolean
     password: string;
     isBlocked?: boolean;
+    
 }
 
 const driverSchema: Schema<IDriver> = new Schema<IDriver>({
@@ -19,7 +22,12 @@ const driverSchema: Schema<IDriver> = new Schema<IDriver>({
         type: String,
         required: true
     },
-    email: {
+
+    DriverPhoto: {
+        type: String,
+        required: true, 
+    },
+        email: {
         type: String,
         required: true,
     },
@@ -27,10 +35,16 @@ const driverSchema: Schema<IDriver> = new Schema<IDriver>({
         type: Number,
         required: true,
     },
-    DrivingId: {
+    licenseno: {
         type: String,
         required: true
     },
+
+    vehiclePhoto: {
+        type: String,
+        required: true, 
+    },
+
     VehicleModel: {
         type: String,
         required: true
@@ -58,6 +72,6 @@ const driverSchema: Schema<IDriver> = new Schema<IDriver>({
     },
 });
 
-const UserModel = mongoose.model<IDriver>("User", driverSchema);
+const UserModel = mongoose.model<IDriver>("Driver", driverSchema);
 
 export default UserModel;

@@ -15,12 +15,6 @@ export interface IUser {
  const usercontroller={
 
 
-
-
-
-
-
-
     Userhome:(_req:Request,res:Response)=>{
     
         res.json('home page')
@@ -57,13 +51,11 @@ export interface IUser {
     
      ,
         userSignup:async(_req:Request,res:Response)=>{
-            console.log("kayari");
+    
             
             res.json('signup page')
 
         },
-
-
 
 
         userSignupPost: async (req: Request, res: Response) => {
@@ -78,7 +70,6 @@ export interface IUser {
                 res.status(400).json({ error: 'User already exists' });
 
           }
-          
           
           
           else {

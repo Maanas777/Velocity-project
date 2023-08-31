@@ -1,0 +1,30 @@
+@import url('https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@10..48,600&family=M+PLUS+1:wght@400;500&family=Sora:wght@400;700&display=swap');
+
+
+.navbar>.container, .navbar>.container-fluid, .navbar>.container-lg, .navbar>.container-md, .navbar>.container-sm, .navbar>.container-xl, .navbar>.container-xxl {
+    display: flex;
+    flex-wrap: inherit;
+    align-items: center;
+    justify-content: space-between;
+    background-color:#A7ACC3
+    
+}
+.navbar-logo {
+    max-width: 80px; 
+    height:80px 
+  }
+  /* nav.css */
+
+.custom-container {
+    max-width: 800px; /* Adjust the maximum width as needed */
+    padding: 0 15px; /* Add some horizontal padding to maintain spacing */
+  }
+
+
+  /* nav.css */
+.custom-font {
+    font-family: 'Bricolage Grotesque', sans-serif;
+    font-family: 'M PLUS 1', sans-serif;
+    font-family: 'Sora', sans-serif;
+  }
+  

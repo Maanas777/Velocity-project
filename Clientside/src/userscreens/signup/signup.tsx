@@ -25,8 +25,7 @@ const isStrongPassword = (password:string) => {
         hasNumber &&
         hasSpecialChar
     );
-};
-
+}; 
 
 
 
