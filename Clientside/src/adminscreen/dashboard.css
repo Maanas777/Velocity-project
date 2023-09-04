@@ -1,0 +1,6 @@
+
+/* dashboard.css */
+.table-container {
+  max-height: 400px; /* Adjust the maximum height as needed */
+  overflow: auto;
+}

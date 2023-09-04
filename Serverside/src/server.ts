@@ -2,6 +2,7 @@ import express from 'express';
 import { Request, Response } from "express";
 import userRoutes from './routes/userRoutes'
 import driverRoutes from './routes/driverRoutes'
+import adminRoutes  from './routes/adminRoutes'
 import cors from 'cors'
 import connectDB from './connection/connection'
 
@@ -9,8 +10,6 @@ const app = express();
 const port = 3003;
 
 connectDB();
-
-
 
 app.use(cors());
 
@@ -22,6 +21,7 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use('/api/users', userRoutes);
 app.use('/api/drivers', driverRoutes);
+app.use('/api/admin',adminRoutes)
 
 
 app.get('/', (_req:Request, res:Response) => {

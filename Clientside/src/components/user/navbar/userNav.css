@@ -1,0 +1,168 @@
+@import url('https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@10..48,600&family=M+PLUS+1:wght@400;500&family=Sora:wght@400;700&display=swap');
+
+
+
+  *{
+    margin:0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Bricolage Grotesque', sans-serif;
+    font-family: 'M PLUS 1', sans-serif;
+    font-family: 'Sora', sans-serif;
+    
+  }
+  .main1{
+    height: 80px;
+    background-color: #EEEEEE;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0px 50px 0px 80px;
+  }
+
+
+ .logo{
+    height: 5rem;
+    width: 5rem;
+
+
+ }
+
+  
+   
+  
+ul{
+    display:flex;
+    list-style: none;
+  }
+  ul li{
+    margin:  0px 5px;
+    padding: 10px 12px;
+  }
+  ul li a{
+    text-decoration: none;
+    color: rgb(0, 0, 0);
+    font-weight: bolder;
+    padding: 10px;
+    transition: all 0.3s ease;
+  }
+
+  ul li a:hover{
+    background-color: rgb(192, 224, 9);
+    border-radius: 5px;
+  }
+  .menubar{
+
+    color: black;
+    font-size: 44px;
+    cursor: pointer;
+    display: none;
+}
+
+ 
+
+
+
+  /** mediaquery**/
+
+  @media(max-width:1023px){
+
+
+
+    ul.open{
+        display: block;
+        position: fixed;
+        top: 80px;
+        left: -100; 
+        background-color: #fffefe;
+        height: 100vh;
+        width: 100%;
+        text-align: center;
+        transition: left 0.3s ease; /* Add transition for smoother opening */
+    }
+    .hidden-list-items {
+        display: none;
+    }
+
+   
+
+
+ul li{
+    margin: 20px 0;
+}
+
+ul li a{
+    font-size: 20px;
+ display:block;
+ font-weight: 600;
+
+
+}
+
+ul li a:hover{
+    background-color: rgb(192, 224, 9);
+    border-radius: 5px;
+  }
+  .menubar{
+
+    color: black;
+    font-size: 44px;
+    cursor: pointer;
+    display: block;
+} 
+
+
+  }
+
+
+
+
+  @media (max-width: 767px) {
+
+    .menubar {
+        display: block; 
+    }
+    .open {
+        left: 0; 
+    }
+    
+}
+
+@media (min-width: 768px) and (max-width: 1023px) {
+   
+    .menubar {
+        display: block; 
+    }
+    .open {
+        left: 0; 
+    }
+    
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  /* @media(max-width:481px){
+    .menubar{
+
+        color: black;
+        font-size: 44px;
+        cursor: pointer;
+        display: none;
+  }
+
+
+  } */
+

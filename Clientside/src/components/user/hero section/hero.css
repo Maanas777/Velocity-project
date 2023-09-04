@@ -1,0 +1,154 @@
+@import url('https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@10..48,600&family=M+PLUS+1:wght@400;500&family=Sora:wght@400;700&display=swap');
+
+   
+img.first{
+    height:600px;
+    width: 100%;
+  
+}
+.mainContainer{
+    height: 1000px;
+
+}
+
+.imageContainer{
+    position: relative;
+}
+
+
+.formContainer{
+    position: absolute;
+    top: 20%;
+    left: 3%;
+   border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+}
+form{
+    
+    flex-direction: column;
+    align-items: center;
+    background-color: #FFFFFF;
+    width: 25rem;
+  
+   padding:40px;
+   /* padding-top: 90px;
+   padding-bottom: 70px; */
+   border-radius: 10px;
+
+}
+.button1{
+    background-color: black;
+    color: white;
+    border-radius: 10px;
+    width: 8rem;
+    margin-left: 25%
+
+
+}
+.formheading{
+    font-weight: bolder;
+    font-size: 25px;
+    text-align: center;
+    padding-bottom: 40px;
+    font-family: 'Bricolage Grotesque', sans-serif;  
+   font-weight:900
+  
+}
+#fullName,#dob{
+    border-radius: 10px;
+    margin-top: 20px;
+}
+.vertical-line {
+    border-left: 1px solid rgb(2, 2, 2);
+      height: 47px;
+      position:absolute;
+      top:48%;
+      left: 13%;
+
+
+
+  }
+  .second{
+    width: 640px;
+    height: 440px ;
+    position: absolute;
+    left: 50%
+    
+
+  }
+.safely{
+  
+    position: absolute;
+    top: 70px;
+    left: 20px;
+    font-weight: bolder;
+    
+}
+
+.secondimagecontainer{
+   position: relative;
+   
+    
+}
+
+.secondparacontainer{
+   
+    height: 40;
+}
+
+
+.secondpara{
+    position: absolute;
+    top: 10rem;
+    left: 30px;
+    overflow-wrap: break-word;
+    width: 40%;
+    line-height: 2;
+    font-weight: bolder;
+   
+
+}
+
+.thirdimagecontainer{
+    position: relative;
+    width: 100%;
+   background-color: #9FDC1C;
+    position: absolute;
+    top: 67.5rem;
+  
+    
+
+}
+.thirdimage{
+    width: 640px;
+    height: 440px ;
+    left: 50%
+}
+
+
+.thirdpara{
+    position: absolute;
+    left: 40rem;
+    line-height: 1.8;
+    font-weight: bolder;
+}
+
+.velocity-text {
+    margin-left: 15rem;
+    font-weight: bold;
+    color: #080808; 
+    
+  }
+  .thirdparagra{
+
+
+margin: 22px;
+  font-size:large
+  }
+
+  
+
+  

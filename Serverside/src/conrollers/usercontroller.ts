@@ -1,108 +1,84 @@
 import { Request, Response } from "express";
- import userModel from '../models/user'
-import bcrypt from  'bcrypt'
-import { ObjectId } from "mongoose";
+import userModel from "../models/user";
+import bcrypt from "bcrypt";
+import generateToken from "../utilities/jwtToke";
 
 export interface IUser {
-    _id: ObjectId; 
-    username: string;
-    email: string;
-    password: string;
-    
+  _id: import("mongoose").Types.ObjectId;
+  username: string;
+  email: string;
+  password: string;
 }
 
+const usercontroller = {
+  Userhome: (_req: Request, res: Response) => {
+    // Send a JSON response
+    return res.json({ message: "home page" });
+  },
 
- const usercontroller={
+  UserLogin: async (req: Request, res: Response) => {
+    try {
+      const { email, password } = req.body;
+      const user = (await userModel.findOne({ email })) as IUser;
 
+      if (user) {
+        const isMatch = await bcrypt.compare(password, user.password);
 
-    Userhome:(_req:Request,res:Response)=>{
-    
-        res.json('home page')
-    
-     },
+        if (isMatch) {
+        
+          const token = generateToken(user._id);
+          console.log(token);
 
-     UserLogin: async (req: Request, res: Response) => {
-        try {
-            const { email, password } = req.body;
-    
-            const user = await userModel.findOne({ email }) as IUser;
-    
-            if (user) {
-                const isMatch = await bcrypt.compare(password, user.password);
-    
-                if (isMatch) {
-                    res.json({
-                        message: 'logged in successfully',
-                        user: {
-                            name: user.username,
-                            email: user.email
-                        }
-                    });
-                } else {
-                    res.status(401).json({ message: 'Invalid credentials' });
-                }
-            } else {
-                res.status(404).json({ message: 'User not found' });
-            }
-        } catch (error) {
-            res.status(500).json({ message: 'An error occurred' });
+          return res.json({
+            message: "logged in successfully",
+            user: {
+              name: user.username,
+              email: user.email,
+              token,
+            },
+          });
+        } else {
+          return res.status(401).json({ message: "Invalid credentials" });
         }
+      } else {
+        return res.status(404).json({ message: "User not found" });
+      }
+    } catch (error) {
+      return res.status(500).json({ message: "An error occurred" });
     }
-    
-     ,
-        userSignup:async(_req:Request,res:Response)=>{
-    
-            
-            res.json('signup page')
+  },
 
-        },
+  userSignup: async (_req: Request, res: Response) => {
+    // Send a JSON response
+    return res.json({ message: "signup page" });
+  },
 
+  userSignupPost: async (req: Request, res: Response) => {
+    try {
+      const { username, email, phone, password } = req.body;
 
-        userSignupPost: async (req: Request, res: Response) => {
-          try{
-            const { username, email, phone, password } = req.body;
-           
-            const userExists = await userModel.findOne({ email });
+      const userExists = await userModel.findOne({ email });
 
-            if (userExists) {
-                console.log("jiuji");
-                
-                res.status(400).json({ error: 'User already exists' });
+      if (userExists) {
+        console.log("User already exists");
+        return res.status(400).json({ error: "User already exists" });
+      } else {
+        const hashedPassword = await bcrypt.hash(password, 10);
 
-          }
-          
-          
-          else {
+        await userModel.create({
+          username,
+          email,
+          phone,
+          password: hashedPassword,
+        });
 
-            const hashedPassword = await bcrypt.hash(password, 10);
+        return res.json({ message: "User created successfully" });
+      }
+    } catch (error) {
+      console.error(error);
+      return res.status(500).json({ error: "An error occurred" });
+    }
+  },
+};
 
-            await userModel.create({
-                username,
-                email,
-                phone,
-                password:hashedPassword
-            })
-            
-            res.json({ message: 'User created successfully' });
-       
-        
-            } 
-        
-            }catch (error) {
-                console.error(error);
-                res.status(500).json({ error: 'An error occurred' });
-            }
-        }
-        
-
-
-
-
-
-
-
-
- }
- export  default usercontroller;
-
- 
+export default usercontroller;

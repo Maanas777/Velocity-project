@@ -1,5 +1,6 @@
 import { useState, FormEvent, ChangeEvent } from 'react';
 import axios from 'axios';
+import {useNavigate} from 'react-router-dom'
 import './signup.css';
 import logo from '../assets/logofinal.png';
 import { toast, ToastContainer } from 'react-toastify';
@@ -19,6 +20,8 @@ const [driverphotopreview, setdriverphotopreview] = useState<string>('');
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
   const [password, setPassword] = useState('');
+
+  const nav=useNavigate()
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
@@ -48,6 +51,8 @@ const [driverphotopreview, setdriverphotopreview] = useState<string>('');
       });
       toast.success('User created successfully');
       console.log('Signup Successful:', response.data);
+      nav('/driverlogin')
+  
 
     } catch (error) {
       toast.error('An error occurred');
@@ -57,7 +62,9 @@ const [driverphotopreview, setdriverphotopreview] = useState<string>('');
   };
 
   return (
-    <div className='container'>
+    <div className='parent'>
+    
+    <div className='xyz'>
     <ToastContainer position="top-center" autoClose={2000} />
     <div className='logo-container'>
       <img src={logo} alt='Logo' className='logo' />
@@ -166,6 +173,7 @@ const [driverphotopreview, setdriverphotopreview] = useState<string>('');
 
       <button type='submit'>Sign Up</button>
     </form>
+  </div>
   </div>
 );
 };

@@ -13,6 +13,8 @@ interface IDriver extends Document {
     isavailable: boolean
     password: string;
     isBlocked?: boolean;
+    isDriver?:boolean
+
     
 }
 
@@ -70,6 +72,10 @@ const driverSchema: Schema<IDriver> = new Schema<IDriver>({
         type: Boolean,
         default: false,
     },
+    isDriver:{
+        type:Boolean,
+        default:false
+    }
 });
 
 const UserModel = mongoose.model<IDriver>("Driver", driverSchema);

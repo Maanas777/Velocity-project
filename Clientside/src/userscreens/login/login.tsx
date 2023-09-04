@@ -28,8 +28,10 @@ const UserLogin = () => {
     e.preventDefault();
     axios.post('http://localhost:3003/api/users/userLogin',{
         email,password
-
     }).then((res)=>{
+    
+      
+
         toast.success(res.data.message);
         const userdata=res.data.user
         console.log(userdata);
@@ -38,7 +40,8 @@ const UserLogin = () => {
         
         
     }).catch((err)=>{
-   
+      console.log(err);
+    
         toast.error(err.response.data.message);
       
     })
