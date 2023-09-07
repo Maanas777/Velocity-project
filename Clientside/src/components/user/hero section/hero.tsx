@@ -3,14 +3,16 @@ import "./hero.css";
 import First from "./1st section.png";
 import Second from "./seond.jpg";
 import Third from "./3rd.avif";
+ 
 
 const Hero = () => {
   return (
-    <div className="mainContainer">
+    <div className="container-fluid">
+      
       <div className="imageContainer">
         <img className="first" src={First} alt="" />
         <div className="formContainer">
-          <form>
+          <form className="userhomeform">
             <h1 className="formheading">Request a Ride now</h1>
 
             <input
@@ -21,7 +23,7 @@ const Hero = () => {
             <br />
             <br />
 
-            <div className="vertical-line"></div>
+         
 
             <input type="text" id="dob" placeholder="Enter Destination" />
             <br />
@@ -47,8 +49,8 @@ const Hero = () => {
       </div>
       <div className="thirdimagecontainer">
         <h1 className="thirdpara">
-          Navigating the Urban Pulse: Swift and Secure City Travel with{" "}
-          <span className="velocity-text">VeloCity...</span>
+          Navigating the Urban Pulse: Swift and Secure City Travel with
+        VeloCity...
           <p className="thirdparagra">
             
             Discover the thrill of city exploration with VeloCity – where speed
@@ -78,3 +80,7 @@ const Hero = () => {
 };
 
 export default Hero;
+
+
+
+

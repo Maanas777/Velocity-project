@@ -7,12 +7,14 @@ import Driversignup from "./driverscreen/signup/signup";
 import DriverLogin from "./driverscreen/login/driverLogin";
 import AdminLogin from "./adminscreen/adminlogin/adminlogin";
 import Sidebar from "./components/admin/sidebar/sidebar";
-import Dashboard from "./adminscreen/dashboard";
+import Dashboard from "./adminscreen/dashboard/dashboard";
 import Navbar from "./components/admin/navbar/navbar";
 import Hero from "./components/user/hero section/hero";
 import Userhome from './userscreens/home'
+import Users from './adminscreen/users/users'
 // import Usernav from './components/user/navbar/userNav'
-import Verified_driver from "./adminscreen/verified_driver";
+import Verified_driver from "./adminscreen/drivers/drivers";
+import Driververication from "./adminscreen/driververification/driververify";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 function App() {
@@ -46,6 +48,8 @@ function App() {
       <Route path="navbar" element={<Navbar />}></Route>
       <Route path="verifiedDriver" element={<Verified_driver />}></Route>
       <Route path="adminlogin" element={<AdminLogin />}></Route>
+      <Route path="users" element={<Users />}></Route>
+      <Route path="driver-verification" element={<Driververication />}></Route>
     </Routes>
   );
 }

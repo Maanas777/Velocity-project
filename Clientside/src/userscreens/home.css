@@ -1,0 +1,16 @@
+
+.footerhero{
+    position: absolute;
+    top: 240%;
+    width: 100%;
+}
+
+
+@media( max-width: 480px){
+    .footerhero{
+      margin-top: 100rem;
+      
+   
+    }
+
+}

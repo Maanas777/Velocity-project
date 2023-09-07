@@ -18,7 +18,8 @@ const UserNav = () => {
 
 
   return (
-    <body>
+    <body className="container-fluid">
+
         <div className="main1">
             <div  className="logocontainer" >
        <img className="logo"src={logo} alt="" />

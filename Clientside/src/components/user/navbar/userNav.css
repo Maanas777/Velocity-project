@@ -78,7 +78,9 @@ ul{
         height: 100vh;
         width: 100%;
         text-align: center;
-        transition: left 0.3s ease; /* Add transition for smoother opening */
+        transition: left 0.3s ease; 
+        position: relative;
+        z-index: 100;
     }
     .hidden-list-items {
         display: none;
