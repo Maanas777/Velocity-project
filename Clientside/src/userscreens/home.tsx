@@ -6,8 +6,10 @@ import './home.css'
 
 const Home = () => {
   return (
-    <div>
+    <div >
+      <div className='container-fluid'>
         <Navbar/>
+        </div>
         <Hero/> 
        
         <div className='footerhero'>

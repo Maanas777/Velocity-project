@@ -1,8 +1,11 @@
 import { Request, Response } from "express";
 import driverModel from '../models/driver'
 import { ObjectId } from "mongoose";
+import cloudinary from "../utilities/cloudinary";
 
 import bcrypt from "bcrypt";
+
+
 
 export interface IDriver {
     _id: ObjectId;
@@ -60,11 +63,7 @@ const drivercontroller = {
     },
 
 
-
-
     driverSignup: async (req: Request, res: Response) => {
-        console.log("hooo");
-
         const {
             Drivername,
             email,
@@ -74,24 +73,69 @@ const drivercontroller = {
             VehicleModel,
             vehicleNo,
             RCNo
-
         } = req.body;
-
-
+    
         try {
             const files = req.files as { [fieldname: string]: Express.Multer.File[] };
-            const DriverPhoto: string = files['driverPhoto'][0].filename;
-            console.log(DriverPhoto,"79879");
+            const DriverPhoto = files['driverPhoto'][0];
+            const vehiclePhoto = files['vehiclePhoto'][0];
+    
+            let driver: string | null = null; // Initialize with null'
+            let vehicle:string|null=null
+    
+            const uploadDriverImagePromise = new Promise<void>((resolve, reject) => {
+                cloudinary.uploader.upload_stream(
+                    { resource_type: 'auto' },
+                    async (error, result: any) => {
+                        if (error) {
+                            return reject(error);
+                        }
+                        driver = result.secure_url;
+                        resolve();
+                    }
+                ).end(DriverPhoto.buffer);
+            });
+    
+            await Promise.all([uploadDriverImagePromise]);
+    
             
+            if (driver) {
+                console.log("Driver Image URL:", driver,"67567dfsdfgsdgdsgdsfgsdfgs575756");
+            } else {
+                console.error("Driver image URL is not available.");
+            }
 
-            const vehiclePhoto: string = files['vehiclePhoto'][0].filename;
 
+
+            const uploadVehicleImagePromise = new Promise<void>((resolve, reject) => {
+                cloudinary.uploader.upload_stream(
+                    { resource_type: 'auto' },
+                    async (error, result: any) => {
+                        if (error) {
+                            return reject(error);
+                        }
+                        vehicle = result.secure_url;
+                        resolve();
+                    }
+                ).end(vehiclePhoto.buffer);
+            });
+    
+            await Promise.all([uploadVehicleImagePromise]);
+    
+            
+            if (vehicle) {
+                console.log("vehicle Image URL:", vehicle,"vehivleljflasjflsfjlsfjsalfjsalfjsalfkjsafljsa");
+            } else {
+                console.error("vehicle image URL is not available.");
+            }
+
+
+
+    
             const driverExist = await driverModel.findOne({ email });
             if (driverExist) {
                 res.json('Driver already exists');
-            }
-            else {
-
+            } else {
                 const hashedPassword = await bcrypt.hash(password, 10);
                 await driverModel.create({
                     Drivername,
@@ -102,8 +146,8 @@ const drivercontroller = {
                     VehicleModel,
                     vehicleNo,
                     RCNo,
-                    DriverPhoto,
-                    vehiclePhoto
+                    DriverPhoto:driver,
+                    vehiclePhoto:vehicle
                 });
                 res.json({ message: 'Driver created successfully' });
             }
@@ -112,6 +156,7 @@ const drivercontroller = {
             res.status(500).json({ message: 'Error creating driver' });
         }
     }
+    
 
 
 }

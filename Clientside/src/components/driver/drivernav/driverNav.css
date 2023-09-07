@@ -1,0 +1,26 @@
+
+  @import url('https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@10..48,600&family=M+PLUS+1:wght@400;500&family=Rubik:wght@600&family=Sora:wght@400;700&display=swap');
+
+
+body{
+
+    font-family: 'Rubik', sans-serif;
+ 
+}
+
+
+.driver-nav-logo{
+height: 5rem;
+}
+.custom-driver-nav{
+    background-color: rgba(178, 226, 5, 0.568);
+}
+.driver-nav-profile{
+    width: 350%
+}
+.driver_heading{
+    margin-left: 5rem;
+    font-family: 'Rubik', sans-serif;
+    
+
+}
