@@ -1,6 +1,11 @@
 // import React from "react";
 import Navbar from 'react-bootstrap/Navbar';
 import Nav from 'react-bootstrap/Nav';
+// import {useEffect} from 'react'
+// import { useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
+// import { selectUser } from '../../../redux/userSlice';
+import profile from './pngwing.com (1).png'
 import './userNav.css'
 
 import logo from './logofinal.png'
@@ -9,6 +14,43 @@ import logo from './logofinal.png'
 
 
 const UserNav = () => {
+
+
+  const storedUserData = localStorage.getItem("userData");
+  if (storedUserData) {
+          
+        const parsedUserData = JSON.parse(storedUserData);
+        const username=parsedUserData.username
+
+         
+  
+
+
+    // const user=useSelector(selectUser)
+     
+    // useEffect(() => {
+    //   const initializeUserData = async () => {
+    //     const storedUserData = localStorage.getItem("userData");
+  
+    //     if (storedUserData) {
+          
+    //       const parsedUserData = JSON.parse(storedUserData);
+         
+    //     }
+        
+       
+    //     setIsLoading(false);
+    //   };
+
+    //   initializeUserData();
+    
+    
+    // }, [])
+    
+
+
+  
+
     return (
       <Navbar className='custom-user-nav ' expand="md">
         <div className="container">
@@ -26,20 +68,40 @@ const UserNav = () => {
           </Navbar.Brand>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
-            <Nav className="ms-auto " >
-            <Nav.Link href="#home" style={{ marginRight: '10%' }}>Home</Nav.Link>
-      <Nav.Link href="#about" style={{ marginRight: '10%' }}>About</Nav.Link>
-      <Nav.Link href="#services" style={{ marginRight: '10%' }}>Careers</Nav.Link>
-      <Nav.Link href="#contact" style={{ marginRight: '10%' }}>Contact</Nav.Link>
-      {/* <Nav.Link href="#contact" style={{ marginRight: '10%' }}>
-      <img className='img-fluid driver-nav-profile' src={profile} alt="" />
-      </Nav.Link> */}
-            </Nav>
+          <Nav className="ms-auto" style={{ marginLeft: '10px' }}>
+  <Link to="/userhome" style={{ color: location.pathname === '/userhome' ? 'oceanblue' : 'black',   
+   fontWeight: location.pathname === '/userhome' ? 'bolder' : 'normal',
+  
+    marginRight: '40px',  
+    textDecoration: 'none'}}>
+    Home
+  </Link>
+  <Link to="#about" style={{ color: 'black', marginRight: '40px', textDecoration: 'none' }}>
+    About
+  </Link>
+  <Link to="#services" style={{ color: 'black', marginRight: '30px', textDecoration: 'none' }}>
+    Careers
+  </Link>
+  <Link to="#contact" style={{ color: 'black', marginRight: '40px', textDecoration: 'none' }}>
+    Contact
+  </Link>
+</Nav>
+
+            {storedUserData && (
+                <Link to='/userprofile'>
+              <div className="d-flex  flex-column  align-items-center">
+                <img src={profile} style={{ height: '3rem', marginRight: '10px' }} alt="" />
+                <span style={{color:'black',textDecoration: 'none'}}>{username?username :''}</span>
+              </div>
+              </Link>
+            )}
+            
+           
            
           </Navbar.Collapse>
         </div>
       </Navbar>
     );
-};
-
+}
+}
 export default UserNav;

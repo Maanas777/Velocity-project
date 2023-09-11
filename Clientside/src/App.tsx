@@ -16,6 +16,7 @@ import DriverNav from "./components/driver/drivernav/driverNav";
 import Verified_driver from "./adminscreen/drivers/drivers";
 import Driververication from "./adminscreen/driververification/driververify";
 import Driverhome from "./driverscreen/driverhome/driverhome";
+import UserProfile from "./userscreens/userprofile/userprofile";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 function App() {
@@ -26,10 +27,11 @@ function App() {
 
 
       //user
-      <Route path="/" element={<Signup />}></Route>
-      <Route path="login" element={<Login />}></Route>
+      <Route path="usersignup" element={<Signup />}></Route>
+      <Route path="/" element={<Login />}></Route>
       <Route path="hero" element={<Hero />}></Route>
       <Route path="userhome" element={<Userhome />}></Route>
+      <Route path="userprofile" element={<UserProfile />}></Route>
 
 
 

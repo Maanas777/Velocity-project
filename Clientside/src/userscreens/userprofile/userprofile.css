@@ -1,0 +1,22 @@
+.gradient-custom {
+    /* fallback for old browsers */
+    background: #ebe8e0;
+    
+    /* Chrome 10-25, Safari 5.1-6 */
+    background: -webkit-linear-gradient(to right bottom, rgb(170, 131, 14), rgb(228, 185, 174));
+    
+    /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    /* background-color: rgb(137, 140, 145); */
+    background-color: #9b9bc2;
+    }
+    .borerProfile{
+        border: 3PX
+    }
+
+    .userprofilebackground{
+        background-color: #c7c7c9;
+    }
+   .card-body{
+    background-color:#d2d5fe;
+    height: 20rem;
+   }
