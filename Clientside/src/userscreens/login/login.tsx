@@ -27,11 +27,13 @@ const UserLogin = () => {
       .then((res) => {
         toast.success(res.data.message);
         const userdata = res.data;
+        console.log(userdata.user.username);
+        
 
         localStorage.setItem("userData", JSON.stringify(userdata));
         dispatch(login(userdata));
 
-        nav("userhome");
+        nav("/userhome");
       })
       .catch((err) => {
         console.log(err);
@@ -74,11 +76,15 @@ const UserLogin = () => {
               Login
             </button>
           </div>
-          <div className="links-container">
+          <div className="links-container " style={{display:'flex',flexDirection:'column'}}>
             <p>
-              <Link to="usersignup">Create a new account</Link>{" "}
+              <Link to="OtpPhone">Login with OTP</Link>{" "}
+            </p>
+            <p>
+              <Link to="usersignup">Create New accout</Link>{" "}
             </p>
           </div>
+        
         </form>
       </div>
     </div>

@@ -20,11 +20,11 @@ const Home = () => {
   
 
   return (
-    <div>
+
       <div className="container-fluid">
         <Navbar />
-      </div>
-      <div className="container-fluid">
+ 
+      <div >
       <Hero />
       </div>
     

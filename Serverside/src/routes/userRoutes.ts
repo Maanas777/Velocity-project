@@ -11,5 +11,5 @@ router.post('/signup',usercontroller.userSignupPost)
 router.get('/finduser/:id',usercontroller.userprofile)
 router.put('/editProfile/:id',usercontroller.editprofile)
 router.post('/sendOtp',usercontroller.Sentotp)
-
+router.post('/verifyOtp',usercontroller.verifyOtp)
 export default router;

@@ -1,93 +1,105 @@
+import DriverNav from "../../components/driver/drivernav/driverNav";
+
 import React, { useState } from "react";
 import { useEffect } from "react";
 import { login } from "../../redux/userSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { selectUser } from "../../redux/userSlice";
-import UserNav from "../../components/user/navbar/userNav";
 import Footer from "../../components/user/footer/footer";
 import profile from "../assets/pngwing.com (1).png";
-import "./userprofile.css";
+
 import axios from "axios";
 
 function Profile() {
   const dispatch = useDispatch();
-  const user = useSelector(selectUser);
+  const driver = useSelector(selectUser);
 
   const [isEditing, setIsEditing] = useState(false);
-  const [username, setUsername] = useState(user?.user?.name || "");
-  const [email, setEmail] = useState(user?.user?.email || "");
-  const [phone, setPhone] = useState(user?.user?.phone || "");
+  const [Drivername, setDrivername] = useState(
+    driver?.driver?.Drivername || ""
+  );
+  const [email, setEmail] = useState(driver?.driver?.email || "");
+  const [phone, setPhone] = useState(driver?.driver?.phone || "");
   const [isLoading, setIsLoading] = useState(true);
 
+
+
+
+
+  
   useEffect(() => {
     const initializeUserData = async () => {
-      const storedUserData = localStorage.getItem("userData");
-
-      if (storedUserData) {
-        const parsedUserData = JSON.parse(storedUserData);
-        console.log(parsedUserData, "parsed");
-
-        dispatch(login(parsedUserData));
-        console.log(parsedUserData.username, "uhhhkjhkjhjkhj");
-
-        if (parsedUserData && parsedUserData.user) {
-          setUsername(parsedUserData.user.username || "");
-          setEmail(parsedUserData.user.email || "");
-          setPhone(parsedUserData.user.phone || "");
-        } else if (parsedUserData) {
-          setUsername(parsedUserData.username || "");
-          setEmail(parsedUserData.email || "");
-          setPhone(parsedUserData.phone || "");
+      const storedDriverData = localStorage.getItem("DriverData");
+  
+      if (storedDriverData) {
+        const parsedDriverData = JSON.parse(storedDriverData);
+        dispatch(login(parsedDriverData));
+        console.log(parsedDriverData.driver?.Drivername);
+  
+        if (parsedDriverData && parsedDriverData.driver) {
+          setDrivername(parsedDriverData.driver.Drivername || '');
+          setEmail(parsedDriverData.driver.email || '');
+          setPhone(parsedDriverData.driver.phone || '');
+        } else if (parsedDriverData) {
+          setDrivername(parsedDriverData.Drivername || '');
+          setEmail(parsedDriverData.email || '');
+          setPhone(parsedDriverData.phone || '');
         } else {
-          setUsername("");
-          setEmail("");
-          setPhone("");
+          setDrivername('');
+          setEmail('');
+          setPhone('');
         }
+  
+        setIsLoading(false);
       }
-
-      setIsLoading(false);
     };
-
+  
     initializeUserData();
   }, [dispatch]);
+  
+
+
+
 
   const handleEditClick = () => {
     setIsEditing(true);
   };
 
   const handleSaveClick = async () => {
-    const userid = localStorage.getItem("userData");
+    const userid = localStorage.getItem("DriverData");
+
     const parsedUserData = JSON.parse(userid);
-    const userId = parsedUserData._id;
-    const userId2 = parsedUserData.user?._id;
+    const userId = parsedUserData?._id;
+    const userId2 = parsedUserData.driver?._id;
+    console.log(userId, "00990");
+    console.log(userId2, "madnawdsafd");
 
     try {
-      if (!userid) {
-        console.log("User data not available yet.");
-        return;
-      }
+      if (userId || userId2) {
+        console.log("User data available.");
+        const updatedUserData = {
+          Drivername,
+          email,
+          phone,
+        };
 
-      const updatedUserData = {
-        username,
-        email,
-        phone,
-      };
+        const response = await axios.put(
+          `http://localhost:3003/api/drivers/editprofile/${
+            userId ? userId : userId2
+          }`,
+          updatedUserData
+        );
 
-      const response = await axios.put(
-        `http://localhost:3003/api/users/editProfile/${
-          userId ? userId : userId2
-        }`,
-        updatedUserData
-      );
-
-      if (response.data.updateUser) {
-        const updatedUser = response.data.updateUser;
-
-        dispatch(login(updatedUser));
-        localStorage.setItem("userData", JSON.stringify(updatedUser));
-        setIsEditing(false);
+        if (response.data.updateUser) {
+          const updatedUser = response.data.updateUser;
+          dispatch(login(updatedUser));
+          localStorage.setItem("DriverData", JSON.stringify(updatedUser));
+          setIsEditing(false);
+        } else {
+          console.log("Server did not respond with updated user data.");
+        }
       } else {
-        console.log("Server did not respond with updated user data.");
+        console.log("User data not available yet.");
       }
     } catch (error) {
       console.error("Error updating user profile:", error);
@@ -100,7 +112,7 @@ function Profile() {
 
   return (
     <div>
-      <UserNav />
+      <DriverNav />
       <section className="userprofilebackground vh-100">
         <div className="container py-5 h-100">
           <div className="row d-flex justify-content-center align-items-center h-100">
@@ -123,7 +135,7 @@ function Profile() {
                       }}
                       alt=""
                     />
-                    <h5>{username}</h5>
+                    <h5>{Drivername}</h5>
 
                     {!isEditing && (
                       <button
@@ -144,11 +156,11 @@ function Profile() {
                           {isEditing ? (
                             <input
                               type="text"
-                              value={username}
-                              onChange={(e) => setUsername(e.target.value)}
+                              value={Drivername}
+                              onChange={(e) => setDrivername(e.target.value)}
                             />
                           ) : (
-                            <p className="text-muted">{username}</p>
+                            <p className="text-muted">{Drivername}</p>
                           )}
                         </div>
                         <div className="col-6 mb-3">

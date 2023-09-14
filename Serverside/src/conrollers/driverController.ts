@@ -39,12 +39,7 @@ const drivercontroller = {
                 if (isMatch) {
                     res.json({
                         message: "driver logged successfully",
-                        user: {
-                            name: driver.Drivername,
-                            email: driver.email
-
-                        }
-
+                        driver
                     })
 
                 }
@@ -155,7 +150,51 @@ const drivercontroller = {
             console.error('Error creating driver:', error);
             res.status(500).json({ message: 'Error creating driver' });
         }
-    }
+    },
+
+
+
+    editprofile: async (req: Request, res: Response) => {
+   
+      
+    
+        try {
+          const id = req.params.id;
+          const trimmedObjectId = id.trim();
+        console.log(req.body.Drivername);
+        
+          const updateUser = await driverModel.findByIdAndUpdate(
+            trimmedObjectId,
+    
+            {
+              Drivername: req.body.Drivername,
+              email: req.body.email,
+              phone: req.body.phone,
+            },
+            { new: true }
+          );
+    
+          if (updateUser) {
+            res.json({ updateUser });
+          }
+        } catch (error) {
+          console.error(error);
+          res.send(error);
+        }
+      }
+
+
+
+
+
+
+
+
+
+
+
+
+
     
 
 

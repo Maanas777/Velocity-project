@@ -1,6 +1,7 @@
 import  { useState } from 'react';
 import { FormEvent } from 'react';
 import { useDispatch } from 'react-redux';
+import { useNavigate } from "react-router-dom";
 import axios from 'axios'
 
 import { ToastContainer,toast } from 'react-toastify';
@@ -18,7 +19,7 @@ const UserLogin = () => {
   const [email, setemail] = useState<string>('');
   const [password, setpassword] = useState<string>('');
 
-
+  const nav = useNavigate();
 
 
   const dispatch = useDispatch();
@@ -32,10 +33,13 @@ const UserLogin = () => {
 
     }).then((res)=>{
         toast.success(res.data.message);
-        const userdata=res.data.user
+        const userdata=res.data
         console.log(userdata);
-        
+
+        localStorage.setItem("DriverData", JSON.stringify(userdata));
         dispatch(login(userdata))
+
+        nav('/driverhome')
         
         
         

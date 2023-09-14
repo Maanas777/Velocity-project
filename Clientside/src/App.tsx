@@ -6,7 +6,8 @@ import Signup from "./userscreens/signup/signup";
 import Driversignup from "./driverscreen/signup/signup";
 import DriverLogin from "./driverscreen/login/driverLogin";
 import AdminLogin from "./adminscreen/adminlogin/adminlogin";
-
+import LoginWithOtp from './userscreens/loginWithOtp/loginWithOtp';
+import VerifyOTP  from './userscreens/loginWithOtp/verification/OTPverification'
 import Dashboard from "./adminscreen/dashboard/dashboard";
 import Navbar from "./components/admin/navbar/navbar";
 import Hero from "./components/user/hero section/hero";
@@ -17,6 +18,7 @@ import Verified_driver from "./adminscreen/drivers/drivers";
 import Driververication from "./adminscreen/driververification/driververify";
 import Driverhome from "./driverscreen/driverhome/driverhome";
 import UserProfile from "./userscreens/userprofile/userprofile";
+import Driverprofile from './driverscreen/driverProfile/driverprofile'
 import "bootstrap/dist/css/bootstrap.min.css";
 
 function App() {
@@ -28,10 +30,13 @@ function App() {
 
       //user
       <Route path="usersignup" element={<Signup />}></Route>
-      <Route path="/" element={<Login />}></Route>
+
+      <Route path="/userhome" element={<Userhome />}></Route>
       <Route path="hero" element={<Hero />}></Route>
-      <Route path="userhome" element={<Userhome />}></Route>
+      <Route path="/" element={<Login />}></Route>
       <Route path="userprofile" element={<UserProfile />}></Route>
+      <Route path="OtpPhone" element={<LoginWithOtp />}></Route>
+      <Route path="/VerifyOtp" element={<VerifyOTP />}></Route>
 
 
 
@@ -40,7 +45,9 @@ function App() {
       <Route path="driversignup" element={<Driversignup />}></Route>
       <Route path="driverlogin" element={<DriverLogin />}></Route>
       <Route path="drivernav" element={<DriverNav />}></Route>
-      <Route path="driverhome" element={<Driverhome />}></Route>
+      <Route path="/driverhome" element={<Driverhome />}></Route>
+      <Route path="/driveprofile" element={<Driverprofile />}></Route>
+
 
 
 

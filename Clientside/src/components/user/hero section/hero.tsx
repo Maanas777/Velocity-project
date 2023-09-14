@@ -7,7 +7,7 @@ import Third from "./3rd.avif";
 
 const Hero = () => {
   return (
-    <div className="container-fluid">
+    <div >
       
       <div className="imageContainer">
         <img className="first" src={First} alt="" />

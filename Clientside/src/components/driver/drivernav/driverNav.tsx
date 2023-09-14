@@ -1,42 +1,78 @@
 // import React from 'react';
-import Navbar from 'react-bootstrap/Navbar';
-import Nav from 'react-bootstrap/Nav';
-import logo from './logofinal.png'
-// import profile from'../pngwing.com (1).png'
-import './driverNav.css'
+import Navbar from "react-bootstrap/Navbar";
+import Nav from "react-bootstrap/Nav";
+import logo from "./logofinal.png";
+import { Link } from "react-router-dom";
+import profile from "../pngwing.com (1).png";
+import "./driverNav.css";
 
 const MyNavbar = () => {
-  return (
-    <Navbar className='custom-driver-nav ' expand="md">
-      <div className="container">
-        <Navbar.Brand href="#home " className='d-flex  align-items-center justify-content-center '>
-          <img
-            src={logo}
-            alt="Logo"
-        
-         className='driver-nav-logo'
-         
-          />
-         <h1 className="mb-0 driver_heading">Driver</h1>
+  const storedDriverData = localStorage.getItem("DriverData");
 
-        
-        </Navbar.Brand>
-        <Navbar.Toggle aria-controls="basic-navbar-nav" />
-        <Navbar.Collapse id="basic-navbar-nav">
-          <Nav className="ms-auto " >
-          <Nav.Link href="#home" style={{ marginRight: '10%' }}>Home</Nav.Link>
-    <Nav.Link href="#about" style={{ marginRight: '10%' }}>About</Nav.Link>
-    <Nav.Link href="#services" style={{ marginRight: '10%' }}>Services</Nav.Link>
-    <Nav.Link href="#contact" style={{ marginRight: '10%' }}>Contact</Nav.Link>
-    {/* <Nav.Link href="#contact" style={{ marginRight: '10%' }}>
+  if (storedDriverData) {
+    const parsedDriverData = JSON.parse(storedDriverData);
+    const drivername2 = parsedDriverData?.Drivername;
+    const drivername = parsedDriverData.driver?.Drivername;
+
+    return (
+      <Navbar className="custom-driver-nav " expand="md">
+        <div className="container">
+          <Navbar.Brand
+            href="#home "
+            className="d-flex  align-items-center justify-content-center "
+          >
+            <img src={logo} alt="Logo" className="driver-nav-logo" />
+            <h1 className="mb-0 driver_heading">Driver</h1>
+          </Navbar.Brand>
+          <Navbar.Toggle aria-controls="basic-navbar-nav" />
+          <Navbar.Collapse id="basic-navbar-nav">
+            <Nav className="ms-auto ">
+              <Link
+                to="/driverhome"
+                style={{
+                  color:
+                    location.pathname === "/driverhome" ? "indigo" : "black",
+                  fontWeight:
+                    location.pathname === "/driverhome" ? "bolder" : "normal",
+
+                  marginRight: "40px",
+                  textDecoration: "none",
+                }}
+              >
+                Home
+              </Link>
+              <Link to="#about" style={{ color: 'black', marginRight: '40px', textDecoration: 'none' }}>
+    About
+   </Link>
+   <Link to="#services" style={{ color: 'black', marginRight: '30px', textDecoration: 'none' }}>
+    Careers
+   </Link>
+   <Link to="#contact" style={{ color: 'black', marginRight: '40px', textDecoration: 'none' }}>
+    Contact
+   </Link>
+              {/* <Nav.Link href="#contact" style={{ marginRight: '10%' }}>
     <img className='img-fluid driver-nav-profile' src={profile} alt="" />
     </Nav.Link> */}
-          </Nav>
-         
-        </Navbar.Collapse>
-      </div>
-    </Navbar>
-  );
-};
+            </Nav>
 
+            {storedDriverData && (
+              <Link to="/driveprofile">
+                <div className="d-flex  flex-column  align-items-center">
+                  <img
+                    src={profile}
+                    style={{ height: "3rem", marginRight: "10px" }}
+                    alt=""
+                  />
+                  <span style={{ color: "black", textDecoration: "none" }}>
+                    {drivername ? drivername : drivername2 ? drivername2 : ""}
+                  </span>
+                </div>
+              </Link>
+            )}
+          </Navbar.Collapse>
+        </div>
+      </Navbar>
+    );
+  }
+};
 export default MyNavbar;
