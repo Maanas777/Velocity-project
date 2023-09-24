@@ -6,6 +6,7 @@ interface IUser extends Document {
     phone: number;
     password: string;
     isBlocked?: boolean;
+    // trips: mongoose.Types.ObjectId[];
 }
 
 const userSchema: Schema<IUser> = new Schema<IUser>({
@@ -28,6 +29,16 @@ const userSchema: Schema<IUser> = new Schema<IUser>({
         type: Boolean,
         default: false,
     },
+
+    // trips: [
+    //     {
+    //       type: mongoose.Schema.Types.ObjectId,
+    //       ref: 'Ride', 
+    //     },
+    //   ]
+
+
+
 });
 
 const UserModel = mongoose.model<IUser>("User", userSchema);

@@ -1,5 +1,8 @@
 import { Request, Response } from "express";
 import userModel from "../models/user";
+import {TripModel} from '../models/trip'
+import driverModel from '../models/driver'
+
 import bcrypt from "bcrypt";
 import dotenv from "dotenv";
 import twilio from "twilio";
@@ -20,7 +23,6 @@ const client = twilio(accountSid, authToken);
 // }
 
 const usercontroller = {
- 
   Userhome: (_req: Request, res: Response) => {
     // Send a JSON response
     return res.json({ message: "home page" });
@@ -54,10 +56,7 @@ const usercontroller = {
     }
   },
 
-  userSignup: async (_req: Request, res: Response) => {
-    // Send a JSON response
-    return res.json({ message: "signup page" });
-  },
+
 
   userSignupPost: async (req: Request, res: Response) => {
     try {
@@ -106,8 +105,7 @@ const usercontroller = {
       );
 
       if (updateUser) {
-        res.json({ msg:'message: "logged in successfully',
-          updateUser });
+        res.json({ msg: 'message: "logged in successfully', updateUser });
       }
     } catch (error) {
       console.error(error);
@@ -130,29 +128,26 @@ const usercontroller = {
     }
   },
 
-
-///sent otp
+  ///sent otp
 
   Sentotp: async (req: Request, res: Response) => {
     const phone = req.body.phone;
     console.log(phone, "phonenumber");
-  
+
     try {
       const existingUser = await userModel.findOne({ phone: phone });
-  
+
       if (!existingUser) {
         console.log("User not found");
         return res.status(404).json({ error: "Phone number not found" });
       }
-  
-      if (typeof serviceId === 'string') {
-        await client.verify.v2
-          .services(serviceId)
-          .verifications.create({
-            to: '+91' + phone,
-            channel: "sms",
-          });
-        res.json({ msg: "OTP sent successfully",existingUser });
+
+      if (typeof serviceId === "string") {
+        await client.verify.v2.services(serviceId).verifications.create({
+          to: "+91" + phone,
+          channel: "sms",
+        });
+        res.json({ msg: "OTP sent successfully", existingUser });
       } else {
         // Handle the case where serviceId is undefined or not a string
         res.json({ Error: "Invalid serviceId" });
@@ -160,53 +155,105 @@ const usercontroller = {
     } catch (error) {
       res.json({ Error: error });
     }
-  }
-  
-,
+  },
 
+  ////verify otp
 
-////verify otp
+  verifyOtp: async (req: Request, res: Response) => {
+    const { OTP, phone } = req.body;
+    console.log("Received OTP:", OTP);
+    console.log("Received phone:", phone);
 
-verifyOtp:async (req: Request, res: Response)=>{
+    try {
+      if (typeof serviceId === "string") {
+        const formattedPhone = phone.replace(/"/g, "");
+        const verification_check = await client.verify.v2
+          .services(serviceId)
+          .verificationChecks.create({
+            to: "+91" + formattedPhone,
+            code: OTP,
+          });
 
-  const { OTP, phone } = req.body;
-  console.log('Received OTP:', OTP);
-  console.log('Received phone:', phone);
-
-
-  
-  
-  try {
-    if (typeof serviceId === 'string') {
-      const formattedPhone = phone.replace(/"/g, '');
-      const verification_check = await client.verify.v2
-        .services(serviceId)
-        .verificationChecks.create({
-          to: '+91' + formattedPhone,
-          code: OTP,
-        });
-  
-      if (verification_check.status === 'approved') {
-        res.json({ msg: 'verified user' });
+        if (verification_check.status === "approved") {
+          res.json({ msg: "verified user" });
+        } else {
+          res.json({ msg: "invalid user" });
+        }
       } else {
-        res.json({ msg: 'invalid user' });
+        // Handle the case where serviceId is undefined or not a string
+        res.json({ Error: "Invalid serviceId" });
       }
-    } else {
-      // Handle the case where serviceId is undefined or not a string
-      res.json({ Error: 'Invalid serviceId' });
+    } catch (error: any) {
+      console.error("Error:", error);
+
+      if (
+        error.response &&
+        error.response.data &&
+        error.response.data.message
+      ) {
+        res.status(400).json({ error: error.response.data.message });
+      } else {
+        res.status(500).json({ error: "An error occurred" });
+      }
     }
-  } catch (error:any) {
-    console.error('Error:', error);
+  },
+
+
+  createRide: async (req: Request, res: Response) => {
+    try {
+      const id = req.params.id;
+      console.log(id);
+      
+      
+      const pickuplocation = req.body.pickupLocation;
+      const destination = req.body.destinationLocation;
+     
+    
+      const user = await userModel.findById(id).exec();
   
-    if (error.response && error.response.data && error.response.data.message) {
-      res.status(400).json({ error: error.response.data.message });
-    } else {
-      res.status(500).json({ error: 'An error occurred' });
+      if (!user) {
+        res.json({ msg: 'User not found' });
+        return;
+      }
+  
+      const newTrip = await TripModel.create({
+        user: user._id, 
+        pickuplocation: pickuplocation,
+        destination: destination,
+        isCompleted: false
+      });
+  
+      // Populate the 'user' field to get user details including 'username'
+      const populatedTrip = await TripModel.populate(newTrip, { path: 'user', select: 'username phone' });
+      console.log(populatedTrip);
+      
+  
+      // Send the populated trip in the response
+      res.json({ trip: populatedTrip });
+    } catch (error) {
+      // Handle errors
+      console.error('Error creating ride:', error);
+      return res.status(500).json({ msg: 'Internal server error' });
     }
   }
-  
-}
-}
+  ,
+  bikes:async (_req: Request, res: Response) =>{
+    try {
+      const availableBikes=await driverModel.find()
+      if(availableBikes){
+        res.json({availableBikes})
+      }
+
+
+      
+    } catch (error) {
+      res.json({error})
+      
+    }
+
+
+
+  }
 
 
 
@@ -220,5 +267,10 @@ verifyOtp:async (req: Request, res: Response)=>{
 
 
 
+
+
+
+
+};
 
 export default usercontroller;

@@ -9,7 +9,7 @@ import profile from './pngwing.com (1).png'
 import './userNav.css'
 
 import logo from './logofinal.png'
-import { log } from 'console';
+
 
 
 
@@ -28,10 +28,6 @@ const UserNav = () => {
         console.log(username2);
         
         
-
-         
-  
-
     return (
       <Navbar className='custom-user-nav ' expand="md">
         <div className="container">

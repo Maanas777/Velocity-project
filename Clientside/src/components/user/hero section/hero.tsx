@@ -1,31 +1,127 @@
-import React from "react";
+import { useState } from "react";
+// import { FormEvent } from "react";
 import "./hero.css";
 import First from "./1st section.png";
 import Second from "./seond.jpg";
 import Third from "./3rd.avif";
- 
+import { useSelector } from "react-redux";
+import { selectUser } from "../../../redux/userSlice";
+import axios from "axios";
+
+const predefinedLocations = [
+  { name: "Thripunithara", lat: 9.943436, lon: 76.345907 },
+  { name: "Vytila", lat: 9.96571, lon: 76.317854 },
+  { name: "Elamkulam", lat: 9.967908, lon: 76.301361 },
+  { name: "Kaloor", lat: 9.99709, lon: 76.302818 },
+  { name: "Kalamasserry", lat: 10.01455, lon: 76.293159 },
+  { name: "Edapally", lat: 10.023429, lon: 76.309524 },
+];
+
+const predefinedDestinations = [
+  { name: "Thripunithara", lat: 9.943436, lon: 76.345907 },
+  { name: "Vytila", lat: 9.96571, lon: 76.317854 },
+  { name: "Elamkulam", lat: 9.967908, lon: 76.301361 },
+  { name: "Kaloor", lat: 9.99709, lon: 76.302818 },
+  { name: "Kalamasserry", lat: 10.01455, lon: 76.293159 },
+  { name: "Edapally", lat: 10.023429, lon: 76.309524 },
+];
 
 const Hero = () => {
+  const user = useSelector(selectUser);
+  console.log(user._id);
+
+  const userid = user?.user?._id;
+  console.log(userid);
+
+  const [pickupLocation, setPickupLocation] = useState("");
+  const [destinationLocation, setDestinationLocation] = useState("");
+
+  const handlePickupLocationSelect = (
+    e: React.ChangeEvent<HTMLSelectElement>
+  ) => {
+    setPickupLocation(e.target.value);
+  };
+
+  const handleDestinationLocationSelect = (
+    e: React.ChangeEvent<HTMLSelectElement>
+  ) => {
+    setDestinationLocation(e.target.value);
+  };
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    console.log("Pickup Location:", pickupLocation);
+    console.log("Destination:", destinationLocation);
+
+    // Find the selected locations from predefinedLocations
+    const selectedPickupLocation = predefinedLocations.find(
+      (location) => location.name === pickupLocation
+    );
+    const selectedDestinationLocation = predefinedDestinations.find(
+      (location) => location.name === destinationLocation
+    );
+
+    if (!selectedPickupLocation || !selectedDestinationLocation) {
+      console.error("Invalid pickup or destination location.");
+      return;
+    }
+
+    const rideData = {
+      pickupLocation: {
+        name: pickupLocation,
+        lat: selectedPickupLocation.lat,
+        lon: selectedPickupLocation.lon,
+      },
+      destinationLocation: {
+        name: destinationLocation,
+        lat: selectedDestinationLocation.lat,
+        lon: selectedDestinationLocation.lon,
+      },
+    };
+
+    await axios
+      .post(`http://localhost:3003/api/users/createRide/${userid}`, rideData)
+      .then((response) => {
+        console.log(response);
+      });
+  };
+
   return (
-    <div >
-      
+    <div>
       <div className="imageContainer">
         <img className="first" src={First} alt="" />
         <div className="formContainer">
-          <form className="userhomeform">
+          <form className="userhomeform" onSubmit={handleSubmit}>
             <h1 className="formheading">Request a Ride now</h1>
 
-            <input
-              type="text"
-              id="fullName"
-              placeholder="Enter pickup location"
-            />
+            <select
+              className="options"
+              onChange={handlePickupLocationSelect}
+              value={pickupLocation}
+            >
+              <option value="">Select pickup location</option>
+              {predefinedLocations.map((location, index) => (
+                <option key={index} value={location.name}>
+                  {location.name}
+                </option>
+              ))}
+            </select>
             <br />
             <br />
 
-         
-
-            <input type="text" id="dob" placeholder="Enter Destination" />
+            <select
+              className="options"
+              onChange={handleDestinationLocationSelect}
+              value={destinationLocation}
+            >
+              <option value="">Select destination</option>
+              {predefinedDestinations.map((location, index) => (
+                <option key={index} value={location.name}>
+                  {location.name}
+                </option>
+              ))}
+            </select>
             <br />
 
             <input className="button1" type="submit" value="Submit" />
@@ -50,9 +146,8 @@ const Hero = () => {
       <div className="thirdimagecontainer">
         <h1 className="thirdpara">
           Navigating the Urban Pulse: Swift and Secure City Travel with
-        VeloCity...
+          VeloCity...
           <p className="thirdparagra">
-            
             Discover the thrill of city exploration with VeloCity – where speed
             meets safety. Zip through urban landscapes faster than ever before
             while enjoying the peace of mind that comes with our top-tier safety
@@ -64,23 +159,12 @@ const Hero = () => {
 
         <img className="thirdimage" src={Third} alt="" />
       </div>
-  
-  <div className="last">
-    <h1></h1>
 
-
-  </div>
-
-
-
-
-
+      <div className="last">
+        <h1></h1>
+      </div>
     </div>
   );
 };
 
 export default Hero;
-
-
-
-

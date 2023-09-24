@@ -8,6 +8,12 @@
     border-radius: 30px;
 }
 
+.overflow-container {
+    max-height: 28rem; /* Adjust the height as needed */
+    overflow-y: auto; /* Enable vertical scrollbar if content overflows */
+  }
+  
+
 
  .heading{
      font-weight: bold;

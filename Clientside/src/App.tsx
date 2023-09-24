@@ -19,6 +19,9 @@ import Driververication from "./adminscreen/driververification/driververify";
 import Driverhome from "./driverscreen/driverhome/driverhome";
 import UserProfile from "./userscreens/userprofile/userprofile";
 import Driverprofile from './driverscreen/driverProfile/driverprofile'
+import Drivermap from './driverscreen/drivermap/drivermap'
+import SelectBikes from './userscreens/bikes/bikes'
+
 import "bootstrap/dist/css/bootstrap.min.css";
 
 function App() {
@@ -37,7 +40,7 @@ function App() {
       <Route path="userprofile" element={<UserProfile />}></Route>
       <Route path="OtpPhone" element={<LoginWithOtp />}></Route>
       <Route path="/VerifyOtp" element={<VerifyOTP />}></Route>
-
+      <Route path="/selectbike" element={<SelectBikes />}></Route>
 
 
 
@@ -47,7 +50,7 @@ function App() {
       <Route path="drivernav" element={<DriverNav />}></Route>
       <Route path="/driverhome" element={<Driverhome />}></Route>
       <Route path="/driveprofile" element={<Driverprofile />}></Route>
-
+      <Route path="/drivermap" element={<Drivermap />}></Route>
 
 
 

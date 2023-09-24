@@ -1,7 +1,9 @@
 import { Request, Response } from "express";
 import driverModel from '../models/driver'
-import { ObjectId } from "mongoose";
+import { ObjectId,Types } from "mongoose";
 import cloudinary from "../utilities/cloudinary";
+import { TripModel } from "../models/trip";
+import UserModel from "../models/user";
 
 import bcrypt from "bcrypt";
 
@@ -9,6 +11,7 @@ import bcrypt from "bcrypt";
 
 export interface IDriver {
     _id: ObjectId;
+    user:Types.ObjectId | typeof UserModel
     Drivername: string;
     email: string;
     password: string;
@@ -155,9 +158,6 @@ const drivercontroller = {
 
 
     editprofile: async (req: Request, res: Response) => {
-   
-      
-    
         try {
           const id = req.params.id;
           const trimmedObjectId = id.trim();
@@ -181,7 +181,22 @@ const drivercontroller = {
           console.error(error);
           res.send(error);
         }
+      },
+
+
+      rides: async (_req: Request, res: Response) =>{
+       
+        
+      const trips= await TripModel.find().populate({path:'user',select:'username phone'})
+      console.log(trips);
+      
+      res.json({trips})
+
+
       }
+
+
+
 
 
 
