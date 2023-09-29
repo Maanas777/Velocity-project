@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useEffect } from "react";
+import axiosInstance from "../../axiosInstances/userInstance";
 import { login } from "../../redux/userSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { selectUser } from "../../redux/userSlice";
@@ -12,11 +13,14 @@ import axios from "axios";
 function Profile() {
   const dispatch = useDispatch();
   const user = useSelector(selectUser);
+  const userId = user?.user?._id;
+  console.log(userId, "packupaafhsakjfhsakjfh");
 
   const [isEditing, setIsEditing] = useState(false);
   const [username, setUsername] = useState(user?.user?.name || "");
   const [email, setEmail] = useState(user?.user?.email || "");
   const [phone, setPhone] = useState(user?.user?.phone || "");
+  const [trips, setTrips] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -50,6 +54,25 @@ function Profile() {
 
     initializeUserData();
   }, [dispatch]);
+
+  useEffect(() => {
+    const storedUserData = localStorage.getItem("userData");
+
+    const parsedUserData = JSON.parse(storedUserData);
+    console.log(parsedUserData.user?._id, "parsed");
+    const id = parsedUserData.user?._id; 
+    console.log(id, "hallooeerhfdfjfn");
+
+    axiosInstance.get(`/finduser/${id ? id : userId}`).then((response) => {
+      const user = response.data.user;
+      if (user) {
+        const trips = user.trips;
+        setTrips(trips);
+      } else {
+        console.error("User data is undefined.");
+      }
+    });
+  }, []);
 
   const handleEditClick = () => {
     setIsEditing(true);
@@ -185,6 +208,50 @@ function Profile() {
                           Save
                         </button>
                       ) : null}
+                      <div>
+                        <h4
+                          className="
+                       "
+                        >
+                          Trip History
+                        </h4>
+                        <div className="history">
+                          {trips.map((trip, index) => (
+                            <div key={trip._id}>
+                              <div className="triphistoryUser">
+                              <div className="profiledate">
+                                <p>
+                                  {" "}
+                                  {new Date(trip.createdAt).toLocaleDateString(
+                                    undefined,
+                                    {
+                                      day: "numeric",
+                                      month: "long",
+                                      year: "numeric",
+                                    }
+                                  )}
+                                </p>
+                                <p>
+                                  {" "}
+                                  Time :{" "}
+                                  {new Date(trip.createdAt).toLocaleTimeString(
+                                    [],
+                                    {
+                                      hour: "2-digit",
+                                      minute: "2-digit",
+                                    }
+                                  )}
+                                </p>
+                                </div>
+                                <p>
+                                  Pickup Location: {trip.pickuplocation.name}
+                                </p>
+                                <p>Destination: {trip.destination.name}</p>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>

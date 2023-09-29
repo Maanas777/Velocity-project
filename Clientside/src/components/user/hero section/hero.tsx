@@ -5,6 +5,7 @@ import First from "./1st section.png";
 import Second from "./seond.jpg";
 import Third from "./3rd.avif";
 import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import { selectUser } from "../../../redux/userSlice";
 import axios from "axios";
 
@@ -27,6 +28,9 @@ const predefinedDestinations = [
 ];
 
 const Hero = () => {
+
+const nav= useNavigate()
+
   const user = useSelector(selectUser);
   console.log(user._id);
 
@@ -85,6 +89,8 @@ const Hero = () => {
       .then((response) => {
         console.log(response);
       });
+nav('/selectbike')
+      
   };
 
   return (

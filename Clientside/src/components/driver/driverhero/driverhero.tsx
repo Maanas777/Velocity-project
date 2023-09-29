@@ -1,5 +1,6 @@
 import React from "react";
 import axios from "axios";
+
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import "./driverhero.css";
@@ -66,6 +67,7 @@ const Driverhero = () => {
                         <th>Customer</th>
                         <th>Pickup-Location</th>
                         <th>Destinatiion</th>
+                     
                         <th>Action</th>
                       </tr>
                     </thead>
@@ -81,6 +83,7 @@ const Driverhero = () => {
                           </td>
                           <td>{trip.pickuplocation.name}</td>
                           <td> {trip.destination.name} </td>
+                       
 
                           <td>
                             <button className="bg-primary" onClick={() => handleTakeTrip(trip)}>

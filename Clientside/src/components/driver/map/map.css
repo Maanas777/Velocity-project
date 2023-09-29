@@ -1,0 +1,30 @@
+body {
+    margin: 0;
+    padding: 0;
+  }
+  
+ 
+   
+    #map {
+      width: 100%; /* Adjust the width as needed */
+      height: 300px; /* Adjust the height as needed */
+      border: 4px solid #2c2c2c; /* Add a border for styling */
+      border-radius: 5px;
+     
+    }
+ 
+ 
+  
+  .mapmain{
+    background-color: rgb(209, 207, 205);
+    height: 100vh;
+    
+   
+
+  }
+  .maptext{
+    text-align: center;
+    font-weight: bold;
+    color: rgb(0, 0, 0);
+  }
+  

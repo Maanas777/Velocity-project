@@ -115,9 +115,11 @@ const usercontroller = {
 
   userprofile: async (req: Request, res: Response) => {
     try {
-      const id = req.params.id;
+      const id = req.params.id.trim();
+      console.log(id,"lkjlkjflksjf");
+      
 
-      const user = await userModel.findOne({ _id: id });
+      const user = await userModel.findOne({ _id: id }).populate('trips');
 
       if (user) {
         res.json({ user });
@@ -223,6 +225,9 @@ const usercontroller = {
         isCompleted: false
       });
   
+      user.trips.push(newTrip._id);
+      await user.save();
+
       // Populate the 'user' field to get user details including 'username'
       const populatedTrip = await TripModel.populate(newTrip, { path: 'user', select: 'username phone' });
       console.log(populatedTrip);
@@ -239,7 +244,7 @@ const usercontroller = {
   ,
   bikes:async (_req: Request, res: Response) =>{
     try {
-      const availableBikes=await driverModel.find()
+      const availableBikes=await driverModel.find({isDriver:true})
       if(availableBikes){
         res.json({availableBikes})
       }

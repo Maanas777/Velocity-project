@@ -1,6 +1,9 @@
 import { Request, Response } from "express";
 import driverModel from "../models/driver";
 import UserModel from "../models/user";
+// import { TripModel } from "../models/trip";
+
+
 
 const adminController = {
   AdminLogin: async (req: Request, res: Response) => {
@@ -46,8 +49,14 @@ const adminController = {
   },
 
   showUsers: async (_req: Request, res: Response) => {
-    const users = await UserModel.find();
+    // const users = await UserModel.find({}).populate(['trips']);
+    // res.json({ users });
+
+    const users = await UserModel.find().populate('trips')
+    console.log(users,"llll");
+    
     res.json({ users });
+
   },
 
   acceptdriver: async (req: Request, res: Response) => {

@@ -1,7 +1,7 @@
 import mongoose, { Schema, Document, Model, Types } from "mongoose";
 import  UserModel  from "./user"; // Import the UserModel from the user module
 
-interface ITrip extends Document {
+export interface ITrip extends Document {
   user: Types.ObjectId | typeof UserModel; // Reference to the User model
   pickuplocation: {
     name: string;
@@ -22,6 +22,7 @@ const rideSchema = new Schema<ITrip>({
   user: {
     type: Schema.Types.ObjectId,
     ref: UserModel, 
+    
   },
   pickuplocation: {
     name: { type: String, required: true },
@@ -36,7 +37,10 @@ const rideSchema = new Schema<ITrip>({
   isCompleted: {
     type: Boolean,
     default: false,
-  },
+  }, 
+},
+{
+  timestamps: true, 
 });
 
 export const TripModel: Model<ITrip> = mongoose.model<ITrip>("Ride", rideSchema);
