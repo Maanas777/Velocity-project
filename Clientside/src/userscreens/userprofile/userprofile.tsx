@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useEffect } from "react";
-import axiosInstance from "../../axiosInstances/userInstance";
+import {axiosInstance} from "../../axiosInstances/userInstance";
 import { login } from "../../redux/userSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { selectUser } from "../../redux/userSlice";

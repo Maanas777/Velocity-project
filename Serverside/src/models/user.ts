@@ -1,5 +1,5 @@
 import mongoose, { Schema, Document ,Types} from "mongoose";
-import { ITrip } from "./trip";
+import { ITrip } from "./trip"; 
 
 export interface IUser extends Document {
     username?: string;

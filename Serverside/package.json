@@ -25,6 +25,7 @@
     "nodemon": "^3.0.1",
     "react-jwt": "^1.2.0",
     "react-leaflet": "^4.2.1",
+    "socket.io": "^4.7.2",
     "ts-dotenv": "^0.9.1",
     "twilio": "^4.17.0"
   },

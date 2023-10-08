@@ -35,9 +35,6 @@
 
   }
 
-
-
-
   .selectbike{
   text-align: center;
   margin-top: 10px;
@@ -59,3 +56,8 @@
   .mainselectbike{
     background-color: rgb(203 205 203);
   }
+
+.custom-modal{
+ 
+  color: rgb(2, 2, 2);
+}

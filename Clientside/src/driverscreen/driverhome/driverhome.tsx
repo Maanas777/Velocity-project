@@ -1,10 +1,13 @@
 import Drivernav from "../../components/driver/drivernav/driverNav";
 import Driverhero from "../../components/driver/driverhero/driverhero";
+
+import "react-toastify/dist/ReactToastify.css";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { login } from '../../redux/userSlice'
 
-import React from "react";
+
+
 
 const Driverhome = () => {
 
@@ -16,12 +19,15 @@ const Driverhome = () => {
 
     dispatch(login(parsedUserData));
   }, [dispatch]);
+  
 
-
-
+  
 
   return (
-    <div>
+ 
+    <div className="col-sm-12">
+      
+     
       <Drivernav />
       <Driverhero />
     </div>

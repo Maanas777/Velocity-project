@@ -1,217 +1,201 @@
 import { Request, Response } from "express";
-import driverModel from '../models/driver'
-import { ObjectId,Types } from "mongoose";
+import driverModel from "../models/driver";
+import { ObjectId, Types } from "mongoose";
 import cloudinary from "../utilities/cloudinary";
 import { TripModel } from "../models/trip";
 import UserModel from "../models/user";
-
+import { Server } from 'socket.io';
 import bcrypt from "bcrypt";
 
-
-
 export interface IDriver {
-    _id: ObjectId;
-    user:Types.ObjectId | typeof UserModel
-    Drivername: string;
-    email: string;
-    password: string;
+  _id: ObjectId;
+  user: Types.ObjectId | typeof UserModel;
+  Drivername: string;
+  email: string;
+  password: string;
 }
 
-
-
-
-
-
 const drivercontroller = {
+  driverlogin: async (req: Request, res: Response) => {
+    try {
+      const { email, password } = req.body;
 
-    driverloginpage: (_req: Request, res: Response) => {
-        res.json("driver login")
+      const driver = (await driverModel.findOne({ email })) as IDriver;
 
-    },
+      if (driver) {
+        const isMatch = await bcrypt.compare(password, driver.password);
 
-    driverlogin: async (req: Request, res: Response) => {
-        try {
-            const { email, password } = req.body
+        if (isMatch) {
+          res.json({
+            message: "driver logged successfully",
+            driver,
+          });
+        } else {
+          res.status(401).json({ message: "Invalid credentials" });
+        }
+      } else {
+        res.status(404).json({ message: "Driver not found" });
+      }
+    } catch (error) {
+      res.status(500).json({ message: "An error occurred" });
+    }
+  },
 
-            const driver = await driverModel.findOne({ email }) as IDriver
+  driverSignup: async (req: Request, res: Response) => {
+    const {
+      Drivername,
+      email,
+      phone,
+      password,
+      licenseno,
+      VehicleModel,
+      vehicleNo,
+      RCNo,
+    } = req.body;
 
-            if (driver) {
-                const isMatch = await bcrypt.compare(password, driver.password)
+    try {
+      const files = req.files as { [fieldname: string]: Express.Multer.File[] };
+      const DriverPhoto = files["driverPhoto"][0];
+      const vehiclePhoto = files["vehiclePhoto"][0];
 
+      let driver: string | null = null; // Initialize with null'
+      let vehicle: string | null = null;
 
-                if (isMatch) {
-                    res.json({
-                        message: "driver logged successfully",
-                        driver
-                    })
-
-                }
-                else {
-                    res.status(401).json({ message: 'Invalid credentials' });
-                }
-            } else {
-                res.status(404).json({ message: 'Driver not found' });
+      const uploadDriverImagePromise = new Promise<void>((resolve, reject) => {
+        cloudinary.uploader
+          .upload_stream(
+            { resource_type: "auto" },
+            async (error, result: any) => {
+              if (error) {
+                return reject(error);
+              }
+              driver = result.secure_url;
+              resolve();
             }
+          )
+          .end(DriverPhoto.buffer);
+      });
 
+      await Promise.all([uploadDriverImagePromise]);
+
+      const uploadVehicleImagePromise = new Promise<void>((resolve, reject) => {
+        cloudinary.uploader
+          .upload_stream(
+            { resource_type: "auto" },
+            async (error, result: any) => {
+              if (error) {
+                return reject(error);
+              }
+              vehicle = result.secure_url;
+              resolve();
+            }
+          )
+          .end(vehiclePhoto.buffer);
+      });
+
+      await Promise.all([uploadVehicleImagePromise]);
+
+      const driverExist = await driverModel.findOne({ email });
+      if (driverExist) {
+        res.json("Driver already exists");
+      } else {
+        const hashedPassword = await bcrypt.hash(password, 10);
+
+        function generateUniqueSocketId() {
+          const randomString = Math.random().toString(36).substring(2, 15); // Generate a random string
+          const timestamp = Date.now(); // Get the current timestamp
+          return `${randomString}_${timestamp}`;
         }
-        catch (error) {
-            res.status(500).json({ message: 'An error occurred' });
-        }
 
-    },
+        const uniqueSocketId = generateUniqueSocketId();
+        console.log(uniqueSocketId, "sockerrr");
 
-
-    driverSignup: async (req: Request, res: Response) => {
-        const {
+        try {
+          await driverModel.create({
             Drivername,
             email,
             phone,
-            password,
+            password: hashedPassword,
             licenseno,
             VehicleModel,
             vehicleNo,
-            RCNo
-        } = req.body;
-    
-        try {
-            const files = req.files as { [fieldname: string]: Express.Multer.File[] };
-            const DriverPhoto = files['driverPhoto'][0];
-            const vehiclePhoto = files['vehiclePhoto'][0];
-    
-            let driver: string | null = null; // Initialize with null'
-            let vehicle:string|null=null
-    
-            const uploadDriverImagePromise = new Promise<void>((resolve, reject) => {
-                cloudinary.uploader.upload_stream(
-                    { resource_type: 'auto' },
-                    async (error, result: any) => {
-                        if (error) {
-                            return reject(error);
-                        }
-                        driver = result.secure_url;
-                        resolve();
-                    }
-                ).end(DriverPhoto.buffer);
-            });
-    
-            await Promise.all([uploadDriverImagePromise]);
-    
-            
-            if (driver) {
-                console.log("Driver Image URL:", driver,"67567dfsdfgsdgdsgdsfgsdfgs575756");
-            } else {
-                console.error("Driver image URL is not available.");
-            }
+            RCNo,
+            DriverPhoto: driver,
+            vehiclePhoto: vehicle,
+            socketId: uniqueSocketId,
+          });
 
-
-
-            const uploadVehicleImagePromise = new Promise<void>((resolve, reject) => {
-                cloudinary.uploader.upload_stream(
-                    { resource_type: 'auto' },
-                    async (error, result: any) => {
-                        if (error) {
-                            return reject(error);
-                        }
-                        vehicle = result.secure_url;
-                        resolve();
-                    }
-                ).end(vehiclePhoto.buffer);
-            });
-    
-            await Promise.all([uploadVehicleImagePromise]);
-    
-            
-            if (vehicle) {
-                console.log("vehicle Image URL:", vehicle,"vehivleljflasjflsfjlsfjsalfjsalfjsalfkjsafljsa");
-            } else {
-                console.error("vehicle image URL is not available.");
-            }
-
-
-
-    
-            const driverExist = await driverModel.findOne({ email });
-            if (driverExist) {
-                res.json('Driver already exists');
-            } else {
-                const hashedPassword = await bcrypt.hash(password, 10);
-                await driverModel.create({
-                    Drivername,
-                    email,
-                    phone,
-                    password: hashedPassword,
-                    licenseno,
-                    VehicleModel,
-                    vehicleNo,
-                    RCNo,
-                    DriverPhoto:driver,
-                    vehiclePhoto:vehicle
-                });
-                res.json({ message: 'Driver created successfully' });
-            }
+          // Send the response only after the driver is successfully created
+          res.json({ message: "Driver created successfully" });
         } catch (error) {
-            console.error('Error creating driver:', error);
-            res.status(500).json({ message: 'Error creating driver' });
+          // Handle any errors that occur during the create operation
+          res.status(500).json({ message: "An error occurred" });
         }
-    },
-
-
-
-    editprofile: async (req: Request, res: Response) => {
-        try {
-          const id = req.params.id;
-          const trimmedObjectId = id.trim();
-        console.log(req.body.Drivername);
-        
-          const updateUser = await driverModel.findByIdAndUpdate(
-            trimmedObjectId,
-    
-            {
-              Drivername: req.body.Drivername,
-              email: req.body.email,
-              phone: req.body.phone,
-            },
-            { new: true }
-          );
-    
-          if (updateUser) {
-            res.json({ updateUser });
-          }
-        } catch (error) {
-          console.error(error);
-          res.send(error);
-        }
-      },
-
-
-      rides: async (_req: Request, res: Response) =>{
-       
-        
-      const trips= await TripModel.find().populate({path:'user',select:'username phone'})
-      console.log(trips);
-      
-      res.json({trips})
-
-
       }
+    } catch (error) {
+      console.error("Error creating driver:", error);
+      res.status(500).json({ message: "Error creating driver" });
+    }
+  },
 
+  editprofile: async (req: Request, res: Response) => {
+    try {
+      const id = req.params.id;
+      const trimmedObjectId = id.trim();
+      console.log(req.body.Drivername);
 
+      const updateUser = await driverModel.findByIdAndUpdate(
+        trimmedObjectId,
 
+        {
+          Drivername: req.body.Drivername,
+          email: req.body.email,
+          phone: req.body.phone,
+        },
+        { new: true }
+      );
 
+      if (updateUser) {
+        res.json({ updateUser });
+      }
+    } catch (error) {
+      console.error(error);
+      res.send(error);
+    }
+  },
 
+  rides: async (_req: Request, res: Response) => {
+    const trips = await TripModel.find().populate({
+      path: "user",
+      select: "username phone",
+    });
 
+    res.json({ trips });
+  },
 
+    userRequest: async (req: Request, _res: Response) => {
+      
 
+        const io: Server = req.app.get('io'); 
+        
+      const id = req.params.id;
+      console.log(id,"seleceted bikesss");
+      
 
+      const rider = await driverModel.findById(id);
+     if(rider){
+        const socketId=rider.socketId.toString()
 
-
-
-
-
-
-
+       const abx= io.to(socketId).emit("notification", "Your notification message");
+       if(abx){
+        console.log("abx:",abx);
+        
+       }
+     }
+      
     
 
 
-}
-export default drivercontroller
+    },
+};
+export default drivercontroller;

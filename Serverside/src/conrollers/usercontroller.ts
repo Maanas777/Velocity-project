@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import userModel from "../models/user";
 import {TripModel} from '../models/trip'
 import driverModel from '../models/driver'
+import { Server } from 'socket.io';
 
 import bcrypt from "bcrypt";
 import dotenv from "dotenv";
@@ -204,8 +205,8 @@ const usercontroller = {
   createRide: async (req: Request, res: Response) => {
     try {
       const id = req.params.id;
-      console.log(id);
-      
+ 
+      const io: Server = req.app.get('io'); 
       
       const pickuplocation = req.body.pickupLocation;
       const destination = req.body.destinationLocation;
@@ -230,7 +231,10 @@ const usercontroller = {
 
       // Populate the 'user' field to get user details including 'username'
       const populatedTrip = await TripModel.populate(newTrip, { path: 'user', select: 'username phone' });
-      console.log(populatedTrip);
+  
+      
+       // Emit a Socket.IO event to notify drivers of the new ride
+    io.emit("new_ride_available", { message: "New ride is available!" });
       
   
       // Send the populated trip in the response

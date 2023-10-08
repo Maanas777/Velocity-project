@@ -8,6 +8,10 @@ import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { selectUser } from "../../../redux/userSlice";
 import axios from "axios";
+// import { io } from "socket.io-client";
+
+
+// const socket = io("http://localhost:3003");
 
 const predefinedLocations = [
   { name: "Thripunithara", lat: 9.943436, lon: 76.345907 },
@@ -52,6 +56,10 @@ const nav= useNavigate()
     setDestinationLocation(e.target.value);
   };
 
+
+  ///submit function
+
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
@@ -82,6 +90,7 @@ const nav= useNavigate()
         lat: selectedDestinationLocation.lat,
         lon: selectedDestinationLocation.lon,
       },
+
     };
 
     await axios
@@ -89,6 +98,7 @@ const nav= useNavigate()
       .then((response) => {
         console.log(response);
       });
+
 nav('/selectbike')
       
   };

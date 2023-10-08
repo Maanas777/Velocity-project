@@ -13,7 +13,8 @@ interface IDriver extends Document {
     isavailable: boolean
     password: string;
     isBlocked?: boolean;
-    isDriver?:boolean
+    isDriver?:boolean;
+    socketId: String,
 
     
 }
@@ -40,6 +41,10 @@ const driverSchema: Schema<IDriver> = new Schema<IDriver>({
     licenseno: {
         type: String,
         required: true
+    },
+    socketId:{
+        type:String,
+       
     },
 
     vehiclePhoto: {

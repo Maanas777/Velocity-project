@@ -4,14 +4,29 @@ import userRoutes from './routes/userRoutes'
 import driverRoutes from './routes/driverRoutes'
 import adminRoutes  from './routes/adminRoutes'
 import cors from 'cors'
+import http from 'http';
+import { Server } from 'socket.io'
+
 import connectDB from './connection/connection'
 
 const app = express();
 const port = 3003;
 
-connectDB();
+const server=http.createServer(app)
+// const io= new Server(server)
+
 
 app.use(cors());
+
+const io = new Server(server, {
+    cors: {origin:"http://localhost:5173", methods: ["GET", "POST"]},
+});
+
+
+app.set('io', io);
+
+connectDB();
+
 
 app.use(express.json());
 
@@ -29,6 +44,19 @@ app.get('/', (_req:Request, res:Response) => {
 });
 
 
-app.listen(port, () => {
+
+
+
+io.on("connection", (socket) => {
+    console.log(`a user connected ${socket.id}`);
+    
+    socket.on("send_message", (data) => {
+      socket.broadcast.emit("receive_message", data);
+    });
+  });
+
+
+
+server.listen(port, () => {
     console.log("Server started successfully");
 });

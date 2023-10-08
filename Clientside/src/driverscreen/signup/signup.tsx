@@ -1,10 +1,16 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { useState, FormEvent, ChangeEvent } from 'react';
 import axios from 'axios';
 import {useNavigate} from 'react-router-dom'
 import './signup.css';
 import logo from '../assets/logofinal.png';
 import { toast, ToastContainer } from 'react-toastify';
+import { io } from "socket.io-client";
 import 'react-toastify/dist/ReactToastify.css';
+
+
+const socket = io("http://localhost:3003");
+
 
 const Signup = () => {
   const [vehiclePhoto, setVehiclePhoto] = useState<File | null>(null);
