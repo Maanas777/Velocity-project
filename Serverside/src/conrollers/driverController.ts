@@ -1,34 +1,39 @@
 import { Request, Response } from "express";
+
 import driverModel from "../models/driver";
-import { ObjectId, Types } from "mongoose";
+
 import cloudinary from "../utilities/cloudinary";
 import { TripModel } from "../models/trip";
-import UserModel from "../models/user";
-import { Server } from 'socket.io';
-import bcrypt from "bcrypt";
 
-export interface IDriver {
-  _id: ObjectId;
-  user: Types.ObjectId | typeof UserModel;
-  Drivername: string;
-  email: string;
-  password: string;
-}
+// import { Server } from 'socket.io';
+import bcrypt from "bcrypt";
+import generateToken from "../utilities/jwtToke";
+
+// export interface IDriver {
+//   _id: ObjectId;
+//   user: Types.ObjectId | typeof UserModel;
+//   Drivername: string;
+//   email: string;
+//   password: string;
+// }
 
 const drivercontroller = {
   driverlogin: async (req: Request, res: Response) => {
     try {
       const { email, password } = req.body;
 
-      const driver = (await driverModel.findOne({ email })) as IDriver;
+      const driver = (await driverModel.findOne({ email })) ;
 
       if (driver) {
         const isMatch = await bcrypt.compare(password, driver.password);
 
         if (isMatch) {
+          const token = generateToken(driver._id)
+
           res.json({
             message: "driver logged successfully",
             driver,
+            token
           });
         } else {
           res.status(401).json({ message: "Invalid credentials" });
@@ -173,29 +178,29 @@ const drivercontroller = {
     res.json({ trips });
   },
 
-    userRequest: async (req: Request, _res: Response) => {
+    // userRequest: async (req: Request, _res: Response) => {
       
 
-        const io: Server = req.app.get('io'); 
+    //     const io: Server = req.app.get('io'); 
         
-      const id = req.params.id;
-      console.log(id,"seleceted bikesss");
+    //   const id = req.params.id;
+    //   console.log(id,"seleceted bikesss");
       
 
-      const rider = await driverModel.findById(id);
-     if(rider){
-        const socketId=rider.socketId.toString()
+    //   const rider = await driverModel.findById(id);
+    //  if(rider){
+    //     const socketId=rider.socketId.toString()
 
-       const abx= io.to(socketId).emit("notification", "Your notification message");
-       if(abx){
-        console.log("abx:",abx);
+    //    const abx= io.to(socketId).emit("notification", "Your notification message");
+    //    if(abx){
+    //     console.log("abx:",abx);
         
-       }
+    //    }
      }
       
     
 
 
-    },
-};
+    
+
 export default drivercontroller;

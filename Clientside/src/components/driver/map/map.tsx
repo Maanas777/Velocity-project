@@ -12,14 +12,72 @@ import { useLocation } from 'react-router-dom';
 const Map = () => {
   const trip = useLocation();
 
-  const pickup_lat = trip.state.pickuplocation.lat;
-  const pickup_long = trip.state.pickuplocation.lon;
 
-  const Destibnation_lat = trip.state.destination.lat;
-  const Destibnation_long = trip.state.destination.lon;
+  function calculateDistance(pickup_lat, pickup_long, Destination_lat, Destination_long) {
+    // Radius of the Earth in kilometers
+    const earthRadius = 6371; // Use 3958.8 for miles
 
-  const pickupLocation = trip.state.pickuplocation.name;
-  const destination = trip.state.destination.name;
+    // Haversine formula
+    const dlat = Destination_lat - pickup_lat;
+    const dlon = Destination_long - pickup_long;
+    const a =
+        Math.sin(dlat / 2) ** 2 +
+        Math.cos(pickup_lat) * Math.cos(Destination_lat) * Math.sin(dlon / 2) ** 2;
+    const c = 2 * Math.asin(Math.sqrt(a));
+
+    // Calculate the distance
+    const distance = earthRadius * c;
+
+    return distance;
+}
+  
+
+
+  
+  
+  
+  
+  
+
+  const pickup_lat = trip?.state?.trip?.pickupLocation?.lat;
+
+  
+  const pickup_long = trip?.state?.trip.pickupLocation.lon;
+  
+  
+
+  const Destibnation_lat = trip?.state?.trip?.destinationLocation?.lat;
+
+  
+  const Destibnation_long =trip?.state?.trip?.destinationLocation?.lon;
+  
+  
+
+  const pickupLocation = trip?.state?.trip?.pickupLocation?.name;
+ 
+  
+  const destination = trip?.state?.trip?.destinationLocation?.name;
+
+  
+  if (pickup_lat && pickup_long && Destibnation_lat && Destibnation_long) {
+    const distance = calculateDistance(
+        pickup_lat,
+        pickup_long,
+        Destibnation_lat,
+        Destibnation_long
+    );
+    console.log(`Distance between pickup and destination: ${distance} km`);
+} else {
+    console.log('One or more coordinates are missing.');
+}
+
+
+
+
+
+
+
+
 
 
   useEffect(() => {

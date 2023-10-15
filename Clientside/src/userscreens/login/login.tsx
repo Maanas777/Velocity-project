@@ -6,9 +6,14 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { io } from "socket.io-client";
 import { login } from "../../redux/userSlice";
 import logo from "../assets/logofinal.png";
 import "./login.css";
+
+const socket = io('http://localhost:3003'); 
+
+
 
 const UserLogin = () => {
   const [email, setemail] = useState<string>("");
@@ -27,10 +32,15 @@ const UserLogin = () => {
       .then((res) => {
         toast.success(res.data.message);
         const userdata = res.data;
-        console.log(userdata.user.username);
+
+     
+        
+        socket.emit('loginUser', { userId: userdata.user._id });
         
 
         localStorage.setItem("userData", JSON.stringify(userdata));
+        localStorage.setItem("token",userdata.token)
+
         dispatch(login(userdata));
 
         nav("/userhome");

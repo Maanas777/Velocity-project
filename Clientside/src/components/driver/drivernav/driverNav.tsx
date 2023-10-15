@@ -1,5 +1,7 @@
 // import React from 'react';
 import Navbar from "react-bootstrap/Navbar";
+import Dropdown from "react-bootstrap/Dropdown";
+import { useNavigate } from "react-router-dom";
 import Nav from "react-bootstrap/Nav";
 import logo from "./logofinal.png";
 import { Link } from "react-router-dom";
@@ -8,6 +10,27 @@ import "./driverNav.css";
 
 const MyNavbar = () => {
   const storedDriverData = localStorage.getItem("DriverData");
+
+  const nav=useNavigate()
+
+
+
+
+
+  const handleLogout=()=>{
+    localStorage.removeItem("drivertoken")
+    localStorage.removeItem("DriverData")
+    nav('/driverlogin')
+ 
+    
+  }
+
+
+
+
+
+
+
 
   if (storedDriverData) {
     const parsedDriverData = JSON.parse(storedDriverData);
@@ -69,6 +92,19 @@ const MyNavbar = () => {
                 </div>
               </Link>
             )}
+<Dropdown>
+  <Dropdown.Toggle variant="light" id="dropdown-basic" >
+
+  </Dropdown.Toggle>
+
+  <Dropdown.Menu style={{  border: 'none' }}>
+    <Dropdown.Item  onClick={handleLogout} >Logout</Dropdown.Item>
+   
+  </Dropdown.Menu>
+</Dropdown>
+
+
+
           </Navbar.Collapse>
         </div>
       </Navbar>

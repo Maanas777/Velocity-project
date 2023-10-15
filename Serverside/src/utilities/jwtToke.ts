@@ -1,14 +1,15 @@
 import jwt from 'jsonwebtoken';
-import 'dotenv/config';
+import dotenv from "dotenv"
 import { Types } from 'mongoose';
+dotenv.config()
 
 const generateToken = (userId: Types.ObjectId): string => {
   try {
-    const token = jwt.sign({ userId }, process.env.JWT_SECRET as string, {
+   
+    
+    const token = jwt.sign({ userId }, process.env.SECRET as string, {
       expiresIn: '30d',
     });
-
-
 
     return token;
   } catch (error) {

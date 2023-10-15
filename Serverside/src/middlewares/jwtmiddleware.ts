@@ -1,37 +1,55 @@
-import { Request, Response, NextFunction } from 'express';
-import jwt from 'jsonwebtoken';
-import asyncHandler from 'express-async-handler';
-import UserModel, { IUser } from '../models/user'; 
+import User from '../models/user'
+import jwt from "jsonwebtoken";
+import dotenv from "dotenv"
+import { Request, Response,NextFunction } from "express";
+dotenv.config()
 
-const protect = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
-  let token: string | undefined;
-
-  if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
-    token = req.headers.authorization.split(' ')[1];
-  }
-
-  if (token) {
-    try {
-      const decoded: any = jwt.verify(token, process.env.JWT_SECRET as string);
-      const userId: string = decoded.userId;
-
-      const user: IUser | null = await UserModel.findById(userId).select('-password');
-
-      if (user) {
-        req.user = user;
-        next();
-      } else {
-        res.status(401);
-        throw new Error('Not authorized, user not found');
-      }
-    } catch (error) {
-      res.status(401);
-      throw new Error('Not authorized, invalid token');
+declare global {
+  namespace Express {
+    interface Request {
+      userId?: string;
+      auth?: any; // Adjust the type for 'auth' as needed
     }
-  } else {
-    res.status(401);
-    throw new Error('Not authorized');
   }
-});
+}
 
-export { protect };
+
+
+
+const getAuth = async (req:Request, res:Response, next:NextFunction) => {
+    try {
+      const token = req.headers.token as string;
+   
+        console.log(token);
+        if(!token){
+      
+            return res.status(401).json({error: "unauthorized"})
+        }
+     
+        const verifyToken:any = jwt.verify(token, process.env.SECRET as string)
+       console.log(verifyToken,"hejkrk");
+       
+
+        if(!verifyToken){
+          console.log("whhat the fuckk");
+          
+            return res.status(401).json({error: "unauthorized"})
+        }
+      
+    
+        
+        const auth = await User.findById(verifyToken.id)
+        // console.log(auth);
+
+        req.userId = verifyToken.id
+        req.auth = auth
+        next()
+    } catch (error) {
+      
+      console.log(error) ;
+
+        res.status(401).json({error: "unauthorized"})
+    }
+}
+
+export default getAuth;

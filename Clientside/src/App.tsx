@@ -21,6 +21,7 @@ import UserProfile from "./userscreens/userprofile/userprofile";
 import Driverprofile from './driverscreen/driverProfile/driverprofile'
 import Drivermap from './driverscreen/drivermap/drivermap'
 import SelectBikes from './userscreens/bikes/bikes'
+import Driverdetails from './userscreens/driver/driverdetails.jsx'
 
 import "bootstrap/dist/css/bootstrap.min.css";
 
@@ -41,6 +42,7 @@ function App() {
       <Route path="OtpPhone" element={<LoginWithOtp />}></Route>
       <Route path="/VerifyOtp" element={<VerifyOTP />}></Route>
       <Route path="/selectbike" element={<SelectBikes />}></Route>
+      <Route path="/driverdetails" element={<Driverdetails />}></Route>
 
 
 

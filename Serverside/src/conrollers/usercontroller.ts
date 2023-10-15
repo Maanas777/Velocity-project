@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import userModel from "../models/user";
 import {TripModel} from '../models/trip'
 import driverModel from '../models/driver'
-import { Server } from 'socket.io';
+// import { Server } from 'socket.io';
 
 import bcrypt from "bcrypt";
 import dotenv from "dotenv";
@@ -24,10 +24,7 @@ const client = twilio(accountSid, authToken);
 // }
 
 const usercontroller = {
-  Userhome: (_req: Request, res: Response) => {
-    // Send a JSON response
-    return res.json({ message: "home page" });
-  },
+ 
 
   UserLogin: async (req: Request, res: Response) => {
     try {
@@ -39,9 +36,8 @@ const usercontroller = {
 
         if (isMatch) {
           const token = generateToken(user._id);
-          console.log(token);
-
-          return res.json({
+    
+         return res.json({
             message: "logged in successfully",
             user,
             token,
@@ -206,7 +202,7 @@ const usercontroller = {
     try {
       const id = req.params.id;
  
-      const io: Server = req.app.get('io'); 
+     
       
       const pickuplocation = req.body.pickupLocation;
       const destination = req.body.destinationLocation;
@@ -233,8 +229,7 @@ const usercontroller = {
       const populatedTrip = await TripModel.populate(newTrip, { path: 'user', select: 'username phone' });
   
       
-       // Emit a Socket.IO event to notify drivers of the new ride
-    io.emit("new_ride_available", { message: "New ride is available!" });
+
       
   
       // Send the populated trip in the response

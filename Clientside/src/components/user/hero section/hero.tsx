@@ -1,17 +1,21 @@
 import { useState } from "react";
 // import { FormEvent } from "react";
 import "./hero.css";
+
 import First from "./1st section.png";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import Second from "./seond.jpg";
 import Third from "./3rd.avif";
+import Modal from "react-bootstrap/Modal";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { selectUser } from "../../../redux/userSlice";
 import axios from "axios";
-// import { io } from "socket.io-client";
+import { io } from "socket.io-client";
 
 
-// const socket = io("http://localhost:3003");
+const socket = io("http://localhost:3003");
 
 const predefinedLocations = [
   { name: "Thripunithara", lat: 9.943436, lon: 76.345907 },
@@ -35,6 +39,7 @@ const Hero = () => {
 
 const nav= useNavigate()
 
+
   const user = useSelector(selectUser);
   console.log(user._id);
 
@@ -43,6 +48,9 @@ const nav= useNavigate()
 
   const [pickupLocation, setPickupLocation] = useState("");
   const [destinationLocation, setDestinationLocation] = useState("");
+  const [driverDetails, setDriverDetails] = useState(null);
+
+  const [showModal, setShowModal] = useState(false);
 
   const handlePickupLocationSelect = (
     e: React.ChangeEvent<HTMLSelectElement>
@@ -55,6 +63,20 @@ const nav= useNavigate()
   ) => {
     setDestinationLocation(e.target.value);
   };
+
+  const token=localStorage.getItem("token")
+
+  const headers = {
+    'Content-Type': 'application/json',
+    'token': token
+  }
+
+
+
+
+
+
+
 
 
   ///submit function
@@ -92,19 +114,42 @@ const nav= useNavigate()
       },
 
     };
+socket.emit('createdride','rider request')
+    
+    setShowModal(true);
 
-    await axios
-      .post(`http://localhost:3003/api/users/createRide/${userid}`, rideData)
-      .then((response) => {
-        console.log(response);
-      });
+    socket.on('acceptedride',(data)=>{
+      console.log(data, 'accepted driver');
+      setShowModal(false); 
+      setDriverDetails(data);
 
-nav('/selectbike')
+      nav('/driverdetails',{state:data})
+      
+      
+    })
+
+   
+
+
+    try {
+      const response = await axios.post(`http://localhost:3003/api/users/createRide/${userid}`, rideData, { headers });
+      console.log(response);
+      socket.emit('createdride',{trip:rideData,userDetails:user})
+      // nav('/selectbike');
+
+    } catch (error) {
+      toast.error('Axios POST request error')
+      console.error('Axios POST request error:', error);
+  
+   
+    }
+    
       
   };
 
   return (
     <div>
+      <ToastContainer/>
       <div className="imageContainer">
         <img className="first" src={First} alt="" />
         <div className="formContainer">
@@ -179,7 +224,36 @@ nav('/selectbike')
       <div className="last">
         <h1></h1>
       </div>
+
+      <Modal show={showModal} onHide={() => setShowModal(false)}>
+          <Modal.Body className="custom-modal">
+            <p>Connecting to rider...</p>
+          </Modal.Body>
+        </Modal>
+
+
+
+
+
+
+
+
+
+
+
     </div>
+
+
+
+
+
+
+
+
+
+
+
+
   );
 };
 

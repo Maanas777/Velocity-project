@@ -4,9 +4,12 @@ import { useEffect, useState } from "react";
 import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
 import Modal from "react-bootstrap/Modal";
+import io from 'socket.io-client';
 import "./bikes.css";
 import {axiosInstance,axiosDriverInstance} from "../../../axiosInstances/userInstance";
 import axios from "axios";
+
+const socket = io('http://localhost:3003');
 
 const Bikes = () => {
   const [Bikes, setBikes] = useState();
@@ -27,28 +30,35 @@ const Bikes = () => {
   const  handleSelectClick : React.MouseEventHandler<HTMLButtonElement> = (bike) => {
    
     const id = bike._id;
-
-    axiosDriverInstance.get(`/userRequest/${id}`)
-      .then((response) => {
-        console.log(response.data);
-      })
-      .catch((error) => {
-        console.error("Error making GET request:", error);
-      });
    
     
 
+    setShowModal(true);
 
-    // setShowModal(true);
+    setTimeout(() => {
+
+      setShowModal(false);
+    }, 3000);
 
 
+
+    socket.emit('userRequest', {
+      driverId: id,
+      
+    });
+
+
+
+    // axiosDriverInstance.get(`/userRequest/${id}`)
+    //   .then((response) => {
+    //     console.log(response.data);
+    //   })
+    //   .catch((error) => {
+    //     console.error("Error making GET request:", error);
+    //   });
+   
     
 
-
-    // setTimeout(() => {
-
-    //   setShowModal(false);
-    // }, 3000);
 
 
 

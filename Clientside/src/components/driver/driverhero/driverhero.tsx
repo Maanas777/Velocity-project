@@ -1,171 +1,107 @@
 // import React from "react";
-import axios from "axios";
+// import axios from "axios";
 // import { ToastContainer, toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
+
 import { io } from "socket.io-client";
 import "./driverhero.css";
-
-
+import Button from 'react-bootstrap/Button';
+import Modal from "react-bootstrap/Modal";
+import bg from './0_fGUT3jb2dvnw9OZP.gif'
 
 const socket = io("http://localhost:3003");
+const DriverData=localStorage.getItem('DriverData')
+const DriverDatajson=JSON.parse(DriverData)
+const driverdetails=DriverDatajson.driver
 
+console.log(driverdetails,"dfocerkfflsdfj");
 
 const Driverhero = () => {
-  const [Trips, setTrips] = useState();
-
+  const [rideData, setRideData] = useState({}); 
+  const [showModal, setShowModal] = useState(false);
+  console.log(rideData,"ridedata");
+  
   const nav=useNavigate()
 
-
-  const DriverData=localStorage.getItem('DriverData')
-  const driver=JSON.parse(DriverData)
-
-  
-    const driverSocket=driver.driver.socketId
-  
-
-
-
   useEffect(() => {
-    fetchData();
-  }, []);
+    console.log("useeffect");
 
-  const fetchData = () => {
-    axios
-      .get("http://localhost:3003/api/drivers/rides")
-      .then((response) => {
-        const destination = response.data.trips;
-        console.log(destination,"popop");
-        
+    socket.on("newRideRequest", (data) => {
+      console.log(data);
 
-        const data = destination.map((item) => item.destination.name);
-        console.log(data);
-
-        setTrips(response.data.trips);
-        console.log(response.data.trips);
-        
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-  };
-
-
-
-  useEffect(() => {
-    // Listen for incoming messages from the server
-    socket.on("receive_message", (data) => {
-      alert(data.message);
-     
+      setShowModal(true);
+      setRideData(data);
     });
-  
-   
 
-    // Listen for the "new_ride_available" event
-    socket.on("new_ride_available", (data) => {
-      // Display a notification or take any other action
-      alert(data.message);
-      
-    
-     // You can customize how the notification is displayed
-    });
+    return () => {
+      socket.off("newRideRequest");
+    };
   }, []);
-
-
-
-useEffect(() => {
-
-  socket.on('notification', (data) => {
-    console.log('notification');
-    console.log('Received a notification:', data);
-    
-      // Display an alert with the received notification message
-      alert(`Received a notification: ${data}`);
-   
-   
-  });
-
-
-  
-}, [])
-
-
-
-
-
-
-
-
-
-
 
 
   const handleTakeTrip=(trip)=>{
     const data=trip
-
+    console.log(data,"dataaaaaaaaaaa");
+    
     nav("/drivermap",{state:data})
+  socket.emit('acceptedride',{driverdetails})
   
 
   }
 
 
 
+
   return (
-    <div className="driver-background ">
+<div>
 
-      <div className="container ">
-        <div className="row">
-          <div className="col-lg-12 my-5">
-            <button className=" togglebutton">Take Ride</button>
-            <p className="text-uppercase d-block my-3">
-              enable take ride option to see available trips
-            </p>
-          </div>
-          <div className="container">
-            <main className="table ">
-              <div className="table-responsive">
-                <div className="overflow-container">
-                  <table col-sm-12>
-                    <thead>
-                      <tr>
-                        <th>Sl.No</th>
-                        <th>Customer</th>
-                        <th>Pickup-Location</th>
-                        <th>Destinatiion</th>
-                     
-                        <th>Action</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {Trips?.map((trip, index) => (
-                        <tr key={index}>
-                          <td>{index + 1}</td>
 
-                          <td>
-                            {trip.user?.username}
-                            <br />
-                            <p>phone: {trip.user?.phone}</p>
-                          </td>
-                          <td>{trip.pickuplocation.name}</td>
-                          <td> {trip.destination.name} </td>
-                       
+<div>
+  <img className="driverbg-image" src={bg} alt="" />
+</div>
+<Modal
+  show={showModal}
+  onHide={() => setShowModal(false)}
+  size="lg"
+  aria-labelledby="contained-modal-title-vcenter"
+  centered
+>
+  <Modal.Header closeButton className="text-center" style={{ backgroundColor: '#3498db', color: 'white' }}>
+    <Modal.Title id="contained-modal-title-vcenter">
+      New trip is available
+    </Modal.Title>
+  </Modal.Header>
+  <Modal.Body style={{ padding: '20px' }}>
+    {rideData ? (
+      <div style={{ textAlign: 'center' }}>
+        <p>User: {rideData?.userDetails?.user?.username}</p>
+        <p>Phone: {rideData?.userDetails?.user?.phone}</p>
+        <p>Pickup Location: {rideData?.trip?.pickupLocation?.name}</p>
+        <p>Destination: {rideData?.trip?.destinationLocation?.name}</p>
 
-                          <td>
-                            <button className="bg-primary" onClick={() => handleTakeTrip(trip)}>
-                              Take the trip
-                            </button>
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-            </main>
-          </div>
-        </div>
       </div>
-    </div>
+    ) : (
+      <p>New ride is available</p>
+    )}
+  </Modal.Body>
+  <Modal.Footer style={{ backgroundColor: '#f2f2f2', textAlign: 'center' }}>
+    <Button variant="primary" onClick={() => handleTakeTrip(rideData)}>
+      Take trip
+    </Button>
+  </Modal.Footer>
+</Modal>
+
+
+
+
+
+
+
+
+
+</div>
+
   );
 };
 
