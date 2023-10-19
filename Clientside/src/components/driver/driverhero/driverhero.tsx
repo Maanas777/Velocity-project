@@ -3,26 +3,64 @@
 // import { ToastContainer, toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-
+import geodist from 'geodist';
 import { io } from "socket.io-client";
 import "./driverhero.css";
 import Button from 'react-bootstrap/Button';
 import Modal from "react-bootstrap/Modal";
 import bg from './0_fGUT3jb2dvnw9OZP.gif'
 
+
+
 const socket = io("http://localhost:3003");
 const DriverData=localStorage.getItem('DriverData')
 const DriverDatajson=JSON.parse(DriverData)
 const driverdetails=DriverDatajson.driver
 
-console.log(driverdetails,"dfocerkfflsdfj");
 
 const Driverhero = () => {
-  const [rideData, setRideData] = useState({}); 
-  const [showModal, setShowModal] = useState(false);
-  console.log(rideData,"ridedata");
-  
+
   const nav=useNavigate()
+
+
+
+  const [rideData, setRideData] = useState(); 
+  const [showModal, setShowModal] = useState(false);
+  const [distance, setdistance] = useState(0)
+  const [fare, setfare] = useState(0)
+
+  const destinationLat=rideData?.trip?.destinationLocation?.lat;
+  const destinationLon=rideData?.trip?.destinationLocation?.lon;
+  const pickupLat=rideData?.trip?.pickupLocation?.lat;
+  const pickupLon=rideData?.trip?.pickupLocation?.lon;
+
+
+  
+  
+  useEffect(() => {
+    if (rideData && pickupLat && pickupLon && destinationLat && destinationLon) {
+      const destination = { latitude: destinationLat, longitude: destinationLon };
+      const pickup = { latitude: pickupLat, longitude: pickupLon };
+
+      const distanceInKm = geodist(pickup, destination, { unit:'km' });
+      setdistance(distanceInKm)
+
+      console.log(distanceInKm, "Distance in kilometers");
+      const baseFare=10 //RS for Km
+      const farePerKm=10  //RS for Km
+
+      const fare = baseFare + farePerKm * distanceInKm;
+       setfare(fare)
+      
+
+     
+    }
+  }, [rideData, pickupLat, pickupLon, destinationLat, destinationLon]);
+
+
+  
+
+
 
   useEffect(() => {
     console.log("useeffect");
@@ -32,6 +70,10 @@ const Driverhero = () => {
 
       setShowModal(true);
       setRideData(data);
+
+
+
+      
     });
 
     return () => {
@@ -40,17 +82,15 @@ const Driverhero = () => {
   }, []);
 
 
+
   const handleTakeTrip=(trip)=>{
     const data=trip
     console.log(data,"dataaaaaaaaaaa");
     
     nav("/drivermap",{state:data})
-  socket.emit('acceptedride',{driverdetails})
+  socket.emit('acceptedride',{driverdetails,distance,fare})
   
-
   }
-
-
 
 
   return (
@@ -79,6 +119,8 @@ const Driverhero = () => {
         <p>Phone: {rideData?.userDetails?.user?.phone}</p>
         <p>Pickup Location: {rideData?.trip?.pickupLocation?.name}</p>
         <p>Destination: {rideData?.trip?.destinationLocation?.name}</p>
+        <p>Distance: {distance}kms</p>
+        <p>Fare: ₹ {fare}</p>
 
       </div>
     ) : (

@@ -15,5 +15,7 @@ router.post('/sendOtp',usercontroller.Sentotp)
 router.post('/verifyOtp',usercontroller.verifyOtp)
 router.post('/createRide/:id',getAuth,usercontroller.createRide)
 router.get('/availableBikes',usercontroller.bikes)
+router.post('/payment',usercontroller.payment)
+router.post('/verify',usercontroller.Verify_payment)
 
 export default router;

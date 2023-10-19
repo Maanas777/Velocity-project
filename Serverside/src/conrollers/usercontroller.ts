@@ -1,31 +1,27 @@
 import { Request, Response } from "express";
 import userModel from "../models/user";
-import {TripModel} from '../models/trip'
-import driverModel from '../models/driver'
-// import { Server } from 'socket.io';
-
+import { TripModel } from "../models/trip";
+import driverModel from "../models/driver";
+import Razorpay from "razorpay";
 import bcrypt from "bcrypt";
 import dotenv from "dotenv";
+import crypto from 'crypto'
 import twilio from "twilio";
 dotenv.config();
 
 import generateToken from "../utilities/jwtToke";
+
+
+
 
 const accountSid = process.env.Account_SID;
 const authToken = process.env.Auth_Token;
 const serviceId = process.env.Service_SID;
 const client = twilio(accountSid, authToken);
 
-// export interface IUser {
-//   _id: import("mongoose").Types.ObjectId;
-//   username: string;
-//   email: string;
-//   password: string;
-// }
+
 
 const usercontroller = {
- 
-
   UserLogin: async (req: Request, res: Response) => {
     try {
       const { email, password } = req.body;
@@ -36,8 +32,8 @@ const usercontroller = {
 
         if (isMatch) {
           const token = generateToken(user._id);
-    
-         return res.json({
+
+          return res.json({
             message: "logged in successfully",
             user,
             token,
@@ -52,6 +48,11 @@ const usercontroller = {
       return res.status(500).json({ message: "An error occurred" });
     }
   },
+
+
+
+
+
 
 
 
@@ -82,6 +83,13 @@ const usercontroller = {
     }
   },
 
+
+
+
+
+
+
+
   editprofile: async (req: Request, res: Response) => {
     console.log("9009809897897");
 
@@ -110,13 +118,17 @@ const usercontroller = {
     }
   },
 
+
+
+
+
+
   userprofile: async (req: Request, res: Response) => {
     try {
       const id = req.params.id.trim();
-      console.log(id,"lkjlkjflksjf");
-      
+      console.log(id, "lkjlkjflksjf");
 
-      const user = await userModel.findOne({ _id: id }).populate('trips');
+      const user = await userModel.findOne({ _id: id }).populate("trips");
 
       if (user) {
         res.json({ user });
@@ -126,6 +138,9 @@ const usercontroller = {
       res.send(error);
     }
   },
+
+
+
 
   ///sent otp
 
@@ -155,6 +170,7 @@ const usercontroller = {
       res.json({ Error: error });
     }
   },
+
 
   ////verify otp
 
@@ -198,79 +214,127 @@ const usercontroller = {
   },
 
 
+
+
   createRide: async (req: Request, res: Response) => {
     try {
       const id = req.params.id;
- 
-     
-      
-      const pickuplocation = req.body.pickupLocation;
-      const destination = req.body.destinationLocation;
-     
-    
+
+      const rideData = req.body.rideData;
+      const fare = req.body.fare;
+
+      const pickuplocation = rideData.pickupLocation;
+      const destination = rideData.destinationLocation;
+
+      console.log(pickuplocation, "pickiuppiip");
+
       const user = await userModel.findById(id).exec();
-  
+
       if (!user) {
-        res.json({ msg: 'User not found' });
+        res.json({ msg: "User not found" });
         return;
       }
-  
+
       const newTrip = await TripModel.create({
-        user: user._id, 
+        user: user._id,
         pickuplocation: pickuplocation,
         destination: destination,
-        isCompleted: false
+        fare: fare,
+        isCompleted: false,
       });
-  
+
       user.trips.push(newTrip._id);
       await user.save();
 
       // Populate the 'user' field to get user details including 'username'
-      const populatedTrip = await TripModel.populate(newTrip, { path: 'user', select: 'username phone' });
-  
-      
+      const populatedTrip = await TripModel.populate(newTrip, {
+        path: "user",
+        select: "username phone ",
+      });
 
-      
-  
       // Send the populated trip in the response
       res.json({ trip: populatedTrip });
     } catch (error) {
       // Handle errors
-      console.error('Error creating ride:', error);
-      return res.status(500).json({ msg: 'Internal server error' });
+      console.error("Error creating ride:", error);
+      return res.status(500).json({ msg: "Internal server error" });
     }
-  }
-  ,
-  bikes:async (_req: Request, res: Response) =>{
+  },
+
+
+
+
+
+
+  bikes: async (_req: Request, res: Response) => {
     try {
-      const availableBikes=await driverModel.find({isDriver:true})
-      if(availableBikes){
-        res.json({availableBikes})
+      const availableBikes = await driverModel.find({ isDriver: true });
+      if (availableBikes) {
+        res.json({ availableBikes });
       }
-
-
-      
     } catch (error) {
-      res.json({error})
-      
+      res.json({ error });
+    }
+  },
+
+
+  
+
+  payment: async (_req: Request, res: Response) => {
+    console.log("hello");
+    try {
+      const instance = new Razorpay({
+        key_id: process.env.RAZORPAY_KEY_ID || "",
+        key_secret: process.env.RAZORPAY_SECRET || ""
+      });
+  
+      const options = {
+        amount: 50000,
+        currency: "INR",
+        receipt: crypto.randomBytes(10).toString('hex')
+      };
+  
+      instance.orders.create(options, (error, order) => {
+        if (error) {
+          console.log(error);
+          return res.status(500).json({ message: "Something Went Wrong!" });
+        }
+        res.status(200).json({ data: order });
+      });
+    } catch (error) {
+      res.status(500).json({ message: "Internal Server Error!" });
+      console.log(error);
+    }
+  },
+  
+
+
+  Verify_payment: async (req: Request, res: Response) =>{
+    console.log(req.body,'responseeeeeeeeeeeeeeeeeeeeeeeeeeee');
+    
+
+    try {
+      const { razorpay_order_id, razorpay_payment_id, razorpay_signature } =
+        req.body;
+
+      const sign = razorpay_order_id + "|" + razorpay_payment_id;
+      const expectedSign = crypto
+        .createHmac("sha256", process.env.RAZORPAY_SECRET||'')
+        .update(sign.toString())
+        .digest("hex");
+  
+      if (razorpay_signature === expectedSign) {
+        return res.status(200).json({ message: "Payment verified successfully" });
+      } else {
+        return res.status(400).json({ message: "Invalid signature sent!" });
+      }
+    } catch (error) {
+      res.status(500).json({ message: "Internal Server Error!" });
+      console.log(error);
     }
 
 
-
   }
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
