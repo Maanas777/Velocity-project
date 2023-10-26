@@ -37,6 +37,8 @@ const predefinedDestinations = [
 
 const Hero = () => {
 
+
+
 const nav= useNavigate()
 
 
@@ -48,6 +50,7 @@ const nav= useNavigate()
 
   const [pickupLocation, setPickupLocation] = useState("");
   const [destinationLocation, setDestinationLocation] = useState("");
+
   // const [fare, setfare] = useState(0)
 
 
@@ -79,27 +82,25 @@ const nav= useNavigate()
 
 
   ///submit function
-
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
+  
     console.log("Pickup Location:", pickupLocation);
     console.log("Destination:", destinationLocation);
-
+  
     // Find the selected locations from predefinedLocations
-
     const selectedPickupLocation = predefinedLocations.find(
       (location) => location.name === pickupLocation
     );
     const selectedDestinationLocation = predefinedDestinations.find(
       (location) => location.name === destinationLocation
     );
-
+  
     if (!selectedPickupLocation || !selectedDestinationLocation) {
       console.error("Invalid pickup or destination location.");
       return;
     }
-
+  
     const rideData = {
       pickupLocation: {
         name: pickupLocation,
@@ -111,53 +112,47 @@ const nav= useNavigate()
         lat: selectedDestinationLocation.lat,
         lon: selectedDestinationLocation.lon,
       },
-      
-
     };
-
-    
+  
+    // Use a flag to prevent multiple trip creations
+    let isRideCreated = false;
+  
     setShowModal(true);
-
-    socket.on('acceptedride',async (data)=>{
+  
+    socket.on('acceptedride', async (data) => {
       console.log(data, 'accepted driver');
-      setShowModal(false); 
-      // setDriverDetails(data);
-      const fare=data.fare;
-      console.log(fare,"fareeeeeeeeee");
-      
-    
-      try {
-        // Send a POST request to your backend with rideData and fare
-        await axios.post(`http://localhost:3003/api/users/createRide/${userid}`, { rideData, fare }, { headers });
-    
-        // After successfully sending the request, navigate to the 'driverdetails' route
-        nav('/driverdetails', { state: data });
-        
-      } catch (error) {
-        toast.error('Axios POST request error');
-        console.error('Axios POST request error:', error);
+      setShowModal(false);
+  
+      if (!isRideCreated) {
+        isRideCreated = true;
+        const fare = data.fare;
+        console.log(fare, "fareeeeeeeeee");
+  
+        try {
+          // Send a POST request to your backend with rideData and fare
+        const response=  await axios.post(`http://localhost:3003/api/users/createRide/${userid}`, { rideData, fare }, { headers });
+ 
+  const tripId=response.data.trip._id
+
+  
+          // After successfully sending the request, navigate to the 'driverdetails' route
+          nav('/driverdetails',{ state:{...data, tripId:tripId}});
+        } catch (error) {
+          toast.error('Axios POST request error');
+          console.error('Axios POST request error:', error);
+        }
       }
-      
-      
-    })
-
+    });
   
-
     try {
-      
      
-      socket.emit('createdride',{trip:rideData,userDetails:user})
-     
-
+      socket.emit('createdride',  {trip: rideData, userDetails: user });
     } catch (error) {
-      toast.error('Axios POST request error')
-      console.error('Axios POST request error:', error);
-  
-   
+      toast.error('Socket emit error');
+      console.error('Socket emit error:', error);
     }
-    
-      
   };
+  
 
   return (
     <div>

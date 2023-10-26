@@ -12,5 +12,10 @@ router.put('/blockUser/:id',adminController.blockuser)
 router.put('/UnblockUser/:id',adminController.Unblockuser)
 router.put('/blockdriver/:id',adminController.blockDriver)
 router.put('/Unblockdriver/:id',adminController.UnblockDriver)
+router.get('/calculateTotalEarnings',adminController.calculateTotalEarnings)
+router.get('/totalTrips',adminController.TotalTrips)
+router.get('/totalDrivers',adminController.totalDrivers)
+router.get('/totalUsers',adminController.totalUsers)
+
 
 export default router;

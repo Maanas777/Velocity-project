@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import driverModel from "../models/driver";
 import UserModel from "../models/user";
-// import { TripModel } from "../models/trip";
+import { TripModel } from "../models/trip";
 
 
 
@@ -163,6 +163,74 @@ const adminController = {
       res.status(500).json({ message: "error" });
     }
   },
+ 
+
+   calculateTotalEarnings : async (_req: Request, res: Response) => {
+    try {
+      const totalEarnings = await TripModel.aggregate([
+        {
+          $match: {
+            isCompleted: true, // Filter completed trips
+          },
+        },
+        {
+          $group: {
+            _id: null,
+            total: { $sum: "$fare" },
+          },
+        },
+      ]);
+  
+     res.json(totalEarnings)
+  
+      return 0; // No completed trips, so total earnings are 0
+    } catch (error) {
+      console.error("Error calculating total earnings: " + error);
+      throw error;
+    }
+  },
+
+  TotalTrips: async (_req: Request, res: Response) =>{
+
+    try {
+
+      const totalCompletedTrips = await TripModel.countDocuments({ isCompleted: true });
+      res.json(totalCompletedTrips)
+
+    } catch (error) {
+      res.json(error)
+      
+    }
+
+  }
+  ,
+  totalDrivers: async (_req: Request, res: Response) =>{
+
+try {
+  const totalDrivers=await driverModel.countDocuments({isDriver:true})
+  res.json(totalDrivers)
+} catch (error) {
+  res.json(error)
+  
+}
+
+  },
+  totalUsers: async (_req: Request, res: Response) =>{
+    try {
+      const totalUsers=await UserModel.countDocuments()
+      res.json(totalUsers)
+      
+    } catch (error) {
+      res.json(error)
+      
+    }
+
+
+  }
+
+  
+ 
+  
 
 
 

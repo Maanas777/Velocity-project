@@ -15,6 +15,8 @@ export interface ITrip extends Document {
   };
   fare: number;
 
+  Isfarepaid: boolean;
+
   isCompleted: boolean;
 }
 
@@ -36,8 +38,12 @@ const rideSchema = new Schema<ITrip>(
     },
     fare: {
       type: Number,
-      required: true 
-    
+      required: true,
+    },
+
+    Isfarepaid: {
+      type: Boolean,
+      default: false,
     },
 
     isCompleted: {

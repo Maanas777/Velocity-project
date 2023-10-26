@@ -33,6 +33,7 @@ const Driverhero = () => {
   const destinationLon=rideData?.trip?.destinationLocation?.lon;
   const pickupLat=rideData?.trip?.pickupLocation?.lat;
   const pickupLon=rideData?.trip?.pickupLocation?.lon;
+console.log(rideData,"ridedaarrree");
 
 
   
@@ -63,13 +64,15 @@ const Driverhero = () => {
 
 
   useEffect(() => {
-    console.log("useeffect");
+  
+
 
     socket.on("newRideRequest", (data) => {
-      console.log(data);
+      console.log(data,"trip iddd");
 
       setShowModal(true);
       setRideData(data);
+      
 
 
 
@@ -91,6 +94,8 @@ const Driverhero = () => {
   socket.emit('acceptedride',{driverdetails,distance,fare})
   
   }
+
+
 
 
   return (

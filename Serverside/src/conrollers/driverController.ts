@@ -178,24 +178,43 @@ const drivercontroller = {
     res.json({ trips });
   },
 
-    // userRequest: async (req: Request, _res: Response) => {
-      
 
-    //     const io: Server = req.app.get('io'); 
-        
-    //   const id = req.params.id;
-    //   console.log(id,"seleceted bikesss");
-      
+tripcomplete: async (req: Request, res: Response) =>  {
+  
+    const id = req.params.id;
+    console.log(id,"tripiddddd");
+    
 
-    //   const rider = await driverModel.findById(id);
-    //  if(rider){
-    //     const socketId=rider.socketId.toString()
+    try {
+        const trip = await TripModel.findOne({ _id: id });
 
-    //    const abx= io.to(socketId).emit("notification", "Your notification message");
-    //    if(abx){
-    //     console.log("abx:",abx);
-        
-    //    }
+        if (!trip) {
+            return res.status(404).json({ message: 'Trip not found' });
+        }
+
+        if (trip.isCompleted) {
+          return res.status(400).json({ message: 'Trip is already completed' });
+      }
+
+        trip.isCompleted = true;
+        await trip.save();
+
+        return res.status(200).json({ message: 'Trip completed successfully' });
+    } catch (error) {
+        return res.status(500).json({ error: 'Internal server error' });
+    }
+}
+
+
+
+
+
+
+
+
+
+
+   
      }
       
     

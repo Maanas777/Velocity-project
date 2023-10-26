@@ -27,4 +27,21 @@ body {
     font-weight: bold;
     color: rgb(0, 0, 0);
   }
-  
+  .startRide{
+  border-radius: 40px;
+  margin: 10px;
+
+  }
+  .finishRide{
+    border-radius: 40px;
+    margin: 10px;
+    background-color:#02ad3d;
+  }
+
+
+
+  .startridediv{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }

@@ -249,11 +249,11 @@ const usercontroller = {
       // Populate the 'user' field to get user details including 'username'
       const populatedTrip = await TripModel.populate(newTrip, {
         path: "user",
-        select: "username phone ",
+        select: "username phone _id ",
       });
 
       // Send the populated trip in the response
-      res.json({ trip: populatedTrip });
+      res.json({ trip: populatedTrip, });
     } catch (error) {
       // Handle errors
       console.error("Error creating ride:", error);
@@ -280,8 +280,18 @@ const usercontroller = {
 
   
 
-  payment: async (_req: Request, res: Response) => {
+  payment: async (req: Request, res: Response) => {
     console.log("hello");
+    const id=req.body.id
+    console.log(id);
+    
+ 
+    const trip=await TripModel.findOne({_id:id})
+   
+    const fare=trip?.fare
+    console.log(fare,"fareeeeee");
+    
+    
     try {
       const instance = new Razorpay({
         key_id: process.env.RAZORPAY_KEY_ID || "",
@@ -289,16 +299,25 @@ const usercontroller = {
       });
   
       const options = {
-        amount: 50000,
+        amount: (fare||10)*100,
         currency: "INR",
         receipt: crypto.randomBytes(10).toString('hex')
       };
   
-      instance.orders.create(options, (error, order) => {
+      instance.orders.create(options, async (error, order) => {
         if (error) {
           console.log(error);
           return res.status(500).json({ message: "Something Went Wrong!" });
         }
+
+
+ try {
+        await TripModel.updateOne({ _id: id }, { Isfarepaid: true });
+      } catch (updateError) {
+        console.log(updateError);
+        return res.status(500).json({ message: 'Failed to update payment status' });
+      }
+
         res.status(200).json({ data: order });
       });
     } catch (error) {
@@ -310,9 +329,8 @@ const usercontroller = {
 
 
   Verify_payment: async (req: Request, res: Response) =>{
-    console.log(req.body,'responseeeeeeeeeeeeeeeeeeeeeeeeeeee');
-    
 
+  
     try {
       const { razorpay_order_id, razorpay_payment_id, razorpay_signature } =
         req.body;
@@ -324,8 +342,11 @@ const usercontroller = {
         .digest("hex");
   
       if (razorpay_signature === expectedSign) {
+        console.log("sucessss");
+        
         return res.status(200).json({ message: "Payment verified successfully" });
       } else {
+        console.log("errorrr")
         return res.status(400).json({ message: "Invalid signature sent!" });
       }
     } catch (error) {
@@ -333,6 +354,14 @@ const usercontroller = {
       console.log(error);
     }
 
+
+  },
+
+  findTrip: async (req: Request, res: Response) =>{
+    const id=req.params.id
+    const trip=await TripModel.findById(id)
+    res.json(trip)
+    
 
   }
 

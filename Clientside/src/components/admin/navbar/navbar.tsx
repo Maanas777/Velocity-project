@@ -21,7 +21,7 @@ function AdminNavbar() {
             <Link to="/users" className={`nav-link-with-gap ${location.pathname === '/users' ? 'active' : ''}`}>Users</Link>
               <Link to="/driver-verification" className={`nav-link-with-gap ${location.pathname === '/driver-verification' ? 'active' : ''}`}>Driver Verification</Link>
               <Link to="/verifiedDriver" className={`nav-link-with-gap ${location.pathname === '/verifiedDriver' ? 'active' : ''}`}>Drivers</Link>
-              <Link to="/banners" className={`nav-link-with-gap ${location.pathname === '/banners' ? 'active' : ''}`}>Banners</Link>
+              {/* <Link to="/banners" className={`nav-link-with-gap ${location.pathname === '/banners' ? 'active' : ''}`}>Banners</Link> */}
             </Nav>
           </Navbar.Collapse>
         </Container>

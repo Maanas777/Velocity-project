@@ -28,6 +28,7 @@ router.post('/driversignup', uploader.fields([ { name: 'driverPhoto', maxCount: 
 { name: 'vehiclePhoto', maxCount: 1 }]), driverController.driverSignup);
 router.put('/editProfile/:id',driverController.editprofile)
 router.get('/rides',driverController.rides)
+router.put('/completeride/:id',driverController.tripcomplete)
 // router.get('/userRequest/:id',driverController.userRequest)
 
 export default router;

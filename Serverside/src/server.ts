@@ -50,18 +50,25 @@ io.on("connection", (socket) => {
   });
 
   socket.on('acceptedride',(data)=>{
-    console.log(data,"driverdetails");
-
+    console.log(data);
+    
     io.emit('acceptedride',data)
     
+  })
+ 
+  socket.on('ride_started',(data)=>{
+  
+    io.emit('ride_started',data)
 
   })
+  socket.on("ride_completed", (data)=>{
+    io.emit('ride_completed',data)
+  })
 
-
-
+  
 
   socket.on("createdride", (data) => {
-
+console.log(data);
 
     io.emit("newRideRequest",data)
 

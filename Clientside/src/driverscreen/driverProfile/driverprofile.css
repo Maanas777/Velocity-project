@@ -1,0 +1,47 @@
+/* UserProfile.css */
+
+.user-profile {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+  }
+  
+  .user-details {
+    text-align: center;
+  }
+  
+  .user-details img {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+  
+  .ride-history {
+    margin-top: 20px;
+  }
+  
+  .ride-history h2 {
+    text-align: center;
+  }
+  
+  .ride-history ul {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .ride-history li {
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px solid #ccc;
+    padding: 10px 0;
+  }
+  
+  @media (max-width: 768px) {
+    .user-details img {
+      width: 100px;
+      height: 100px;
+    }
+  }
+  

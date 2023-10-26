@@ -4,3 +4,8 @@ button.payment{
     border-radius: 10rem;
 
 }
+.card-body-driver-details{
+    max-height: 100vh;
+    padding-left: 2rem;
+    padding-top: 2rem;
+}
