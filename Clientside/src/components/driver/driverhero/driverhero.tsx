@@ -16,6 +16,7 @@ const socket = io("http://localhost:3003");
 const DriverData=localStorage.getItem('DriverData')
 const DriverDatajson=JSON.parse(DriverData)
 const driverdetails=DriverDatajson.driver
+console.log(driverdetails,"deetailsdriver");
 
 
 const Driverhero = () => {
@@ -73,8 +74,6 @@ console.log(rideData,"ridedaarrree");
       setShowModal(true);
       setRideData(data);
       
-
-
 
       
     });

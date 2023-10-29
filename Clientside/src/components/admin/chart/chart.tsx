@@ -5,20 +5,7 @@ import { useState } from 'react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, LineChart, Line } from 'recharts';
 
 function AdminDashBoard() {
-  const monthlyIncomeData = [
-    { _id: 1, totalIncome: 5000 },
-    { _id: 2, totalIncome: 7500 },
-    { _id: 3, totalIncome: 6200 },
-    { _id: 4, totalIncome: 8000 },
-    { _id: 5, totalIncome: 6900 },
-    { _id: 6, totalIncome: 9000 },
-    { _id: 7, totalIncome: 8500 },
-    { _id: 8, totalIncome: 7400 },
-    { _id: 9, totalIncome: 9500 },
-    { _id: 10, totalIncome: 8700 },
-    { _id: 11, totalIncome: 9200 },
-    { _id: 12, totalIncome: 8200 },
-  ];
+
 
   const monthlyCoursesData = [
     { _id: 1, count: 100 },
@@ -39,11 +26,19 @@ function AdminDashBoard() {
   const [drivers, setdrivers] = useState()
   const [totaltrips, settotaltrips] = useState()
   const [totalIncome, settotalIncome] = useState()
-
+  const [monthlyIncome, setmonthlyIncome] = useState([])
 
 
 
   useEffect(() => {
+
+  
+
+
+
+
+
+
     const fetchTotalUsers= async () => {
       try{
         const response = await axiosAdminInstance.get('/totalUsers');
@@ -109,6 +104,31 @@ console.log(totalIncome,"income");
 }
 
 
+const fetchMonthlyIncome=async()=>{
+
+  try {
+    const response = await axiosAdminInstance.get('/monthlyIncome');
+console.log(response.data,'monthlyincome');
+
+const allMonthsData = Array.from({ length: 12 }, () => ({
+  _id: { month: 1 },
+  totalIncome: 0,
+}));
+
+response.data.forEach(item => {
+  const month = item._id.month - 1; // Month number (0-11)
+  allMonthsData[month] = item;
+});
+
+
+setmonthlyIncome(allMonthsData);
+    
+  } catch (error) {
+    console.error('Error fetching total drivers:', error);
+    
+  }
+}
+
 
 
 
@@ -118,6 +138,7 @@ console.log(totalIncome,"income");
     fetchTotalDrivers()
     fetchTotalTrips()
     fetchTotalIncome()
+    fetchMonthlyIncome()
    
   }, [])
   
@@ -171,7 +192,7 @@ console.log(totalIncome,"income");
       <div className="charts">
         <ResponsiveContainer width="100%" height={300}>
           <BarChart
-            data={monthlyIncomeData}
+            data={monthlyIncome }
             margin={{
               top: 5,
               right: 30,
@@ -181,7 +202,7 @@ console.log(totalIncome,"income");
           >
             <CartesianGrid strokeDasharray="3 3" />
             <XAxis
-              dataKey="_id"
+              dataKey="_id.month"
               tickFormatter={(month) =>
                 new Date(0, month - 1, 1).toLocaleDateString("en-US", {
                   month: "short",
@@ -191,7 +212,7 @@ console.log(totalIncome,"income");
             <YAxis />
             <Tooltip />
             <Legend />
-            <Bar dataKey="totalIncome" fill="#82ca9d" name="Monthly Sales" />
+            <Bar dataKey="totalIncome" fill="#82ca9d" name="Monthly Earnings" />
           </BarChart>
         </ResponsiveContainer>
 

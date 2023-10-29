@@ -22,7 +22,7 @@ import Driverprofile from './driverscreen/driverProfile/driverprofile'
 import Drivermap from './driverscreen/drivermap/drivermap'
 import SelectBikes from './userscreens/bikes/bikes'
 import Driverdetails from './userscreens/driver/driverdetails.jsx'
-
+import Review from './userscreens/review/review.js'
 import "bootstrap/dist/css/bootstrap.min.css";
 
 function App() {
@@ -34,7 +34,7 @@ function App() {
 
       //user
       <Route path="usersignup" element={<Signup />}></Route>
-
+      <Route path="/review" element={<Review />}></Route>
       <Route path="/userhome" element={<Userhome />}></Route>
       <Route path="hero" element={<Hero />}></Route>
       <Route path="/" element={<Login />}></Route>

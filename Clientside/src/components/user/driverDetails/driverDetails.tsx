@@ -3,10 +3,13 @@ import { useNavigate } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 import { axiosDriverInstance } from "../../../axiosInstances/userInstance";
 import "./driverDetails.css";
+import ReviewModal from "../review/review";
 import { io } from "socket.io-client";
 import { axiosInstance } from "../../../axiosInstances/userInstance";
 import Button from 'react-bootstrap/Button';
 import Modal from "react-bootstrap/Modal";
+import { useSelector } from "react-redux";
+
 const socket = io("http://localhost:3003");
 
 const cardBodyStyle = {
@@ -18,15 +21,10 @@ const DriverDetails = () => {
   const nav=useNavigate()
 
 
-
-
-
-
-
-
   const [payment, setPayment] = useState(false);
   const [start, setstart] = useState(false);
   const [showModal, setShowModal] = useState(false);
+
 
 
   const driver = useLocation();
@@ -38,15 +36,15 @@ const DriverDetails = () => {
 
   const user = userdetails.user.username;
 
-  console.log(driver.state.tripId);
-  const id = driver.state.tripId;
+  
+  const id = driver?.state?.tripId;
 
-  const driverName = driver.state.driverdetails.Drivername;
-  const VehicleModel = driver.state.driverdetails.VehicleModel;
-  const driverPhoto = driver.state.driverdetails.vehiclePhoto;
-  const contactNumber = driver.state.driverdetails.phone;
-  const distance = driver.state.distance;
-  const fair = driver.state.fare;
+  const driverName = driver?.state?.driverdetails?.Drivername;
+  const VehicleModel = driver?.state?.driverdetails?.VehicleModel;
+  const driverPhoto = driver?.state?.driverdetails?.vehiclePhoto;
+  const contactNumber = driver?.state?.driverdetails?.phone;
+  const distance = driver?.state?.distance;
+  const fair = driver?.state?.fare;
 
   const keyId = import.meta.env.VITE_RAZORPAY_KEY_ID;
 
@@ -55,10 +53,10 @@ const homeGo=()=>{
   nav('/userhome')
 }
 
+  const feedbackButton=()=>{
+   nav('/review')
 
-
-
-
+  }
 
 
 
@@ -129,6 +127,9 @@ useEffect(() => {
     paymentComplete();
   }, []);
 
+
+
+
   const initPayment = (data) => {
     console.log(data, "dayeeeee");
     const options = {
@@ -170,6 +171,8 @@ useEffect(() => {
 
   return (
     <div className="container">
+
+
       <div className="row">
         <div className="col-md-8 offset-md-2">
           <div className="card mt-5">
@@ -234,6 +237,11 @@ useEffect(() => {
             </div>
           </div>
         </div>
+
+
+      
+       
+
       </div>
 
 
@@ -259,6 +267,9 @@ useEffect(() => {
   <Modal.Footer style={{ backgroundColor: '#f2f2f2', textAlign: 'center' }}>
     <Button variant="primary" onClick={homeGo}>
       go to home
+    </Button>
+    <Button variant="primary" onClick={feedbackButton}>
+   Feedback
     </Button>
   </Modal.Footer>
 </Modal>
