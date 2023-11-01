@@ -105,22 +105,26 @@ const Hero = () => {
     setShowModal(true);
 
     socket.on("acceptedride", async (data) => {
-      console.log(data.driverdetails.driver, "accepted driver");
+      console.log(data, "accepted driver");
       setShowModal(false);
 
       if (!isRideCreated) {
         isRideCreated = true;
         const fare = data.fare;
-        const DriverId=data.driverdetails.driver._id
+        const DriverId= data.driverdetails._id;
+
         console.log(DriverId,"rdiverId");
         
         const driver={
-          DriverName:data.driverdetails.driver.Drivername,
-          DriverPhone:data.driverdetails.driver.phone,
-          VehicleModel:data.driverdetails.driver.VehicleModel,
-          vehiclePhoto:data.driverdetails.driver.vehiclePhoto
+          DriverName:data.driverdetails.driver?.Drivername || data.driverdetails.Drivername,
+         DriverPhone : data.driverdetails.driver?.phone || data.driverdetails.phone,
+          VehicleModel : data.driverdetails.driver?.VehicleModel || data.driverdetails.VehicleModel,
+           vehiclePhoto : data.driverdetails.driver?.vehiclePhoto || data.driverdetails.vehiclePhoto
+          
 
         }
+     
+        
      
 
         try {

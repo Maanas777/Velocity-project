@@ -8,7 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { selectUser } from "../../redux/userSlice";
 import Footer from "../../components/user/footer/footer";
 import profile from "./4333097.jpg";
-import { TailSpin } from "react-loader-spinner";
+import ClipLoader from "react-spinners/ClipLoader";
 
 
 
@@ -27,6 +27,17 @@ function Profile() {
   const [loading, setLoading] = useState(false);
 
   const [trips, setTrips] = useState([]);
+
+
+
+  
+
+
+
+
+
+
+
 
 
   useEffect(() => {
@@ -85,7 +96,7 @@ function Profile() {
 
 
     try {
-      setLoading(true);
+     
       if (userId || userId2) {
         console.log("User data available.");
         const updatedUserData = {
@@ -111,7 +122,7 @@ function Profile() {
         }
       } else {
         console.log("User data not available yet.");
-        setLoading(false);
+        
       }
     } catch (error) {
       console.error("Error updating user profile:", error);
@@ -122,7 +133,7 @@ function Profile() {
 
 
   useEffect(()=>{
-    setLoading(true);
+
     axiosDriverInstance.get(`/driverhistory/${ userId ? userId : userId2}`)
     .then((response)=>{
       console.log(response);
@@ -143,7 +154,14 @@ function Profile() {
       <DriverNav />
 
       {loading ? (
-  <TailSpin color="red" radius={"8px"} />
+   <ClipLoader
+   color='#36d7b7'
+   loading={loading}
+
+   size={150}
+   aria-label="Loading Spinner"
+   data-testid="loader"
+ />
 ):(
       <div>
         <section className="driverprofilebackground vh-100">

@@ -50,7 +50,7 @@ io.on("connection", (socket) => {
   });
 
   socket.on('acceptedride',(data)=>{
- console.log(data,"accepted rideee");
+
 
     io.emit('acceptedride',data)
     
@@ -68,6 +68,7 @@ io.on("connection", (socket) => {
   
 
   socket.on("createdride", (data) => {
+console.log("hello aree you there");
 
     io.emit("newRideRequest",data)
 

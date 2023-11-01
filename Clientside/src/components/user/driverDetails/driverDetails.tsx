@@ -38,10 +38,10 @@ const DriverDetails = () => {
   
   const id = driver?.state?.tripId;
 
-  const driverName = driver?.state?.driverdetails?.driver?.Drivername;
-  const VehicleModel = driver?.state?.driverdetails?.driver?.VehicleModel;
-  const driverPhoto = driver?.state?.driverdetails?.driver?.vehiclePhoto;
-  const contactNumber = driver?.state?.driverdetails?.driver?.phone;
+  const driverName = driver?.state?.driverdetails?.driver?.Drivername|| driver?.state?.driverdetails?.Drivername;
+  const VehicleModel = driver?.state?.driverdetails?.driver?.VehicleModel||driver?.state?.driverdetails?.VehicleModel;
+  const driverPhoto = driver?.state?.driverdetails?.driver?.vehiclePhoto||driver?.state?.driverdetails?.vehiclePhoto;
+  const contactNumber = driver?.state?.driverdetails?.driver?.phone|| driver?.state?.driverdetails?.phone;
   const distance = driver?.state?.distance;
   const fair = driver?.state?.fare;
 

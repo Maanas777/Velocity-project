@@ -240,6 +240,44 @@ const adminController = {
       
     }
   },
+
+  monthlyTrips:async (_req: Request, res: Response) =>{
+   
+
+    try {
+      const result = await TripModel.aggregate([
+        {
+          $match: { isCompleted: true } // Filter only completed trips
+        },
+        {
+          $group: {
+            _id: {
+              year: { $year: '$createdAt' }, // Extract year from createdAt field
+              month: { $month: '$createdAt' } // Extract month from createdAt field
+            },
+            totalTrips: { $sum: 1 } // Count the number of trips in each group
+          }
+        },
+        {
+          $project: {
+            _id: 0, // Exclude the default _id field
+            year: '$_id.year',
+            month: '$_id.month',
+            totalTrips: 1
+          }
+        }
+      ]).exec();
+  
+      res.json({ monthlyTrips: result });
+    } catch (error) {
+      console.error('Error aggregating data:', error);
+      res.status(500).json({ error: 'An error occurred' });
+    }
+  }
+
+
+
+
 };
 
 export default adminController;

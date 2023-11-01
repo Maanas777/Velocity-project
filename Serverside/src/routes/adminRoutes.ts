@@ -17,6 +17,7 @@ router.get('/totalTrips',adminController.TotalTrips)
 router.get('/totalDrivers',adminController.totalDrivers)
 router.get('/totalUsers',adminController.totalUsers)
 router.get('/monthlyIncome',adminController.monthlyIncome)
+router.get('/monthlyTrips',adminController.monthlyTrips)
 
 
 export default router;

@@ -7,36 +7,20 @@ import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, Responsive
 function AdminDashBoard() {
 
 
-  const monthlyCoursesData = [
-    { _id: 1, count: 100 },
-    { _id: 2, count: 120 },
-    { _id: 3, count: 90 },
-    { _id: 4, count: 110 },
-    { _id: 5, count: 95 },
-    { _id: 6, count: 130 },
-    { _id: 7, count: 115 },
-    { _id: 8, count: 105 },
-    { _id: 9, count: 125 },
-    { _id: 10, count: 110 },
-    { _id: 11, count: 120 },
-    { _id: 12, count: 112 },
-  ];
 
   const [users, setusers] = useState()
   const [drivers, setdrivers] = useState()
   const [totaltrips, settotaltrips] = useState()
   const [totalIncome, settotalIncome] = useState()
   const [monthlyIncome, setmonthlyIncome] = useState([])
+  const [monthlyTrips, setMonthlyTrips] = useState([]);
+
 
 
 
   useEffect(() => {
 
   
-
-
-
-
 
 
     const fetchTotalUsers= async () => {
@@ -103,29 +87,26 @@ console.log(totalIncome,"income");
   }
 }
 
-
-const fetchMonthlyIncome=async()=>{
-
+const fetchMonthlyIncome = async () => {
   try {
     const response = await axiosAdminInstance.get('/monthlyIncome');
-console.log(response.data,'monthlyincome');
+    console.log(response.data, 'monthlyincome');
 
-const allMonthsData = Array.from({ length: 12 }, () => ({
-  _id: { month: 1 },
-  totalIncome: 0,
-}));
+    // Initialize the data with all months and totalIncome set to 0
+    const allMonthsData = Array.from({ length: 12 }, (_, index) => ({
+      _id: { month: index + 1 },
+      totalIncome: 0,
+    }));
 
-response.data.forEach(item => {
-  const month = item._id.month - 1; // Month number (0-11)
-  allMonthsData[month] = item;
-});
+    // Update the data with the actual income data
+    response.data.forEach(item => {
+      const month = item._id.month - 1; // Month number (0-11)
+      allMonthsData[month] = item;
+    });
 
-
-setmonthlyIncome(allMonthsData);
-    
+    setmonthlyIncome(allMonthsData);
   } catch (error) {
-    console.error('Error fetching total drivers:', error);
-    
+    console.error('Error fetching monthly income:', error);
   }
 }
 
@@ -133,7 +114,21 @@ setmonthlyIncome(allMonthsData);
 
 
 
+async function fetchMonthlyTrips() {
+ 
+    try {
+      const response = await axiosAdminInstance.get('/monthlyTrips'); // Adjust the URL to your API
+      setMonthlyTrips(response.data.monthlyTrips);
+    } catch (error) {
+      console.error('Error fetching monthly trips data:', error);
+    }
+  
+}
 
+
+
+
+fetchMonthlyTrips()
     fetchTotalUsers()
     fetchTotalDrivers()
     fetchTotalTrips()
@@ -143,6 +138,12 @@ setmonthlyIncome(allMonthsData);
   }, [])
   
 
+  const transformedData = monthlyTrips.map((trip) => ({
+    month: new Date(trip.year, trip.month - 1, 1).toLocaleDateString('en-US', {
+      month: 'short',
+    }),
+    count: trip.totalTrips,
+  }));
 
 
 
@@ -217,36 +218,30 @@ setmonthlyIncome(allMonthsData);
         </ResponsiveContainer>
 
         <ResponsiveContainer width="100%" height={300}>
-          <LineChart
-            data={monthlyCoursesData}
-            margin={{
-              top: 5,
-              right: 30,
-              left: 20,
-              bottom: 5,
-            }}
-          >
-            <CartesianGrid strokeDasharray="3 3" />
-            <XAxis
-              dataKey="_id"
-              tickFormatter={(month) =>
-                new Date(0, month - 1, 1).toLocaleDateString("en-US", {
-                  month: "short",
-                })
-              }
-            />
-            <YAxis />
-            <Tooltip />
-            <Legend />
-            <Line
-              type="monotone"
-              dataKey="count"
-              stroke="#8884d8"
-              activeDot={{ r: 8 }}
-              name="Monthly Courses"
-            />
-          </LineChart>
-        </ResponsiveContainer>
+      <LineChart
+        data={transformedData}
+        margin={{
+          top: 5,
+          right: 30,
+          left: 20,
+          bottom: 5,
+        }}
+      >
+        <CartesianGrid strokeDasharray="3 3" />
+        <XAxis dataKey="month" />
+        <YAxis />
+        <Tooltip />
+        <Legend />
+        <Line
+          type="monotone"
+          dataKey="count"
+          stroke="#8884d8"
+          activeDot={{ r: 8 }}
+          name="Monthly Trips"
+        />
+      </LineChart>
+    </ResponsiveContainer>
+
       </div>
     </main>
   );

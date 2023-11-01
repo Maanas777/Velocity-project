@@ -1,0 +1,35 @@
+.moon-loader {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+  
+  .moon {
+    width: 100px;
+    height: 100px;
+    background-color: #36d7b7;
+    border-radius: 50%;
+    position: relative;
+  }
+  
+  .circle {
+    width: 20px;
+    height: 20px;
+    background-color: #fff;
+    border-radius: 50%;
+    position: absolute;
+    top: 30px;
+    left: 40px;
+  }
+  
+  .tail {
+    width: 50px;
+    height: 20px;
+    background-color: #fff;
+    position: absolute;
+    top: 45px;
+    left: 20px;
+    transform: rotate(60deg);
+  }
+  

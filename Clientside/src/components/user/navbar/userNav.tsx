@@ -14,19 +14,13 @@ import "./userNav.css";
 import logo from "./logofinal.png";
 
 const UserNav = () => {
+  const nav = useNavigate();
 
-  const nav=useNavigate()
-  
-
-
-  const handleLogout=()=>{
-    localStorage.removeItem("token")
-    localStorage.removeItem("userData")
-    nav('/')
- 
-    
-  }
-
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("userData");
+    nav("/");
+  };
 
   const storedUserData = localStorage.getItem("userData");
   if (storedUserData) {
@@ -95,37 +89,31 @@ const UserNav = () => {
                 Contact
               </Link>
             </Nav>
-     
-  {storedUserData && (
-    <Link to="/userprofile">
-      
-        <div className="d-flex flex-column align-items-center">
-          <img
-            src={profile}
-            style={{ height: "3rem", marginRight: "10px" }}
-            alt=""
-          />
-          <span style={{ color: "black", textDecoration: "none" }}>
-            {username || username2 || ""}
-          </span>
-        </div>
 
-    </Link>
-  )}
-<Dropdown>
-  <Dropdown.Toggle variant="light" id="dropdown-basic" >
+            {storedUserData && (
+              <Link to="/userprofile">
+                <div className="d-flex flex-column align-items-center">
+                  <img
+                    src={profile}
+                    style={{ height: "3rem", marginRight: "10px" }}
+                    alt=""
+                  />
+                  <span style={{ color: "black", textDecoration: "none" }}>
+                    {username || username2 || ""}
+                  </span>
+                </div>
+              </Link>
+            )}
+            <Dropdown>
+              <Dropdown.Toggle
+                variant="light"
+                id="dropdown-basic"
+              ></Dropdown.Toggle>
 
-  </Dropdown.Toggle>
-
-  <Dropdown.Menu style={{  border: 'none' }}>
-    <Dropdown.Item  onClick={handleLogout} >Logout</Dropdown.Item>
-   
-  </Dropdown.Menu>
-</Dropdown>
-
-
-  
-
+              <Dropdown.Menu style={{ border: "none" }}>
+                <Dropdown.Item onClick={handleLogout}>Logout</Dropdown.Item>
+              </Dropdown.Menu>
+            </Dropdown>
           </Navbar.Collapse>
         </div>
       </Navbar>
