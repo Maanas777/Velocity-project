@@ -18,5 +18,6 @@ router.get('/availableBikes',usercontroller.bikes)
 router.post('/payment',usercontroller.payment)
 router.get('/findTrip/:id',usercontroller.findTrip)
 router.post('/verify',usercontroller.Verify_payment)
+router.post('/review/:id',usercontroller.createReview)
 
 export default router;

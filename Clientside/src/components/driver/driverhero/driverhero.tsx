@@ -13,10 +13,9 @@ import bg from './0_fGUT3jb2dvnw9OZP.gif'
 
 
 const socket = io("http://localhost:3003");
-const DriverData=localStorage.getItem('DriverData')
-const DriverDatajson=JSON.parse(DriverData)
-const driverdetails=DriverDatajson.driver
-console.log(driverdetails,"deetailsdriver");
+
+
+
 
 
 const Driverhero = () => {
@@ -28,15 +27,20 @@ const Driverhero = () => {
   const [rideData, setRideData] = useState(); 
   const [showModal, setShowModal] = useState(false);
   const [distance, setdistance] = useState(0)
+
   const [fare, setfare] = useState(0)
 
   const destinationLat=rideData?.trip?.destinationLocation?.lat;
   const destinationLon=rideData?.trip?.destinationLocation?.lon;
   const pickupLat=rideData?.trip?.pickupLocation?.lat;
   const pickupLon=rideData?.trip?.pickupLocation?.lon;
-console.log(rideData,"ridedaarrree");
 
 
+  const DriverData=localStorage.getItem('DriverData')
+  const DriverDatajson=JSON.parse(DriverData)
+  const driverdetails=DriverDatajson
+
+  console.log(driverdetails,"driverdetailssss");
   
   
   useEffect(() => {

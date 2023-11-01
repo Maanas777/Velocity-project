@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import { useEffect } from "react";
-import {axiosInstance} from "../../axiosInstances/userInstance";
+import { axiosInstance } from "../../axiosInstances/userInstance";
 import { login } from "../../redux/userSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { selectUser } from "../../redux/userSlice";
 import UserNav from "../../components/user/navbar/userNav";
 import Footer from "../../components/user/footer/footer";
-import profile from "../assets/pngwing.com (1).png";
+import profile from "../assets/4333097.jpg";
 import "./userprofile.css";
 import axios from "axios";
 
@@ -14,7 +14,6 @@ function Profile() {
   const dispatch = useDispatch();
   const user = useSelector(selectUser);
   const userId = user?.user?._id;
-  console.log(userId, "packupaafhsakjfhsakjfh");
 
   const [isEditing, setIsEditing] = useState(false);
   const [username, setUsername] = useState(user?.user?.name || "");
@@ -29,10 +28,8 @@ function Profile() {
 
       if (storedUserData) {
         const parsedUserData = JSON.parse(storedUserData);
-        console.log(parsedUserData, "parsed");
 
         dispatch(login(parsedUserData));
-        console.log(parsedUserData.username, "uhhhkjhkjhjkhj");
 
         if (parsedUserData && parsedUserData.user) {
           setUsername(parsedUserData.user.username || "");
@@ -59,9 +56,8 @@ function Profile() {
     const storedUserData = localStorage.getItem("userData");
 
     const parsedUserData = JSON.parse(storedUserData);
-    console.log(parsedUserData.user?._id, "parsed");
-    const id = parsedUserData.user?._id; 
-    console.log(id, "hallooeerhfdfjfn");
+
+    const id = parsedUserData.user?._id;
 
     axiosInstance.get(`/finduser/${id ? id : userId}`).then((response) => {
       const user = response.data.user;
@@ -73,6 +69,8 @@ function Profile() {
       }
     });
   }, []);
+
+  console.log(trips);
 
   const handleEditClick = () => {
     setIsEditing(true);
@@ -138,15 +136,16 @@ function Profile() {
                     }}
                   >
                     <img
+                      className="driver-profile-img"
                       src={profile}
                       style={{
-                        width: "9rem",
-                        height: "13rem",
+                        width: "15rem",
+                        height: "18rem",
                         paddingTop: "20%",
                       }}
                       alt=""
                     />
-                    <h5>{username}</h5>
+                    <h5 style={{ color: "black" }}>{username}</h5>
 
                     {!isEditing && (
                       <button
@@ -159,11 +158,11 @@ function Profile() {
                   </div>
                   <div className="col-md-8">
                     <div className="card-body p-4">
-                      <h6>Information</h6>
+                      <h6 style={{ fontWeight: "bold" }}>Information</h6>
                       <hr className="mt-0 mb-4" />
                       <div className="row pt-1">
                         <div className="col-6 mb-3">
-                          <h6>Username</h6>
+                          <h6 style={{ fontWeight: "bold" }}>Username</h6>
                           {isEditing ? (
                             <input
                               type="text"
@@ -171,11 +170,16 @@ function Profile() {
                               onChange={(e) => setUsername(e.target.value)}
                             />
                           ) : (
-                            <p className="text-muted">{username}</p>
+                            <p
+                              className="text-muted"
+                              style={{ fontWeight: "bold" }}
+                            >
+                              {username}
+                            </p>
                           )}
                         </div>
                         <div className="col-6 mb-3">
-                          <h6>Email</h6>
+                          <h6 style={{ fontWeight: "bold" }}>Email</h6>
                           {isEditing ? (
                             <input
                               type="text"
@@ -183,12 +187,17 @@ function Profile() {
                               onChange={(e) => setEmail(e.target.value)}
                             />
                           ) : (
-                            <p className="text-muted">{email}</p>
+                            <p
+                              className="text-muted"
+                              style={{ fontWeight: "bold" }}
+                            >
+                              {email}
+                            </p>
                           )}
                         </div>
 
                         <div className="col-6 mb-3">
-                          <h6>Phone</h6>
+                          <h6 style={{ fontWeight: "bold" }}>Phone</h6>
                           {isEditing ? (
                             <input
                               type="text"
@@ -196,7 +205,12 @@ function Profile() {
                               onChange={(e) => setPhone(e.target.value)}
                             />
                           ) : (
-                            <p className="text-muted">{phone}</p>
+                            <p
+                              className="text-muted"
+                              style={{ fontWeight: "bold" }}
+                            >
+                              {phone}
+                            </p>
                           )}
                         </div>
                       </div>
@@ -209,44 +223,52 @@ function Profile() {
                         </button>
                       ) : null}
                       <div>
-                        <h4
-                          className="
-                       "
-                        >
-                          Trip History
-                        </h4>
-                        <div className="history">
+                        <div className="text-trip-history">
+                          <h4 className="trip-history-title">Trip History</h4>
+                        </div>
+                        <div className="trip-history">
                           {trips.map((trip, index) => (
-                            <div key={trip._id}>
-                              <div className="triphistoryUser">
-                              <div className="profiledate">
-                                <p>
-                                  {" "}
-                                  {new Date(trip.createdAt).toLocaleDateString(
-                                    undefined,
-                                    {
+                            <div key={trip._id} className="trip-item">
+                              <div className="profile-date">
+                                <div className="trip-location">
+                                  <h5 style={{ fontWeight: "bolder" }}>
+                                    {trip.pickuplocation.name} To{" "}
+                                    {trip.destination.name}
+                                  </h5>
+                                </div>
+                                <p className="date-time">
+                                  <span className="date">
+                                    {new Date(
+                                      trip.createdAt
+                                    ).toLocaleDateString(undefined, {
                                       day: "numeric",
                                       month: "long",
                                       year: "numeric",
-                                    }
-                                  )}
-                                </p>
-                                <p>
-                                  {" "}
-                                  Time :{" "}
-                                  {new Date(trip.createdAt).toLocaleTimeString(
-                                    [],
-                                    {
+                                    })}
+                                  </span>
+                                  <span className="time">
+                                    Time:{" "}
+                                    {new Date(
+                                      trip.createdAt
+                                    ).toLocaleTimeString([], {
                                       hour: "2-digit",
                                       minute: "2-digit",
-                                    }
-                                  )}
+                                    })}
+                                  </span>
                                 </p>
+                                <div className="driver-details">
+                                  <p className="driver-name">
+                                    <span className="label">Driver Name:</span>{" "}
+                                    {trip.driverDetails.name}-
+                                  </p>
+                                  <p className="driver-phone">
+                                    {trip.driverDetails.phone}
+                                  </p>
                                 </div>
-                                <p>
-                                  Pickup Location: {trip.pickuplocation.name}
+                                <p className="fare">
+                                  <span className="label">Fare:</span> ₹
+                                  {trip.fare}
                                 </p>
-                                <p>Destination: {trip.destination.name}</p>
                               </div>
                             </div>
                           ))}

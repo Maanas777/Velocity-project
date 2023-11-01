@@ -3,12 +3,11 @@ import { useNavigate } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 import { axiosDriverInstance } from "../../../axiosInstances/userInstance";
 import "./driverDetails.css";
-import ReviewModal from "../review/review";
 import { io } from "socket.io-client";
 import { axiosInstance } from "../../../axiosInstances/userInstance";
 import Button from 'react-bootstrap/Button';
 import Modal from "react-bootstrap/Modal";
-import { useSelector } from "react-redux";
+
 
 const socket = io("http://localhost:3003");
 
@@ -39,10 +38,10 @@ const DriverDetails = () => {
   
   const id = driver?.state?.tripId;
 
-  const driverName = driver?.state?.driverdetails?.Drivername;
-  const VehicleModel = driver?.state?.driverdetails?.VehicleModel;
-  const driverPhoto = driver?.state?.driverdetails?.vehiclePhoto;
-  const contactNumber = driver?.state?.driverdetails?.phone;
+  const driverName = driver?.state?.driverdetails?.driver?.Drivername;
+  const VehicleModel = driver?.state?.driverdetails?.driver?.VehicleModel;
+  const driverPhoto = driver?.state?.driverdetails?.driver?.vehiclePhoto;
+  const contactNumber = driver?.state?.driverdetails?.driver?.phone;
   const distance = driver?.state?.distance;
   const fair = driver?.state?.fare;
 
@@ -89,7 +88,6 @@ useEffect(() => {
   });
 
 }, [])
-
 
 
 

@@ -2,24 +2,20 @@ import { Request, Response } from "express";
 import userModel from "../models/user";
 import { TripModel } from "../models/trip";
 import driverModel from "../models/driver";
+import ReviewModel from "../models/review";
 import Razorpay from "razorpay";
 import bcrypt from "bcrypt";
 import dotenv from "dotenv";
-import crypto from 'crypto'
+import crypto from "crypto";
 import twilio from "twilio";
 dotenv.config();
 
 import generateToken from "../utilities/jwtToke";
 
-
-
-
 const accountSid = process.env.Account_SID;
 const authToken = process.env.Auth_Token;
 const serviceId = process.env.Service_SID;
 const client = twilio(accountSid, authToken);
-
-
 
 const usercontroller = {
   UserLogin: async (req: Request, res: Response) => {
@@ -49,13 +45,6 @@ const usercontroller = {
     }
   },
 
-
-
-
-
-
-
-
   userSignupPost: async (req: Request, res: Response) => {
     try {
       const { username, email, phone, password } = req.body;
@@ -82,13 +71,6 @@ const usercontroller = {
       return res.status(500).json({ error: "An error occurred" });
     }
   },
-
-
-
-
-
-
-
 
   editprofile: async (req: Request, res: Response) => {
     console.log("9009809897897");
@@ -118,11 +100,6 @@ const usercontroller = {
     }
   },
 
-
-
-
-
-
   userprofile: async (req: Request, res: Response) => {
     try {
       const id = req.params.id.trim();
@@ -138,9 +115,6 @@ const usercontroller = {
       res.send(error);
     }
   },
-
-
-
 
   ///sent otp
 
@@ -170,7 +144,6 @@ const usercontroller = {
       res.json({ Error: error });
     }
   },
-
 
   ////verify otp
 
@@ -213,15 +186,17 @@ const usercontroller = {
     }
   },
 
-
-
-
   createRide: async (req: Request, res: Response) => {
     try {
       const id = req.params.id;
 
+      const driverId = req.body.DriverId;
+
       const rideData = req.body.rideData;
       const fare = req.body.fare;
+      const driver = req.body.driver;
+
+      console.log(driver, "driver");
 
       const pickuplocation = rideData.pickupLocation;
       const destination = rideData.destinationLocation;
@@ -237,9 +212,16 @@ const usercontroller = {
 
       const newTrip = await TripModel.create({
         user: user._id,
+        driverId: driverId,
         pickuplocation: pickuplocation,
         destination: destination,
         fare: fare,
+        driverDetails: {
+          name: driver.DriverName,
+          phone: driver.DriverPhone,
+          vehicleModel: driver.VehicleModel,
+          vehiclePhoto: driver.vehiclePhoto,
+        },
         isCompleted: false,
       });
 
@@ -253,18 +235,13 @@ const usercontroller = {
       });
 
       // Send the populated trip in the response
-      res.json({ trip: populatedTrip, });
+      res.json({ trip: populatedTrip });
     } catch (error) {
       // Handle errors
       console.error("Error creating ride:", error);
       return res.status(500).json({ msg: "Internal server error" });
     }
   },
-
-
-
-
-
 
   bikes: async (_req: Request, res: Response) => {
     try {
@@ -277,46 +254,42 @@ const usercontroller = {
     }
   },
 
-
-  
-
   payment: async (req: Request, res: Response) => {
     console.log("hello");
-    const id=req.body.id
+    const id = req.body.id;
     console.log(id);
-    
- 
-    const trip=await TripModel.findOne({_id:id})
-   
-    const fare=trip?.fare
-    console.log(fare,"fareeeeee");
-    
-    
+
+    const trip = await TripModel.findOne({ _id: id });
+
+    const fare = trip?.fare;
+    console.log(fare, "fareeeeee");
+
     try {
       const instance = new Razorpay({
         key_id: process.env.RAZORPAY_KEY_ID || "",
-        key_secret: process.env.RAZORPAY_SECRET || ""
+        key_secret: process.env.RAZORPAY_SECRET || "",
       });
-  
+
       const options = {
-        amount: (fare||10)*100,
+        amount: (fare || 10) * 100,
         currency: "INR",
-        receipt: crypto.randomBytes(10).toString('hex')
+        receipt: crypto.randomBytes(10).toString("hex"),
       };
-  
+
       instance.orders.create(options, async (error, order) => {
         if (error) {
           console.log(error);
           return res.status(500).json({ message: "Something Went Wrong!" });
         }
 
-
- try {
-        await TripModel.updateOne({ _id: id }, { Isfarepaid: true });
-      } catch (updateError) {
-        console.log(updateError);
-        return res.status(500).json({ message: 'Failed to update payment status' });
-      }
+        try {
+          await TripModel.updateOne({ _id: id }, { Isfarepaid: true });
+        } catch (updateError) {
+          console.log(updateError);
+          return res
+            .status(500)
+            .json({ message: "Failed to update payment status" });
+        }
 
         res.status(200).json({ data: order });
       });
@@ -325,49 +298,60 @@ const usercontroller = {
       console.log(error);
     }
   },
-  
 
-
-  Verify_payment: async (req: Request, res: Response) =>{
-
-  
+  Verify_payment: async (req: Request, res: Response) => {
     try {
       const { razorpay_order_id, razorpay_payment_id, razorpay_signature } =
         req.body;
 
       const sign = razorpay_order_id + "|" + razorpay_payment_id;
       const expectedSign = crypto
-        .createHmac("sha256", process.env.RAZORPAY_SECRET||'')
+        .createHmac("sha256", process.env.RAZORPAY_SECRET || "")
         .update(sign.toString())
         .digest("hex");
-  
+
       if (razorpay_signature === expectedSign) {
         console.log("sucessss");
-        
-        return res.status(200).json({ message: "Payment verified successfully" });
+
+        return res
+          .status(200)
+          .json({ message: "Payment verified successfully" });
       } else {
-        console.log("errorrr")
+        console.log("errorrr");
         return res.status(400).json({ message: "Invalid signature sent!" });
       }
     } catch (error) {
       res.status(500).json({ message: "Internal Server Error!" });
       console.log(error);
     }
-
-
   },
 
-  findTrip: async (req: Request, res: Response) =>{
-    const id=req.params.id
-    const trip=await TripModel.findById(id)
-    res.json(trip)
-    
+  findTrip: async (req: Request, res: Response) => {
+    const id = req.params.id;
+    const trip = await TripModel.findById(id);
+    res.json(trip);
+  },
 
-  }
+  createReview: async (req: Request, res: Response) => {
+    try {
+      const reviewData = req.body.content;
+      const id = req.params.id;
 
+      console.log(reviewData, "reviewwwwwwwwwww");
+      console.log(id, "iddddddddddddddddddddd");
 
-
-
+      const newReview = await new ReviewModel({
+        body: reviewData,
+        author: id,
+        date: new Date(),
+      });
+      await newReview.save();
+      res.status(201).json({ message: "Review created successfully" });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: "Failed to create the review" });
+    }
+  },
 };
 
 export default usercontroller;

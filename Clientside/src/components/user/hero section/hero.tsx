@@ -3,8 +3,8 @@ import { useState } from "react";
 import "./hero.css";
 
 import First from "./1st section.png";
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import Second from "./seond.jpg";
 import Third from "./3rd.avif";
 import Modal from "react-bootstrap/Modal";
@@ -13,7 +13,6 @@ import { useNavigate } from "react-router-dom";
 import { selectUser } from "../../../redux/userSlice";
 import axios from "axios";
 import { io } from "socket.io-client";
-
 
 const socket = io("http://localhost:3003");
 
@@ -36,11 +35,7 @@ const predefinedDestinations = [
 ];
 
 const Hero = () => {
-
-
-
-const nav= useNavigate()
-
+  const nav = useNavigate();
 
   const user = useSelector(selectUser);
   console.log(user._id);
@@ -52,7 +47,6 @@ const nav= useNavigate()
   const [destinationLocation, setDestinationLocation] = useState("");
 
   // const [fare, setfare] = useState(0)
-
 
   const [showModal, setShowModal] = useState(false);
 
@@ -68,26 +62,17 @@ const nav= useNavigate()
     setDestinationLocation(e.target.value);
   };
 
-  const token=localStorage.getItem("token")
+  const token = localStorage.getItem("token");
 
   const headers = {
-    'Content-Type': 'application/json',
-    'token': token
-  }
-
-
-
-
-
-
+    "Content-Type": "application/json",
+    token: token,
+  };
 
   ///submit function
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-  
-    console.log("Pickup Location:", pickupLocation);
-    console.log("Destination:", destinationLocation);
-  
+
     // Find the selected locations from predefinedLocations
     const selectedPickupLocation = predefinedLocations.find(
       (location) => location.name === pickupLocation
@@ -95,12 +80,12 @@ const nav= useNavigate()
     const selectedDestinationLocation = predefinedDestinations.find(
       (location) => location.name === destinationLocation
     );
-  
+
     if (!selectedPickupLocation || !selectedDestinationLocation) {
       console.error("Invalid pickup or destination location.");
       return;
     }
-  
+
     const rideData = {
       pickupLocation: {
         name: pickupLocation,
@@ -113,50 +98,61 @@ const nav= useNavigate()
         lon: selectedDestinationLocation.lon,
       },
     };
-  
+
     // Use a flag to prevent multiple trip creations
     let isRideCreated = false;
-  
+
     setShowModal(true);
-  
-    socket.on('acceptedride', async (data) => {
-      console.log(data, 'accepted driver');
+
+    socket.on("acceptedride", async (data) => {
+      console.log(data.driverdetails.driver, "accepted driver");
       setShowModal(false);
-  
+
       if (!isRideCreated) {
         isRideCreated = true;
         const fare = data.fare;
-        console.log(fare, "fareeeeeeeeee");
-  
+        const DriverId=data.driverdetails.driver._id
+        console.log(DriverId,"rdiverId");
+        
+        const driver={
+          DriverName:data.driverdetails.driver.Drivername,
+          DriverPhone:data.driverdetails.driver.phone,
+          VehicleModel:data.driverdetails.driver.VehicleModel,
+          vehiclePhoto:data.driverdetails.driver.vehiclePhoto
+
+        }
+     
+
         try {
           // Send a POST request to your backend with rideData and fare
-        const response=  await axios.post(`http://localhost:3003/api/users/createRide/${userid}`, { rideData, fare }, { headers });
- 
-  const tripId=response.data.trip._id
+          const response = await axios.post(
+            `http://localhost:3003/api/users/createRide/${userid}`,
+            { rideData, fare,driver,DriverId},
+            { headers }
+          );
 
-  
+          const tripId = response.data.trip._id;
+
           // After successfully sending the request, navigate to the 'driverdetails' route
-          nav('/driverdetails',{ state:{...data, tripId:tripId}});
+          nav("/driverdetails", { state: { ...data, tripId: tripId } });
         } catch (error) {
-          toast.error('Axios POST request error');
-          console.error('Axios POST request error:', error);
+          toast.error("Axios POST request error");
+          console.error("Axios POST request error:", error);
         }
       }
     });
-  
+
     try {
-     
-      socket.emit('createdride',  {trip: rideData, userDetails: user });
+      socket.emit("createdride", { trip: rideData, userDetails: user });
     } catch (error) {
-      toast.error('Socket emit error');
-      console.error('Socket emit error:', error);
+      toast.error("Socket emit error");
+      console.error("Socket emit error:", error);
     }
   };
-  
 
   return (
     <div>
-      <ToastContainer/>
+      <ToastContainer />
       <div className="imageContainer">
         <img className="first" src={First} alt="" />
         <div className="formContainer">
@@ -233,23 +229,11 @@ const nav= useNavigate()
       </div>
 
       <Modal show={showModal} onHide={() => setShowModal(false)}>
-          <Modal.Body className="custom-modal">
-            <p>Connecting to rider...</p>
-          </Modal.Body>
-        </Modal>
+        <Modal.Body className="custom-modal">
+          <p>Connecting to rider...</p>
+        </Modal.Body>
+      </Modal>
     </div>
-
-
-
-
-
-
-
-
-
-
-
-
   );
 };
 

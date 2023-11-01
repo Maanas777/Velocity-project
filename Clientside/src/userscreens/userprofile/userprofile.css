@@ -15,10 +15,13 @@
 
     .userprofilebackground{
         background-color: #c7c7c9;
+        background-image: url(./istockphoto-1317584985-612x612-transformed.jpg);
+        background-size: cover;
+       
     }
    .card-body{
     background-color:#d2d5fe;
-    max-height: 20rem;
+    max-height: 29rem;
    overflow-y: scroll;
    scrollbar-width:thin
    }
@@ -51,6 +54,57 @@
     padding: 1rem;
     border-radius: 5px;
   }
-  .profiledate{
-    
-  }
+ 
+  /* Add these styles to your CSS to enhance the visual appeal */
+.text-trip-history {
+  margin-top: 20px;
+  text-align: center;
+}
+
+.trip-history-title {
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+.trip-item {
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  margin: 20px 0;
+  padding: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  background-color: #fff;
+}
+
+.trip-location h5 {
+  font-size: 18px;
+  margin: 0;
+}
+
+.date-time {
+  display: flex;
+  justify-content: space-between;
+  font-size: 16px;
+  margin-top: 10px;
+  font-weight: bold;
+}
+
+.driver-name {
+  font-weight: bold;
+}
+
+.driver-phone {
+  color: #007bff;
+}
+
+.fare {
+  font-weight: bold;
+}
+
+.label {
+  font-weight: bold;
+  margin-right: 5px;
+}
+
+.trip-history-title{
+  font-weight: bolder;
+}

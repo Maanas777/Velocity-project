@@ -203,6 +203,21 @@ tripcomplete: async (req: Request, res: Response) =>  {
     } catch (error) {
         return res.status(500).json({ error: 'Internal server error' });
     }
+},
+
+driverhistory:async (req: Request, res: Response) => {
+  const driverId=req.params.id
+  
+  
+  try {
+    const trips = await TripModel.find({ driverId: driverId }).populate("user");
+
+    res.json({ trips });
+    
+  } catch (error) {
+    res.status(500).json({ error: "Error fetching trip data" });
+    
+  }
 }
 
 
