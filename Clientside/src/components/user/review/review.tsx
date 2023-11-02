@@ -20,7 +20,7 @@ function ReviewModal() {
 
 
   const userData = localStorage.getItem('userData')
-  const userDatajson=JSON.parse(userData)
+  const userDatajson=userData?JSON.parse(userData):null;
  console.log(userDatajson.user._id);
  const id=userDatajson.user._id
  

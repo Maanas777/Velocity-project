@@ -1,4 +1,4 @@
-import React from "react";
+
 import Drivers from "../../components/admin/drivers/verified_driver";
 import Nav from "../../components/admin/navbar/navbar";
 const drivers = () => {

@@ -1,4 +1,4 @@
-import React from "react";
+
 import Navbar from '../../components/admin/navbar/navbar'
 // import Table from "../components/admin/table";
 import Chart from "../../components/admin/chart/chart";

@@ -4,16 +4,26 @@ import { useEffect } from 'react';
 import { useState } from 'react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, LineChart, Line } from 'recharts';
 
+
+
+
+interface MonthlyTripData {
+  year: number;
+  month: number;
+  totalTrips: number;
+}
+
+
 function AdminDashBoard() {
 
 
 
-  const [users, setusers] = useState()
-  const [drivers, setdrivers] = useState()
-  const [totaltrips, settotaltrips] = useState()
-  const [totalIncome, settotalIncome] = useState()
-  const [monthlyIncome, setmonthlyIncome] = useState([])
-  const [monthlyTrips, setMonthlyTrips] = useState([]);
+  const [users, setusers] = useState<number | null>(null);
+  const [drivers, setdrivers] = useState<number | null>(null);
+  const [totaltrips, settotaltrips] = useState<number | null>(null);
+  const [totalIncome, settotalIncome] =  useState<number[]>([]);
+  const [monthlyIncome, setmonthlyIncome] = useState<{ _id: { month: number }; totalIncome: number }[]>([]);
+  const [monthlyTrips, setMonthlyTrips] = useState<MonthlyTripData[]>([]);
 
 
 
@@ -70,7 +80,7 @@ const fetchTotalTrips=async()=>{
 const fetchTotalIncome=async()=>{
 
   try {
-    const response = await axiosAdminInstance.get('/calculateTotalEarnings');
+    const response = await axiosAdminInstance.get <{ total: number }[]>('/calculateTotalEarnings');
 console.log(response.data);
 
 const income=response.data.map((item)=>item.total
@@ -89,7 +99,7 @@ console.log(totalIncome,"income");
 
 const fetchMonthlyIncome = async () => {
   try {
-    const response = await axiosAdminInstance.get('/monthlyIncome');
+    const response = await axiosAdminInstance.get<{ _id: { month: number }; totalIncome: number }[]>('/monthlyIncome');
     console.log(response.data, 'monthlyincome');
 
     // Initialize the data with all months and totalIncome set to 0
@@ -135,6 +145,7 @@ fetchMonthlyTrips()
     fetchTotalIncome()
     fetchMonthlyIncome()
    
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
   
 

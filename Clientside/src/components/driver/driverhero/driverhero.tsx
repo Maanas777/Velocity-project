@@ -3,16 +3,40 @@
 // import { ToastContainer, toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import geodist from 'geodist';
+// import geodist from 'geodist';
 import { io } from "socket.io-client";
 import "./driverhero.css";
 import Button from 'react-bootstrap/Button';
 import Modal from "react-bootstrap/Modal";
 import bg from './0_fGUT3jb2dvnw9OZP.gif'
-
+import * as geolib from 'geolib'
 
 
 const socket = io("http://localhost:3003");
+
+interface RideData{
+  trip:{
+    destinationLocation: {
+      lat: number;
+      lon: number;
+        name:string;
+    };
+    pickupLocation: {
+      lat: number;
+      lon: number;
+      name:string;
+    };
+  },
+  userDetails:{
+    user:{
+      username:string;
+      phone:string;
+      
+    }
+
+  }
+
+}
 
 
 
@@ -24,7 +48,7 @@ const Driverhero = () => {
 
 
 
-  const [rideData, setRideData] = useState(); 
+  const [rideData, setRideData] = useState<RideData | null>(null);
   const [showModal, setShowModal] = useState(false);
   const [distance, setdistance] = useState(0)
 
@@ -37,31 +61,35 @@ const Driverhero = () => {
 
 
   const DriverData=localStorage.getItem('DriverData')
-  const DriverDatajson=JSON.parse(DriverData)
+  const DriverDatajson=DriverData?JSON.parse(DriverData):null
   const driverdetails=DriverDatajson
 
   console.log(driverdetails,"driverdetailssss");
   
   
   useEffect(() => {
-    if (rideData && pickupLat && pickupLon && destinationLat && destinationLon) {
+    if (destinationLat && destinationLon && pickupLat && pickupLon) {
       const destination = { latitude: destinationLat, longitude: destinationLon };
       const pickup = { latitude: pickupLat, longitude: pickupLon };
+  
+      const distanceInMeters = geolib.getDistance(destination, pickup);
+      const distanceInKilometers = distanceInMeters / 1000;
+      setdistance(distanceInKilometers)
 
-      const distanceInKm = geodist(pickup, destination, { unit:'km' });
-      setdistance(distanceInKm)
-
-      console.log(distanceInKm, "Distance in kilometers");
+      console.log(distanceInKilometers, "Distance in kilometers");
       const baseFare=10 //RS for Km
       const farePerKm=10  //RS for Km
 
-      const fare = baseFare + farePerKm * distanceInKm;
+      const fare = Math.round(baseFare + farePerKm * distanceInKilometers);
        setfare(fare)
       
 
      
     }
   }, [rideData, pickupLat, pickupLon, destinationLat, destinationLon]);
+
+
+  
 
 
   
@@ -89,7 +117,7 @@ const Driverhero = () => {
 
 
 
-  const handleTakeTrip=(trip)=>{
+  const handleTakeTrip=(trip: RideData | null)=>{
     const data=trip
     console.log(data,"dataaaaaaaaaaa");
     

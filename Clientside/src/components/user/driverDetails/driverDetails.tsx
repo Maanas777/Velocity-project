@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useLocation } from "react-router-dom";
@@ -9,11 +10,16 @@ import Button from 'react-bootstrap/Button';
 import Modal from "react-bootstrap/Modal";
 
 
+
 const socket = io("http://localhost:3003");
 
 const cardBodyStyle = {
   backgroundColor: "#f1bf29",
+  
 };
+
+
+
 
 const DriverDetails = () => {
 
@@ -30,11 +36,10 @@ const DriverDetails = () => {
   console.log(driver, "driverrrr");
 
   const data = localStorage.getItem("userData");
-  const userdetails = JSON.parse(data);
+  const userdetails = data ? JSON.parse(data):null;
   console.log(userdetails.user.username);
 
   const user = userdetails.user.username;
-
   
   const id = driver?.state?.tripId;
 
@@ -46,7 +51,6 @@ const DriverDetails = () => {
   const fair = driver?.state?.fare;
 
   const keyId = import.meta.env.VITE_RAZORPAY_KEY_ID;
-
 
 const homeGo=()=>{
   nav('/userhome')
@@ -87,6 +91,7 @@ useEffect(() => {
     
   });
 
+// eslint-disable-next-line react-hooks/exhaustive-deps
 }, [])
 
 
@@ -123,25 +128,30 @@ useEffect(() => {
       }
     };
     paymentComplete();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
 
 
 
-  const initPayment = (data) => {
-    console.log(data, "dayeeeee");
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const initPayment = (data: { data: { id: any; currency: any; amount: any; }; amount: any; })  => {
+    console.log(data.data.id, "dayeeeee");
+    console.log(data.data.currency,"currency");
+    console.log(data.amount,"amount")
+    
     const options = {
       key: keyId || "",
       name: user,
-      amount: data.amount,
-      currency: data.currency,
-      order_id: data.id,
+      amount: data.data.amount,
+      currency: data.data.currency,
+      order_id: data.data.id,
 
-      handler: async (response) => {
+      handler: async (response:unknown) => {
         console.log(response, "respondeeee");
         try {
           const { data } = await axiosInstance.post(
-            `/verify?nocache=${new Date().getTime()}`,
+            `/verify`,
             response
           );
           console.log(data, "dattaaaaaaa");
@@ -153,14 +163,21 @@ useEffect(() => {
         color: "#3399cc",
       },
     };
-    const rzp1 = new window.Razorpay(options);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const rzp1 = new (window as any).Razorpay(options);
     rzp1.open();
   };
 
   const handlePayment = async () => {
     try {
       const { data } = await axiosInstance.post("/payment", { id });
-      initPayment(data.data);
+      console.log(data);
+      
+      console.log(data.data.amount,"payment data");
+      console.log(data.currency,"payment data");
+      console.log(data.id,"payment data");
+
+      initPayment(data);
       setPayment(true);
     } catch (error) {
       console.log(error);

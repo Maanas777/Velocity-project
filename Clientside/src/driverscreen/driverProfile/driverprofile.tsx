@@ -9,10 +9,32 @@ import { selectUser } from "../../redux/userSlice";
 import Footer from "../../components/user/footer/footer";
 import profile from "./4333097.jpg";
 import ClipLoader from "react-spinners/ClipLoader";
-
-
-
 import axios from "axios";
+
+interface Trip{
+  _id:string;
+
+  pickuplocation:{
+    name:string
+  };
+  destination:{
+    name:string
+  };
+  createdAt:string;
+
+  user:{
+    username:string
+    phone:string
+  }
+  
+  fare:string;
+ 
+}
+
+
+
+
+
 
 function Profile() {
   const dispatch = useDispatch();
@@ -26,16 +48,9 @@ function Profile() {
   const [phone, setPhone] = useState(driver?.driver?.phone || "");
   const [loading, setLoading] = useState(false);
 
-  const [trips, setTrips] = useState([]);
 
 
-
-  
-
-
-
-
-
+  const [trips, setTrips] = useState<Trip[]>([]);
 
 
 
@@ -81,7 +96,7 @@ function Profile() {
 
   const userid = localStorage.getItem("DriverData");
 
-  const parsedUserData = JSON.parse(userid);
+  const parsedUserData = userid?JSON.parse(userid):null;
   const userId = parsedUserData?._id;
   const userId2 = parsedUserData.driver?._id;
   console.log(userId, "00990");
@@ -147,6 +162,7 @@ function Profile() {
     })
   
   
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   },[])
   
   return (
@@ -256,7 +272,7 @@ function Profile() {
                           <h4 className="trip-history-title">Trip History</h4>
                         </div>
                         <div className="trip-history">
-                          {trips.map((trip, index)=>(
+                          {trips.map((trip)=>(
                             <div key={trip._id} className="trip-item">
                               <div className="profile-date">
                                 <div className="trip-location">

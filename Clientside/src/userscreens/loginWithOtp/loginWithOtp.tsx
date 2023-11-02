@@ -31,8 +31,8 @@ const UserLogin = () => {
 
       nav("/VerifyOtp");
     } catch (err) {
-      if (err) {
-        toast.error(err.response.data.error);
+      if (err instanceof Error) {
+        toast.error(err.message);
       } else {
         toast.error("An error occurred.");
       }
@@ -64,15 +64,7 @@ const UserLogin = () => {
               Submit
             </button>
           </div>
-          {/* <div className="links-container " style={{display:'flex',flexDirection:'column'}}>
-            <p>
-              <Link to="usersignup">Login with OTP</Link>{" "}
-            </p>
-         <button>
-              <Link to="usersignup">Create New account</Link>{" "}
-              </button>
-      
-          </div> */}
+         
         </form>
       </div>
     </div>

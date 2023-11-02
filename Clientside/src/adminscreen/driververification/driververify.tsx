@@ -1,4 +1,4 @@
-import React from "react";
+
 import Driververif from "../../components/admin/driververification/table";
 import Nav from "../../components/admin/navbar/navbar";
 

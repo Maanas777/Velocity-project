@@ -5,11 +5,11 @@ import {useNavigate} from 'react-router-dom'
 import './signup.css';
 import logo from '../assets/logofinal.png';
 import { toast, ToastContainer } from 'react-toastify';
-import { io } from "socket.io-client";
+
 import 'react-toastify/dist/ReactToastify.css';
 
 
-const socket = io("http://localhost:3003");
+
 
 
 const Signup = () => {

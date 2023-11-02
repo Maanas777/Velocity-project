@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import  { useState } from 'react';
 import logo from '../assets/logofinal.png'
 import './signup.css';
 import { FormEvent } from 'react';

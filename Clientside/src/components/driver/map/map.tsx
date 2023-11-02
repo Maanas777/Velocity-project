@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import  { useEffect } from "react";
 
 import "./map.css";
 import "mapbox-gl/dist/mapbox-gl.css";

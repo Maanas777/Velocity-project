@@ -1,4 +1,4 @@
-import React from 'react'
+
 import Drivernav from '../../components/driver/drivernav/driverNav'
 import Map from '../../components/driver/map/map'
 

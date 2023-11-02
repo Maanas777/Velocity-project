@@ -1,4 +1,4 @@
-import React from "react";
+
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import Navbar from "../components/user/navbar/userNav";
@@ -12,7 +12,7 @@ const Home = () => {
 
   useEffect(() => {
     const storedUserData = localStorage.getItem("userData");
-    const parsedUserData = JSON.parse(storedUserData);
+    const parsedUserData = storedUserData?JSON.parse(storedUserData):null;
 
     dispatch(login(parsedUserData));
   }, [dispatch]);

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import  { useState } from "react";
 import { useEffect } from "react";
 import { axiosInstance } from "../../axiosInstances/userInstance";
 import { login } from "../../redux/userSlice";
@@ -10,6 +10,32 @@ import profile from "../assets/4333097.jpg";
 import "./userprofile.css";
 import axios from "axios";
 
+
+interface Trip{
+  _id:string;
+  pickuplocation:{
+    name:string;
+
+  },
+  destination:{
+    name:string;
+  },
+  createdAt:string;
+
+  driverDetails:{
+    name:string,
+    phone:string
+  }
+  fare:number
+
+
+}
+
+
+
+
+
+
 function Profile() {
   const dispatch = useDispatch();
   const user = useSelector(selectUser);
@@ -19,7 +45,7 @@ function Profile() {
   const [username, setUsername] = useState(user?.user?.name || "");
   const [email, setEmail] = useState(user?.user?.email || "");
   const [phone, setPhone] = useState(user?.user?.phone || "");
-  const [trips, setTrips] = useState([]);
+  const [trips, setTrips] = useState<Trip[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -55,7 +81,7 @@ function Profile() {
   useEffect(() => {
     const storedUserData = localStorage.getItem("userData");
 
-    const parsedUserData = JSON.parse(storedUserData);
+    const parsedUserData = storedUserData?JSON.parse(storedUserData):null;
 
     const id = parsedUserData.user?._id;
 
@@ -68,6 +94,7 @@ function Profile() {
         console.error("User data is undefined.");
       }
     });
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   console.log(trips);
@@ -78,7 +105,7 @@ function Profile() {
 
   const handleSaveClick = async () => {
     const userid = localStorage.getItem("userData");
-    const parsedUserData = JSON.parse(userid);
+    const parsedUserData = userid?JSON.parse(userid):null;
     const userId = parsedUserData._id;
     const userId2 = parsedUserData.user?._id;
 
@@ -227,7 +254,7 @@ function Profile() {
                           <h4 className="trip-history-title">Trip History</h4>
                         </div>
                         <div className="trip-history">
-                          {trips.map((trip, index) => (
+                          {trips.map((trip, ) => (
                             <div key={trip._id} className="trip-item">
                               <div className="profile-date">
                                 <div className="trip-location">

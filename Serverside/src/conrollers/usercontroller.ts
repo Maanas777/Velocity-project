@@ -269,6 +269,7 @@ const usercontroller = {
         key_id: process.env.RAZORPAY_KEY_ID || "",
         key_secret: process.env.RAZORPAY_SECRET || "",
       });
+     
 
       const options = {
         amount: (fare || 10) * 100,

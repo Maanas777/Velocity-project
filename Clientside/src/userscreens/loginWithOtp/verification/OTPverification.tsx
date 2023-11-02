@@ -18,9 +18,9 @@ const UserLogin = () => {
   const dispatch = useDispatch();
 
 
-  const handlesubmit = (e:FormEvent) => {
+  const handlesubmit = (e: FormEvent) => {
     e.preventDefault();
-
+  
     axios
       .post('http://localhost:3003/api/users/verifyOtp', {
         OTP,
@@ -28,14 +28,17 @@ const UserLogin = () => {
       })
       .then((res) => {
         if (res.data.msg === 'verified user') {
-
-          const userDetails=localStorage.getItem('userData')
+          const userDetails = localStorage.getItem('userData');
+          
+          if (userDetails !== null) {
             dispatch(login(userDetails));
-          toast.success('User verified');
-
-          nav('/userhome')
+            toast.success('User verified');
+            nav('/userhome');
+          } else {
+            toast.error('Invalid User');
+           
+          }
         } else {
-         
           toast.error('Invalid user');
         }
       })
@@ -48,6 +51,7 @@ const UserLogin = () => {
         }
       });
   };
+  
 
   return (
     <div className="login-container">

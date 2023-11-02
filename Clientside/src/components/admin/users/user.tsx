@@ -6,16 +6,31 @@ import { confirmAlert } from "react-confirm-alert";
 import "react-confirm-alert/src/react-confirm-alert.css";
 import "react-toastify/dist/ReactToastify.css";
 
+
+interface Trip {
+  createdAt: string; 
+  pickuplocation:{
+    name:string
+  } ,
+  destination:{
+    name:string
+  }
+
+
+}
+
+
 interface User {
   _id: string;
   username: string;
   email: string;
   phone: string;
   isBlocked: boolean;
+  trips: Trip[];
 }
 
 function Adminuser() {
-  const [users, setusers] = useState< []>([]);
+  const [users, setusers] = useState<User[]>([]);
   const [updateUi, setupdateUi] = useState(false);
 
   useEffect(() => {
@@ -118,7 +133,7 @@ function Adminuser() {
               <td>{user.phone}</td>
           <div style={{maxHeight:'10rem',overflowY: 'scroll'  }}>
               <td style={{}}>
-                {user.trips.map((trip: any, tripIndex: any) => (
+                {user.trips.map((trip, tripIndex) => (
                   <div key={tripIndex}>
                     <div style={{marginBottom:'30px'}}>  <span style={{fontWeight:'bold'}}>Trip {tripIndex + 1}</span>:
                     <div>

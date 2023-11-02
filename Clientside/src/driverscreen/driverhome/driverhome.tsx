@@ -15,7 +15,7 @@ const Driverhome = () => {
 
   useEffect(() => {
     const storedUserData = localStorage.getItem("DriverData");
-    const parsedUserData = JSON.parse(storedUserData);
+    const parsedUserData = storedUserData?JSON.parse(storedUserData):null;
 
     dispatch(login(parsedUserData));
   }, [dispatch]);
