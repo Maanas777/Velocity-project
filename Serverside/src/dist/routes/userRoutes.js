@@ -1,0 +1,22 @@
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = __importDefault(require("express"));
+const usercontroller_1 = __importDefault(require("../conrollers/usercontroller"));
+const jwtmiddleware_1 = __importDefault(require("../middlewares/jwtmiddleware"));
+const router = express_1.default.Router();
+router.post('/userLogin', usercontroller_1.default.UserLogin);
+router.post('/signup', usercontroller_1.default.userSignupPost);
+router.get('/finduser/:id', usercontroller_1.default.userprofile);
+router.put('/editProfile/:id', usercontroller_1.default.editprofile);
+router.post('/sendOtp', usercontroller_1.default.Sentotp);
+router.post('/verifyOtp', usercontroller_1.default.verifyOtp);
+router.post('/createRide/:id', jwtmiddleware_1.default, usercontroller_1.default.createRide);
+router.get('/availableBikes', usercontroller_1.default.bikes);
+router.post('/payment', usercontroller_1.default.payment);
+router.get('/findTrip/:id', usercontroller_1.default.findTrip);
+router.post('/verify', usercontroller_1.default.Verify_payment);
+router.post('/review/:id', usercontroller_1.default.createReview);
+exports.default = router;

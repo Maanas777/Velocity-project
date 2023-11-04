@@ -1,0 +1,24 @@
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = __importDefault(require("express"));
+const adminController_1 = __importDefault(require("../conrollers/adminController"));
+const router = express_1.default.Router();
+router.post('/adminlogin', adminController_1.default.AdminLogin);
+router.get('/driver', adminController_1.default.showDrivers);
+router.get('/approvedDriver', adminController_1.default.showApprovedDrivers);
+router.get('/users', adminController_1.default.showUsers);
+router.put('/acceptdriver/:id', adminController_1.default.acceptdriver);
+router.put('/blockUser/:id', adminController_1.default.blockuser);
+router.put('/UnblockUser/:id', adminController_1.default.Unblockuser);
+router.put('/blockdriver/:id', adminController_1.default.blockDriver);
+router.put('/Unblockdriver/:id', adminController_1.default.UnblockDriver);
+router.get('/calculateTotalEarnings', adminController_1.default.calculateTotalEarnings);
+router.get('/totalTrips', adminController_1.default.TotalTrips);
+router.get('/totalDrivers', adminController_1.default.totalDrivers);
+router.get('/totalUsers', adminController_1.default.totalUsers);
+router.get('/monthlyIncome', adminController_1.default.monthlyIncome);
+router.get('/monthlyTrips', adminController_1.default.monthlyTrips);
+exports.default = router;

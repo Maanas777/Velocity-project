@@ -29,6 +29,10 @@ const driverSchema = new mongoose_1.Schema({
         type: String,
         required: true
     },
+    DriverPhoto: {
+        type: String,
+        required: true,
+    },
     email: {
         type: String,
         required: true,
@@ -37,9 +41,16 @@ const driverSchema = new mongoose_1.Schema({
         type: Number,
         required: true,
     },
-    DrivingId: {
+    licenseno: {
         type: String,
         required: true
+    },
+    socketId: {
+        type: String,
+    },
+    vehiclePhoto: {
+        type: String,
+        required: true,
     },
     VehicleModel: {
         type: String,
@@ -65,6 +76,10 @@ const driverSchema = new mongoose_1.Schema({
         type: Boolean,
         default: false,
     },
+    isDriver: {
+        type: Boolean,
+        default: false
+    }
 });
-const UserModel = mongoose_1.default.model("User", driverSchema);
+const UserModel = mongoose_1.default.model("Driver", driverSchema);
 exports.default = UserModel;

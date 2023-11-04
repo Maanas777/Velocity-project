@@ -4,15 +4,49 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
+const userRoutes_1 = __importDefault(require("./routes/userRoutes"));
+const driverRoutes_1 = __importDefault(require("./routes/driverRoutes"));
+const adminRoutes_1 = __importDefault(require("./routes/adminRoutes"));
+const cors_1 = __importDefault(require("cors"));
+const http_1 = __importDefault(require("http"));
+const socket_io_1 = require("socket.io");
 const connection_1 = __importDefault(require("./connection/connection"));
 const app = (0, express_1.default)();
 const port = 3003;
+const server = http_1.default.createServer(app);
+app.use((0, cors_1.default)());
+const io = new socket_io_1.Server(server, {
+    cors: { origin: "http://localhost:5173" },
+});
+app.set("io", io);
 (0, connection_1.default)();
 app.use(express_1.default.json());
 app.use(express_1.default.urlencoded({ extended: true }));
-app.get('/', (_req, res) => {
-    res.send('Hello world');
+app.use("/api/users", userRoutes_1.default);
+app.use("/api/drivers", driverRoutes_1.default);
+app.use("/api/admin", adminRoutes_1.default);
+app.get("/", (_req, res) => {
+    res.send("Hello world");
 });
-app.listen(port, () => {
+io.on("connection", (socket) => {
+    socket.on("driverConnected", (driverId) => {
+        socket.join(driverId);
+        console.log(`Driver ${driverId} connected.`);
+    });
+    socket.on('acceptedride', (data) => {
+        io.emit('acceptedride', data);
+    });
+    socket.on('ride_started', (data) => {
+        io.emit('ride_started', data);
+    });
+    socket.on("ride_completed", (data) => {
+        io.emit('ride_completed', data);
+    });
+    socket.on("createdride", (data) => {
+        console.log("hello aree you there");
+        io.emit("newRideRequest", data);
+    });
+});
+server.listen(port, () => {
     console.log("Server started successfully");
 });

@@ -22,34 +22,52 @@ var __importStar = (this && this.__importStar) || function (mod) {
     __setModuleDefault(result, mod);
     return result;
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.TripModel = void 0;
 const mongoose_1 = __importStar(require("mongoose"));
-const userSchema = new mongoose_1.Schema({
-    username: {
-        type: String,
+const user_1 = __importDefault(require("./user"));
+const driver_1 = __importDefault(require("./driver"));
+const rideSchema = new mongoose_1.Schema({
+    user: {
+        type: mongoose_1.Schema.Types.ObjectId,
+        ref: user_1.default,
     },
-    email: {
-        type: String,
-        required: true,
+    driverId: {
+        type: mongoose_1.Schema.Types.ObjectId,
+        ref: driver_1.default,
     },
-    phone: {
+    driverDetails: {
+        name: { type: String, required: true },
+        phone: { type: Number, required: true },
+        vehicleModel: { type: String, required: true },
+        vehiclePhoto: { type: String, required: true },
+    },
+    pickuplocation: {
+        name: { type: String, required: true },
+        lat: { type: Number, required: true },
+        lon: { type: Number, required: true },
+    },
+    destination: {
+        name: { type: String, required: true },
+        lat: { type: Number, required: true },
+        lon: { type: Number, required: true },
+    },
+    fare: {
         type: Number,
         required: true,
     },
-    password: {
-        type: String,
-        required: true,
-    },
-    isBlocked: {
+    Isfarepaid: {
         type: Boolean,
         default: false,
     },
-    trips: [
-        {
-            type: mongoose_1.default.Schema.Types.ObjectId,
-            ref: 'Ride',
-        },
-    ]
+    isCompleted: {
+        type: Boolean,
+        default: false,
+    },
+}, {
+    timestamps: true,
 });
-const UserModel = mongoose_1.default.model("User", userSchema);
-exports.default = UserModel;
+exports.TripModel = mongoose_1.default.model("Ride", rideSchema);
