@@ -5,9 +5,12 @@ import driverRoutes from "./routes/driverRoutes";
 import adminRoutes from "./routes/adminRoutes";
 import cors from "cors";
 import http from "http";
+import path from 'path';
+
 import { Server } from "socket.io";
 
 import connectDB from "./connection/connection";
+
 
 
 
@@ -18,9 +21,36 @@ const server = http.createServer(app);
 
 app.use(cors());
 
+
 const io = new Server(server, {
   cors: { origin: "http://localhost:5173" }, // Allow all methods
 });
+
+app.use(express.static(path.join(__dirname,"../../Clientside/dist")));
+
+
+
+app.get("/*", function(_req, res){
+  // res.sendFile(path.join(__dirname,"../../Clientside/dist/index.html"));
+  
+
+
+  res.sendFile(
+      path.join(__dirname, "../../Clientside/dist/index.html"),
+      function (err) {
+        if (err) {
+          res.status(500).send(err);
+          console.log(err);
+          
+        }
+      }
+    );
+
+})
+
+
+
+
 
 app.set("io", io);
 
