@@ -31,8 +31,6 @@ app.use(express.static(path.join(__dirname,"../../Clientside/dist")));
 
 
 app.get("/*", function(_req, res){
-  // res.sendFile(path.join(__dirname,"../../Clientside/dist/index.html"));
-  
 
 
   res.sendFile(
