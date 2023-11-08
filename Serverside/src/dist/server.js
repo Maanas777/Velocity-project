@@ -21,7 +21,7 @@ const io = new socket_io_1.Server(server, {
 });
 app.use(express_1.default.static(path_1.default.join(__dirname, '/Clientside/dist')));
 app.get("/*", function (_req, res) {
-    res.sendFile(path_1.default.join(__dirname, "../../Clientside/dist/index.html"), function (err) {
+    res.sendFile(path_1.default.join(__dirname, "/Clientside/dist/index.html"), function (err) {
         if (err) {
             res.status(500).send(err);
             console.log(err);
