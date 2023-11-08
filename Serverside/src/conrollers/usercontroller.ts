@@ -8,7 +8,7 @@ import bcrypt from "bcrypt";
 import dotenv from "dotenv";
 import crypto from "crypto";
 // import twilio from "twilio";
-dotenv.config();
+dotenv.config({ path: '../../.env' });
 
 import generateToken from "../utilities/jwtToke";
 
