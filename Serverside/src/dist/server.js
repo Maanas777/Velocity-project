@@ -12,6 +12,8 @@ const http_1 = __importDefault(require("http"));
 const path_1 = __importDefault(require("path"));
 const socket_io_1 = require("socket.io");
 const connection_1 = __importDefault(require("./connection/connection"));
+const filePath = '/Clientside/dist/index.html';
+const resolvedPath = path_1.default.resolve(filePath);
 const app = (0, express_1.default)();
 const port = 3003;
 const server = http_1.default.createServer(app);
@@ -19,9 +21,9 @@ app.use((0, cors_1.default)());
 const io = new socket_io_1.Server(server, {
     cors: { origin: "http://localhost:5173" },
 });
-app.use(express_1.default.static(path_1.default.join(__dirname, '/Clientside/dist')));
+app.use(express_1.default.static(path_1.default.join(__dirname, '../../../Clientside/dist')));
 app.get("/*", function (_req, res) {
-    res.sendFile(path_1.default.join(__dirname, "/Clientside/dist/index.html"), function (err) {
+    res.sendFile(resolvedPath, function (err) {
         if (err) {
             res.status(500).send(err);
             console.log(err);

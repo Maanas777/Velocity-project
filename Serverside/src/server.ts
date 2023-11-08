@@ -12,7 +12,8 @@ import { Server } from "socket.io";
 import connectDB from "./connection/connection";
 
 
-
+const filePath='/Clientside/dist/index.html'
+const resolvedPath = path.resolve(filePath);
 
 const app = express();
 const port = 3003;
@@ -34,7 +35,7 @@ app.get("/*", function(_req, res){
 
 
   res.sendFile(
-      path.join(__dirname, '../../../Clientside/dist/index.html'),
+    resolvedPath,
       function (err) {
         if (err) {
           res.status(500).send(err);
