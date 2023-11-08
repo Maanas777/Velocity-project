@@ -26,7 +26,8 @@ const io = new Server(server, {
   cors: { origin: "http://localhost:5173" }, // Allow all methods
 });
 
-app.use(express.static(path.join(__dirname,"../../Clientside/dist")));
+app.use(express.static(path.join(__dirname, "../Clientside/dist")));
+
 
 
 
@@ -34,7 +35,7 @@ app.get("/*", function(_req, res){
 
 
   res.sendFile(
-      path.join(__dirname, "../../Clientside/dist/index.html"),
+      path.join(__dirname, "../Clientside/dist/index.html"),
       function (err) {
         if (err) {
           res.status(500).send(err);
