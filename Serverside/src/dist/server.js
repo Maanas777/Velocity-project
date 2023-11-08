@@ -19,9 +19,9 @@ app.use((0, cors_1.default)());
 const io = new socket_io_1.Server(server, {
     cors: { origin: "http://localhost:5173" },
 });
-app.use(express_1.default.static(path_1.default.join(__dirname, "../../Clientside/dist")));
+app.use(express_1.default.static(path_1.default.join(__dirname, '../../../velocity/Clientside/dist')));
 app.get("/*", function (_req, res) {
-    res.sendFile(path_1.default.join(__dirname, "../../Clientside/dist/index.html"), function (err) {
+    res.sendFile(path_1.default.join(__dirname, "../../../velocity/Clientside/dist/index.html"), function (err) {
         if (err) {
             res.status(500).send(err);
             console.log(err);
