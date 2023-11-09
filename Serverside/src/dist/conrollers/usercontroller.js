@@ -21,12 +21,13 @@ const bcrypt_1 = __importDefault(require("bcrypt"));
 const dotenv_1 = __importDefault(require("dotenv"));
 const crypto_1 = __importDefault(require("crypto"));
 const twilio_1 = __importDefault(require("twilio"));
-dotenv_1.default.config({ path: '../../.env' });
+dotenv_1.default.config();
 const jwtToke_1 = __importDefault(require("../utilities/jwtToke"));
 const accountSid = process.env.Account_SID;
 const authToken = process.env.Auth_Token;
 const serviceId = process.env.Service_SID;
 const client = (0, twilio_1.default)(accountSid, authToken);
+console.log(accountSid);
 const usercontroller = {
     UserLogin: (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         console.log("userlogin");

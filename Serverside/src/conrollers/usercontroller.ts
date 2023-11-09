@@ -8,7 +8,7 @@ import bcrypt from "bcrypt";
 import dotenv from "dotenv";
 import crypto from "crypto";
 import twilio from "twilio";
-dotenv.config({ path: '../../.env' });
+dotenv.config()
 
 import generateToken from "../utilities/jwtToke";
 
@@ -16,6 +16,10 @@ const accountSid = process.env.Account_SID;
 const authToken = process.env.Auth_Token;
 const serviceId = process.env.Service_SID;
 const client = twilio(accountSid, authToken);
+console.log(accountSid);
+
+
+
 
 const usercontroller = {
   UserLogin: async (req: Request, res: Response) => {
