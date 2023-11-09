@@ -5,45 +5,56 @@ import driverRoutes from "./routes/driverRoutes";
 import adminRoutes from "./routes/adminRoutes";
 import cors from "cors";
 import http from "http";
-import path from 'path';
+import path from "path";
 
 import { Server } from "socket.io";
 
 import connectDB from "./connection/connection";
 
-
-const filePath='/Clientside/dist/index.html'
+const filePath = "/Clientside/dist/index.html";
 const resolvedPath = path.resolve(filePath);
-
-
 
 const app = express();
 const port = 3003;
 
 const server = http.createServer(app);
 
-app.use(cors());
-
-
 const io = new Server(server, {
-  cors: { origin: "http://localhost:5173" }, 
+  cors: {
+    origin: [
+      "http://localhost:5173",
+      "https://velocityy.online",
+      "http://velocityy.online",
+    ],
+    
+  },
 });
 
-app.use(express.static(path.join(__dirname,'../../../Clientside/dist')));
+
+
+const corsOptions = {
+  origin: [
+    "http://localhost:5173",
+    "https://velocityy.online",
+    "http://localhost:3003",
+    "http://velocityy.online"
+  ],
+  methods: "GET,PUT,PATCH,POST,DELETE",
+};
+
+app.use(cors(corsOptions));
+
+app.use(express.static(path.join(__dirname, "../../../Clientside/dist")));
 
 // app.use(express.static(path.join(__dirname,'../../Clientside/dist')));
 
-app.get("/*", function(_req, res){
-  res.sendFile(
-    resolvedPath,
-      function (err) {
-        if (err) {
-          res.status(500).send(err);
-          console.log(err);
-          
-        }
-      }
-    );
+app.get("/*", function (_req, res) {
+  res.sendFile(resolvedPath, function (err) {
+    if (err) {
+      res.status(500).send(err);
+      console.log(err);
+    }
+  });
 
   // res.sendFile(
   //   (path.join(__dirname,'../../Clientside/dist/index.html')),
@@ -51,16 +62,11 @@ app.get("/*", function(_req, res){
   //       if (err) {
   //         res.status(500).send(err);
   //         console.log(err);
-          
+
   //       }
   //     }
   //   );
-
-})
-
-
-
-
+});
 
 app.set("io", io);
 
@@ -82,8 +88,6 @@ app.get("/", (_req: Request, res: Response) => {
 
 // const drivers = new Map();
 
-
-
 io.on("connection", (socket) => {
   socket.on("driverConnected", (driverId) => {
     // drivers.set(driverId, socket);
@@ -91,29 +95,21 @@ io.on("connection", (socket) => {
     console.log(`Driver ${driverId} connected.`);
   });
 
-  socket.on('acceptedride',(data)=>{
+  socket.on("acceptedride", (data) => {
+    io.emit("acceptedride", data);
+  });
 
-
-    io.emit('acceptedride',data)
-    
-  })
- 
-  socket.on('ride_started',(data)=>{
-  
-    io.emit('ride_started',data)
-
-  })
-  socket.on("ride_completed", (data)=>{
-    io.emit('ride_completed',data)
-  })
-
-  
+  socket.on("ride_started", (data) => {
+    io.emit("ride_started", data);
+  });
+  socket.on("ride_completed", (data) => {
+    io.emit("ride_completed", data);
+  });
 
   socket.on("createdride", (data) => {
-console.log("hello aree you there");
+    console.log("hello aree you there");
 
-    io.emit("newRideRequest",data)
-
+    io.emit("newRideRequest", data);
   });
 });
 
