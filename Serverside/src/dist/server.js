@@ -50,7 +50,6 @@ app.set("io", io);
 app.use(express_1.default.json());
 app.use(express_1.default.urlencoded({ extended: true }));
 app.use("/api/users", userRoutes_1.default);
-console.log("userhonr");
 app.use("/api/drivers", driverRoutes_1.default);
 app.use("/api/admin", adminRoutes_1.default);
 app.get("/", (_req, res) => {
