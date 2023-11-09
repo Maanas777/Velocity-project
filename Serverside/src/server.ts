@@ -71,6 +71,8 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.use("/api/users", userRoutes);
+console.log("userhonr");
+
 app.use("/api/drivers", driverRoutes);
 app.use("/api/admin", adminRoutes);
 
