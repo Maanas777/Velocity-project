@@ -2,18 +2,17 @@ import { useState } from "react";
 import { FormEvent } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+// import axios from "axios";
 import { Link } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { io } from "socket.io-client";
 import { login } from "../../redux/userSlice";
 import logo from "../assets/logofinal.png";
+import { axiosInstance } from "../../axiosInstances/userInstance";
 import "./login.css";
 
-const socket = io('http://localhost:3003'); 
-
-
+const socket = io("http://localhost:3003");
 
 const UserLogin = () => {
   const [email, setemail] = useState<string>("");
@@ -24,22 +23,17 @@ const UserLogin = () => {
 
   const handlesubmit = (e: FormEvent) => {
     e.preventDefault();
-    axios
-      .post("http://localhost:3003/api/users/userLogin", {
-        email,
-        password,
-      })
+    axiosInstance
+      .post("/userLogin", { email, password })
+
       .then((res) => {
         toast.success(res.data.message);
         const userdata = res.data;
 
-     
-        
-        socket.emit('loginUser', { userId: userdata.user._id });
-        
+        socket.emit("loginUser", { userId: userdata.user._id });
 
         localStorage.setItem("userData", JSON.stringify(userdata));
-        localStorage.setItem("token",userdata.token)
+        localStorage.setItem("token", userdata.token);
 
         dispatch(login(userdata));
 
@@ -86,7 +80,10 @@ const UserLogin = () => {
               Login
             </button>
           </div>
-          <div className="links-container " style={{display:'flex',flexDirection:'column'}}>
+          <div
+            className="links-container "
+            style={{ display: "flex", flexDirection: "column" }}
+          >
             <p>
               <Link to="OtpPhone">Login with OTP</Link>{" "}
             </p>
@@ -94,7 +91,6 @@ const UserLogin = () => {
               <Link to="usersignup">Create New accout</Link>{" "}
             </p>
           </div>
-        
         </form>
       </div>
     </div>
