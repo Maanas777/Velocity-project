@@ -15,6 +15,8 @@ import connectDB from "./connection/connection";
 const filePath='/Clientside/dist/index.html'
 const resolvedPath = path.resolve(filePath);
 
+
+
 const app = express();
 const port = 3003;
 
@@ -24,16 +26,14 @@ app.use(cors());
 
 
 const io = new Server(server, {
-  cors: { origin: "http://localhost:5173" }, // Allow all methods
+  cors: { origin: "http://localhost:5173" }, 
 });
 
 app.use(express.static(path.join(__dirname,'../../../Clientside/dist')));
 
-
+// app.use(express.static(path.join(__dirname,'../../Clientside/dist')));
 
 app.get("/*", function(_req, res){
-
-
   res.sendFile(
     resolvedPath,
       function (err) {
@@ -44,6 +44,17 @@ app.get("/*", function(_req, res){
         }
       }
     );
+
+  // res.sendFile(
+  //   (path.join(__dirname,'../../Clientside/dist/index.html')),
+  //     function (err) {
+  //       if (err) {
+  //         res.status(500).send(err);
+  //         console.log(err);
+          
+  //       }
+  //     }
+  //   );
 
 })
 

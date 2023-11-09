@@ -24,6 +24,7 @@ dotenv_1.default.config({ path: '../../.env' });
 const jwtToke_1 = __importDefault(require("../utilities/jwtToke"));
 const usercontroller = {
     UserLogin: (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+        console.log("userlogin");
         try {
             const { email, password } = req.body;
             const user = yield user_1.default.findOne({ email });
@@ -50,6 +51,7 @@ const usercontroller = {
         }
     }),
     userSignupPost: (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+        console.log("usersignup");
         try {
             const { username, email, phone, password } = req.body;
             const userExists = yield user_1.default.findOne({ email });

@@ -19,6 +19,8 @@ import generateToken from "../utilities/jwtToke";
 
 const usercontroller = {
   UserLogin: async (req: Request, res: Response) => {
+    console.log("userlogin");
+    
     try {
       const { email, password } = req.body;
       const user = await userModel.findOne({ email });
@@ -46,6 +48,8 @@ const usercontroller = {
   },
 
   userSignupPost: async (req: Request, res: Response) => {
+    console.log("usersignup");
+    
     try {
       const { username, email, phone, password } = req.body;
 
