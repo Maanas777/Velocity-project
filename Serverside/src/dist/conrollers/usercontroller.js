@@ -13,7 +13,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const user_1 = __importDefault(require("../models/user"));
-const { log } = require("console");
 const trip_1 = require("../models/trip");
 const driver_1 = __importDefault(require("../models/driver"));
 const review_1 = __importDefault(require("../models/review"));
@@ -27,9 +26,10 @@ const jwtToke_1 = __importDefault(require("../utilities/jwtToke"));
 const accountSid = process.env.Account_SID;
 const authToken = process.env.Auth_Token;
 const serviceId = process.env.Service_SID;
-
+console.log(accountSid);
+console.log(authToken);
+console.log(accountSid);
 const client = (0, twilio_1.default)(accountSid, authToken);
-
 const usercontroller = {
     UserLogin: (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         console.log("userlogin");
