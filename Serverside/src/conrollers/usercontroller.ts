@@ -15,11 +15,11 @@ import generateToken from "../utilities/jwtToke";
 const accountSid = process.env.Account_SID;
 const authToken = process.env.Auth_Token;
 const serviceId = process.env.Service_SID;
-const client = twilio(accountSid, authToken);
+console.log(accountSid);
+console.log(authToken);
 console.log(accountSid);
 
-
-
+const client = twilio(accountSid, authToken);
 
 const usercontroller = {
   UserLogin: async (req: Request, res: Response) => {
