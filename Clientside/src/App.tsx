@@ -13,7 +13,7 @@ import Navbar from "./components/admin/navbar/navbar";
 import Hero from "./components/user/hero section/hero";
 import Userhome from './userscreens/home'
 import Users from './adminscreen/users/users'
-import DriverNav from "./components/driver/drivernav/driverNav";
+// import DriverNav from "./components/driver/drivernav/driverNav";
 import Verified_driver from "./adminscreen/drivers/drivers";
 import Driververication from "./adminscreen/driververification/driververify";
 import Driverhome from "./driverscreen/driverhome/driverhome";
@@ -49,7 +49,7 @@ function App() {
       //////driver
       <Route path="driversignup" element={<Driversignup />}></Route>
       <Route path="driverlogin" element={<DriverLogin />}></Route>
-      <Route path="drivernav" element={<DriverNav />}></Route>
+      {/* <Route path="drivernav" element={<DriverNav />}></Route> */}
       <Route path="/driverhome" element={<Driverhome />}></Route>
       <Route path="/driveprofile" element={<Driverprofile />}></Route>
       <Route path="/drivermap" element={<Drivermap />}></Route>
