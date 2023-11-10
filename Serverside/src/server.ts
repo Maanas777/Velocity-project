@@ -48,7 +48,7 @@ app.use(express.static(path.join(__dirname, "../../../Clientside/dist")));
 
 // app.use(express.static(path.join(__dirname,'../../Clientside/dist')));
 
-app.get("/*", function (_req, res) {
+app.get("*", function (_req, res) {
   res.sendFile(resolvedPath, function (err) {
     if (err) {
       res.status(500).send(err);

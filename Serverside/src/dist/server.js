@@ -37,7 +37,7 @@ const corsOptions = {
 };
 app.use((0, cors_1.default)(corsOptions));
 app.use(express_1.default.static(path_1.default.join(__dirname, "../../../Clientside/dist")));
-app.get("/*", function (_req, res) {
+app.get("*", function (_req, res) {
     res.sendFile(resolvedPath, function (err) {
         if (err) {
             res.status(500).send(err);
