@@ -12,7 +12,7 @@ import { Server } from "socket.io";
 import connectDB from "./connection/connection";
 
 const filePath = "/Clientside/dist/index.html";
-const resolvedPath = path.resolve(filePath);
+const resolvedPath = path.join(__dirname,filePath);
 
 const app = express();
 const port = 3003;
@@ -41,6 +41,8 @@ const corsOptions = {
   ],
   methods: "GET,PUT,PATCH,POST,DELETE",
 };
+
+
 
 app.use(cors(corsOptions));
 

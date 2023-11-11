@@ -33,13 +33,13 @@ function App() {
 
 
       //user
-      <Route path="usersignup" element={<Signup />}></Route>
+      <Route path="/usersignup" element={<Signup />}></Route>
       <Route path="/review" element={<Review />}></Route>
       <Route path="/userhome" element={<Userhome />}></Route>
       <Route path="hero" element={<Hero />}></Route>
       <Route path="/" element={<Login />}></Route>
       <Route path="userprofile" element={<UserProfile />}></Route>
-      <Route path="OtpPhone" element={<LoginWithOtp />}></Route>
+      <Route path="/OtpPhone" element={<LoginWithOtp />}></Route>
       <Route path="/VerifyOtp" element={<VerifyOTP />}></Route>
       {/* <Route path="/selectbike" element={<SelectBikes />}></Route> */}
       <Route path="/driverdetails" element={<Driverdetails />}></Route>
