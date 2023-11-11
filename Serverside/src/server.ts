@@ -12,7 +12,9 @@ import { Server } from "socket.io";
 import connectDB from "./connection/connection";
 
 const filePath = "/Clientside/dist/index.html";
-const resolvedPath = path.join(__dirname,filePath);
+const resolvedPath = path.resolve(filePath);
+console.log(resolvedPath);
+
 
 const app = express();
 const port = 3003;
@@ -42,8 +44,6 @@ const corsOptions = {
   methods: "GET,PUT,PATCH,POST,DELETE",
 };
 
-
-
 app.use(cors(corsOptions));
 
 app.use(express.static(path.join(__dirname, "../../../Clientside/dist")));
@@ -51,12 +51,7 @@ app.use(express.static(path.join(__dirname, "../../../Clientside/dist")));
 // app.use(express.static(path.join(__dirname,'../../Clientside/dist')));
 
 app.get("*", function (_req, res) {
-  res.sendFile(resolvedPath, function (err) {
-    if (err) {
-      res.status(500).send(err);
-      console.log(err);
-    }
-  });
+  res.sendFile(resolvedPath)
 
   // res.sendFile(
   //   (path.join(__dirname,'../../Clientside/dist/index.html')),
