@@ -11,9 +11,13 @@ import { Server } from "socket.io";
 
 import connectDB from "./connection/connection";
 
-const filePath = "/Clientside/dist/index.html";
-const resolvedPath = path.resolve(filePath);
-console.log(resolvedPath);
+const _dirname=path.dirname("")
+const buildpath=path.join(_dirname ,"../../Clientside/dist")
+
+
+// const filePath = "/Clientside/dist/index.html";
+// const resolvedPath = path.resolve(filePath);
+// console.log(resolvedPath);
 
 
 const app = express();
@@ -50,8 +54,17 @@ app.use(express.static(path.join(__dirname, "../../../Clientside/dist")));
 
 // app.use(express.static(path.join(__dirname,'../../Clientside/dist')));
 
-app.get("*", function (_req, res) {
-  res.sendFile(resolvedPath)
+app.get("/*", function (_req, res) {
+  res.sendFile(path.join(__dirname,"../../Clientside/dist/index.html"),
+  function (err) {
+          if (err) {
+            res.status(500).send(err);
+            console.log(err);
+  
+          }
+  
+        }
+  )
 
   // res.sendFile(
   //   (path.join(__dirname,'../../Clientside/dist/index.html')),
