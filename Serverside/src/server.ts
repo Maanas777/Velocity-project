@@ -11,14 +11,6 @@ import { Server } from "socket.io";
 
 import connectDB from "./connection/connection";
 
-const _dirname=path.dirname("")
-const buildpath=path.join(_dirname ,"../../Clientside/dist")
-
-
-// const filePath = "/Clientside/dist/index.html";
-// const resolvedPath = path.resolve(filePath);
-// console.log(resolvedPath);
-
 
 const app = express();
 const port = 3003;
@@ -50,14 +42,14 @@ const corsOptions = {
 
 app.use(cors(corsOptions));
 
-app.use(express.static(path.join(__dirname, "../../../Clientside/dist")));
+app.use(express.static(path.resolve(__dirname, "../../../Clientside/dist")));
 
 // app.use(express.static(path.join(__dirname,'../../Clientside/dist')));
 
 app.get("/*", function (_req, res) {
   console.log("called");
   
-  res.sendFile(path.join(__dirname,"../../Clientside/dist/index.html"),
+  res.sendFile(path.resolve(__dirname,"../../Clientside/dist/index.html"),
   function (err) {
     console.log("eror occured");
     
