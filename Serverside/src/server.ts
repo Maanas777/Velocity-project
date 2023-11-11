@@ -42,14 +42,14 @@ const corsOptions = {
 
 app.use(cors(corsOptions));
 
-app.use(express.static(path.resolve(__dirname, "../../../Clientside/dist")));
+app.use(express.static(path.resolve(__dirname, "/Clientside/dist")));
 
 // app.use(express.static(path.join(__dirname,'../../Clientside/dist')));
 
 app.get("*", function (_req, res) {
   console.log("called");
   
-  res.sendFile(path.resolve(__dirname,"../../Clientside/dist/index.html"),
+  res.sendFile(path.resolve(__dirname,"/Clientside/dist/index.html"),
   function (err) {
     console.log("eror occured");
     
