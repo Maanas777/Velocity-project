@@ -12,9 +12,6 @@ const http_1 = __importDefault(require("http"));
 const path_1 = __importDefault(require("path"));
 const socket_io_1 = require("socket.io");
 const connection_1 = __importDefault(require("./connection/connection"));
-const filePath = "/Clientside/dist/index.html";
-const resolvedPath = path_1.default.resolve(filePath);
-console.log(resolvedPath);
 const app = (0, express_1.default)();
 const port = 3003;
 const server = http_1.default.createServer(app);
@@ -37,9 +34,16 @@ const corsOptions = {
     methods: "GET,PUT,PATCH,POST,DELETE",
 };
 app.use((0, cors_1.default)(corsOptions));
-app.use(express_1.default.static(path_1.default.join(__dirname, "../../../Clientside/dist")));
-app.get("*", function (_req, res) {
-    res.sendFile(resolvedPath);
+app.use(express_1.default.static(path_1.default.resolve(__dirname, "../../../Clientside/dist")));
+app.get("/*", function (_req, res) {
+    console.log("called");
+    res.sendFile(path_1.default.resolve(__dirname, "../../Clientside/dist/index.html"), function (err) {
+        console.log("eror occured");
+        if (err) {
+            res.status(500).send(err);
+            console.log(err);
+        }
+    });
 });
 app.set("io", io);
 (0, connection_1.default)();
