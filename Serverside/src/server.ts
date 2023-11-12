@@ -18,7 +18,7 @@ const port = 3003;
 const server = http.createServer(app);
 
 
-const buildPath = path.join(__dirname, "../../Clientside/dist");
+const buildPath = path.resolve(__dirname, "../../Clientside/dist");
 
 const io = new Server(server, {
   cors: {
@@ -60,7 +60,7 @@ app.use(express.static(buildPath))
 app.get("/*", function (_req, res) {
   console.log("called");
   
-  const indexPath = path.join(buildPath, "index.html");
+  const indexPath = path.resolve(buildPath, "index.html");
 
   res.sendFile(indexPath, function (err) {
     if (err) {

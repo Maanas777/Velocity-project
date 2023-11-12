@@ -15,7 +15,7 @@ const connection_1 = __importDefault(require("./connection/connection"));
 const app = (0, express_1.default)();
 const port = 3003;
 const server = http_1.default.createServer(app);
-const buildPath = path_1.default.join(__dirname, "../../Clientside/dist");
+const buildPath = path_1.default.resolve(__dirname, "../../Clientside/dist");
 const io = new socket_io_1.Server(server, {
     cors: {
         origin: [
@@ -39,7 +39,7 @@ app.use((0, cors_1.default)(corsOptions));
 app.use(express_1.default.static(buildPath));
 app.get("/*", function (_req, res) {
     console.log("called");
-    const indexPath = path_1.default.join(buildPath, "index.html");
+    const indexPath = path_1.default.resolve(buildPath, "index.html");
     res.sendFile(indexPath, function (err) {
         if (err) {
             console.log("error occurred");
