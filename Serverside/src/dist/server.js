@@ -38,10 +38,10 @@ const corsOptions = {
 app.use((0, cors_1.default)(corsOptions));
 
 
-app.use(express_1.static(path.join(__dirname,"../../../Clientside/dist")));
+app.use(express_1.static(path_1.join(__dirname,"../../../Clientside/dist")));
 
 app.get("*", function (req, res) {
-    res.sendFile(path.join(__dirname,"../../../Clientside/dist/index.html"));
+    res.sendFile(path_1.join(__dirname,"../../../Clientside/dist/index.html"));
   });
 
 
