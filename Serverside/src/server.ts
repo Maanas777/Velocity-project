@@ -17,8 +17,8 @@ const port = 3003;
 
 const server = http.createServer(app);
 
-const _dirname = path.dirname("")
-const buildPath = path.join(_dirname  , "../../Clientside/dist");
+
+const buildPath = path.join(__dirname, "../../Clientside/dist");
 
 const io = new Server(server, {
   cors: {
@@ -60,18 +60,16 @@ app.use(express.static(buildPath))
 app.get("/*", function (_req, res) {
   console.log("called");
   
-  res.sendFile(path.join(__dirname,"../../Clientside/dist/index.html"),
-  function (err) {
-  
-          if (err) {
-              console.log("eror occured");
-            res.status(500).send(err);
-            console.log(err);
-          }
-  
-        }
+  const indexPath = path.join(buildPath, "index.html");
 
-  )
+  res.sendFile(indexPath, function (err) {
+    if (err) {
+      console.log("error occurred");
+      res.status(500).send(err);
+      console.log(err);
+    }
+  });
+});
 
   // res.sendFile(
   //   (path.join(__dirname,'../../Clientside/dist/index.html')),
@@ -83,7 +81,7 @@ app.get("/*", function (_req, res) {
   //       }
   //     }
   //   );
-});
+
 
 app.set("io", io);
 
