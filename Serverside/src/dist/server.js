@@ -15,7 +15,7 @@ const connection_1 = __importDefault(require("./connection/connection"));
 const app = (0, express_1.default)();
 const port = 3003;
 const server = http_1.default.createServer(app);
-const buildPath = path_1.default.resolve(__dirname, "../../Clientside/dist");
+
 const io = new socket_io_1.Server(server, {
     cors: {
         origin: [
@@ -36,18 +36,15 @@ const corsOptions = {
     methods: "GET,PUT,PATCH,POST,DELETE",
 };
 app.use((0, cors_1.default)(corsOptions));
-app.use(express_1.default.static(buildPath));
-app.get("/*", function (_req, res) {
-    console.log("called");
-    const indexPath = path_1.default.resolve(buildPath, "index.html");
-    res.sendFile(indexPath, function (err) {
-        if (err) {
-            console.log("error occurred");
-            res.status(500).send(err);
-            console.log(err);
-        }
-    });
-});
+
+
+app.use(express_1.static(path.join(__dirname,"../../../Clientside/dist")));
+
+app.get("*", function (req, res) {
+    res.sendFile(path.join(__dirname,"../../../Clientside/dist/index.html"));
+  });
+
+
 app.set("io", io);
 (0, connection_1.default)();
 app.use(express_1.default.json());
