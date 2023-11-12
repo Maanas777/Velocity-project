@@ -9,13 +9,12 @@ const driverRoutes_1 = __importDefault(require("./routes/driverRoutes"));
 const adminRoutes_1 = __importDefault(require("./routes/adminRoutes"));
 const cors_1 = __importDefault(require("cors"));
 const http_1 = __importDefault(require("http"));
-const path = require("path");
+const path_1 = __importDefault(require("path"));
 const socket_io_1 = require("socket.io");
 const connection_1 = __importDefault(require("./connection/connection"));
 const app = (0, express_1.default)();
 const port = 3003;
 const server = http_1.default.createServer(app);
-
 const io = new socket_io_1.Server(server, {
     cors: {
         origin: [
@@ -36,15 +35,6 @@ const corsOptions = {
     methods: "GET,PUT,PATCH,POST,DELETE",
 };
 app.use((0, cors_1.default)(corsOptions));
-
-
-app.use(express_1.static(path.join(__dirname,"../../../Clientside/dist")));
-
-app.get("*", function (req, res) {
-    res.sendFile(path.join(__dirname,"../../../Clientside/dist/index.html"));
-  });
-
-
 app.set("io", io);
 (0, connection_1.default)();
 app.use(express_1.default.json());
@@ -52,6 +42,10 @@ app.use(express_1.default.urlencoded({ extended: true }));
 app.use("/api/users", userRoutes_1.default);
 app.use("/api/drivers", driverRoutes_1.default);
 app.use("/api/admin", adminRoutes_1.default);
+app.use(express_1.default.static(path_1.default.join(__dirname, "../../../Clientside/dist")));
+app.get("*", function (_req, res) {
+    res.sendFile(path_1.default.join(__dirname, "../../../Clientside/dist/index.html"));
+});
 app.get("/", (_req, res) => {
     res.send("Hello world");
 });
@@ -70,7 +64,7 @@ io.on("connection", (socket) => {
         io.emit("ride_completed", data);
     });
     socket.on("createdride", (data) => {
-        console.log("hello aree you there");
+        console.log("hello are you there");
         io.emit("newRideRequest", data);
     });
 });

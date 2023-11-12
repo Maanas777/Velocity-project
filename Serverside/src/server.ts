@@ -45,12 +45,16 @@ app.use("/api/drivers", driverRoutes);
 app.use("/api/admin", adminRoutes);
 
 // Serve the React app as static files
-app.use(express.static(path.join(__dirname, "../")));
+app.use(express.static(path.join(__dirname,"../../../Clientside/dist")));
 
-// Serve the React app for any other routes
-app.get("*", (_req: Request, res: Response) => {
-  res.sendFile(path.join(__dirname, "build", "index.html"));
-});
+app.get("*", function (_req, res) {
+    res.sendFile(path.join(__dirname,"../../../Clientside/dist/index.html"));
+  });
+
+// // Serve the React app for any other routes
+// app.get("*", (_req: Request, res: Response) => {
+//   res.sendFile(path.join(__dirname, "build", "index.html"));
+// });
 
 app.get("/", (_req: Request, res: Response) => {
   res.send("Hello world");
