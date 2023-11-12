@@ -15,12 +15,15 @@ const connection_1 = __importDefault(require("./connection/connection"));
 const app = (0, express_1.default)();
 const port = 3003;
 const server = http_1.default.createServer(app);
+const _dirname = path_1.default.dirname("");
+const buildPath = path_1.default.join(_dirname, "../../Clientside/dist");
 const io = new socket_io_1.Server(server, {
     cors: {
         origin: [
             "http://localhost:5173",
             "https://velocityy.online",
             "http://velocityy.online",
+            "*"
         ],
     },
 });
@@ -29,17 +32,17 @@ const corsOptions = {
         "http://localhost:5173",
         "https://velocityy.online",
         "http://localhost:3003",
-        "http://velocityy.online"
+        "http://velocityy.online",
     ],
     methods: "GET,PUT,PATCH,POST,DELETE",
 };
 app.use((0, cors_1.default)(corsOptions));
-app.use(express_1.default.static(path_1.default.resolve(__dirname, "../../Clientside/dist")));
-app.get("*", function (_req, res) {
+app.use(express_1.default.static(buildPath));
+app.get("/*", function (_req, res) {
     console.log("called");
-    res.sendFile(path_1.default.resolve(__dirname, "../../Clientside/dist/index.html"), function (err) {
-        console.log("eror occured");
+    res.sendFile(path_1.default.join(__dirname, "../../Clientside/dist/index.html"), function (err) {
         if (err) {
+            console.log("eror occured");
             res.status(500).send(err);
             console.log(err);
         }

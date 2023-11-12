@@ -17,12 +17,17 @@ const port = 3003;
 
 const server = http.createServer(app);
 
+const _dirname = path.dirname("")
+const buildPath = path.join(_dirname  , "../../Clientside/dist");
+
 const io = new Server(server, {
   cors: {
     origin: [
       "http://localhost:5173",
       "https://velocityy.online",
       "http://velocityy.online",
+      "*"
+      
     ],
     
   },
@@ -35,25 +40,31 @@ const corsOptions = {
     "http://localhost:5173",
     "https://velocityy.online",
     "http://localhost:3003",
-    "http://velocityy.online"
+    "http://velocityy.online",
+    
   ],
   methods: "GET,PUT,PATCH,POST,DELETE",
 };
 
 app.use(cors(corsOptions));
 
-app.use(express.static(path.resolve(__dirname, "../../Clientside/dist")));
+
+
+
+
+// app.use(express.static(path.resolve(__dirname, "../../Clientside/dist")));
+app.use(express.static(buildPath))
 
 // app.use(express.static(path.join(__dirname,'../../Clientside/dist')));
 
-app.get("*", function (_req, res) {
+app.get("/*", function (_req, res) {
   console.log("called");
   
-  res.sendFile(path.resolve(__dirname,"../../Clientside/dist/index.html"),
+  res.sendFile(path.join(__dirname,"../../Clientside/dist/index.html"),
   function (err) {
-    console.log("eror occured");
-    
+  
           if (err) {
+              console.log("eror occured");
             res.status(500).send(err);
             console.log(err);
           }
