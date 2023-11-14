@@ -2,7 +2,6 @@ import { useState } from "react";
 import { FormEvent } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-// import axios from "axios";
 import { Link } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -11,8 +10,9 @@ import { login } from "../../redux/userSlice";
 import logo from "../assets/logofinal.png";
 import { axiosInstance } from "../../axiosInstances/userInstance";
 import "./login.css";
+import { dns } from "../../axiosInstances/userInstance";
 
-const socket = io("http://localhost:3003");
+const socket = io(dns);
 
 const UserLogin = () => {
   const [email, setemail] = useState<string>("");

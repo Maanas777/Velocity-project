@@ -6,13 +6,14 @@ import { useEffect, useState } from "react";
 // import geodist from 'geodist';
 import { io } from "socket.io-client";
 import "./driverhero.css";
+import { dns } from "../../../axiosInstances/userInstance";
 import Button from 'react-bootstrap/Button';
 import Modal from "react-bootstrap/Modal";
 import bg from './0_fGUT3jb2dvnw9OZP.gif'
 import * as geolib from 'geolib'
 
 
-const socket = io("http://localhost:3003");
+const socket = io(dns);
 
 interface RideData{
   trip:{

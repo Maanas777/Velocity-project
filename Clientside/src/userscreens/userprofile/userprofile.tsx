@@ -8,7 +8,7 @@ import UserNav from "../../components/user/navbar/userNav";
 import Footer from "../../components/user/footer/footer";
 import profile from "../assets/4333097.jpg";
 import "./userprofile.css";
-import axios from "axios";
+
 
 
 interface Trip{
@@ -121,8 +121,8 @@ function Profile() {
         phone,
       };
 
-      const response = await axios.put(
-        `http://localhost:3003/api/users/editProfile/${
+      const response = await axiosInstance.put(
+        `/editProfile/${
           userId ? userId : userId2
         }`,
         updatedUserData

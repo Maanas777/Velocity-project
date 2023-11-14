@@ -7,12 +7,15 @@ export const axiosInstance = axios.create({
 
 
   export const axiosDriverInstance = axios.create({
-    baseURL: "http://localhost:3003/api/drivers",
+    baseURL: "https://www.velocityy.online/api/drivers",
   });
   
   
+
   export const axiosAdminInstance = axios.create({
-    baseURL: "http://localhost:3003/api/admin",
+    baseURL: "https://www.velocityy.online/api/admin",
   });
+
+  export const dns="https://www.velocityy.online"
   
 

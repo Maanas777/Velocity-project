@@ -8,10 +8,11 @@ import { io } from "socket.io-client";
 import { axiosInstance } from "../../../axiosInstances/userInstance";
 import Button from 'react-bootstrap/Button';
 import Modal from "react-bootstrap/Modal";
+import { dns } from "../../../axiosInstances/userInstance";
 
 
 
-const socket = io("http://localhost:3003");
+const socket = io(dns);
 
 const cardBodyStyle = {
   backgroundColor: "#f1bf29",

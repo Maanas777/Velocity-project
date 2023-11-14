@@ -1,6 +1,6 @@
 import Table from "react-bootstrap/Table";
 import { useEffect, useState } from "react";
-import axios from "axios";
+import { axiosAdminInstance } from "../../../axiosInstances/userInstance";
 import { ToastContainer, toast } from "react-toastify";
 import { confirmAlert } from "react-confirm-alert";
 import "react-confirm-alert/src/react-confirm-alert.css";
@@ -38,8 +38,8 @@ function Adminuser() {
   }, [updateUi]);
 
   const fetchData = () => {
-    axios
-      .get("http://localhost:3003/api/admin/users")
+    axiosAdminInstance
+      .get("/users")
       .then((response) => {
         console.log(response.data.users);
         setusers(response.data.users);
@@ -58,8 +58,8 @@ function Adminuser() {
           {
             label: "Yes",
             onClick: () => {
-              axios
-                .put(`http://localhost:3003/api/admin/blockUser/${userid}`)
+              axiosAdminInstance
+                .put(`/blockUser/${userid}`)
                 .then((response) => {
                   console.log(response.data);
                   toast.success(response.data);
@@ -88,8 +88,8 @@ function Adminuser() {
           {
             label: "Yes",
             onClick: () => {
-              axios
-                .put(`http://localhost:3003/api/admin/UnblockUser/${userid}`)
+              axiosAdminInstance
+                .put(`/UnblockUser/${userid}`)
                 .then((response) => {
                   console.log(response.data);
                   toast.success(response.data);

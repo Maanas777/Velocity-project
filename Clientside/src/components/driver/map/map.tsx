@@ -7,13 +7,11 @@ import { useNavigate } from "react-router-dom";
 import mapboxgl from "mapbox-gl";
 import { useLocation } from "react-router-dom";
 import { io } from "socket.io-client";
+import { dns } from "../../../axiosInstances/userInstance";
 
-const socket = io("http://localhost:3003");
+const socket = io(dns);
 
 const Map = () => {
-
-
-
 
 
 

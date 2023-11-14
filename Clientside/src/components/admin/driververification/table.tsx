@@ -1,5 +1,5 @@
 import  { useEffect, useState } from "react";
-import axios from "axios";
+import { axiosAdminInstance } from "../../../axiosInstances/userInstance";
 import './tables.css'
 import { ToastContainer, toast } from "react-toastify";
 import { confirmAlert } from "react-confirm-alert";
@@ -25,7 +25,7 @@ function ResponsiveExample() {
   const [drivers, setDrivers] = useState<Driver[]>([]);
 
   useEffect(() => {
-    axios.get("http://localhost:3003/api/admin/driver").then((response) => {
+    axiosAdminInstance.get("/driver").then((response) => {
       setDrivers(response.data.drivers);
       console.log(response.data.drivers);
     });
@@ -40,8 +40,8 @@ function ResponsiveExample() {
           {
             label: "Yes",
             onClick: () => {
-              axios
-                .put(`http://localhost:3003/api/admin/acceptdriver/${id}`)
+              axiosAdminInstance
+                .put(`/acceptdriver/${id}`)
                 .then((response) => {
                   console.log(response.data);
                   toast.success(response.data);

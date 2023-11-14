@@ -2,15 +2,16 @@ import { useState } from "react";
 import { FormEvent } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+
 import { io } from "socket.io-client";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { login } from "../../redux/userSlice";
 import logo from "../assets/logofinal.png";
 import "./driverlogin.css";
-
-const socket = io("http://localhost:3003");
+import { dns } from "../../axiosInstances/userInstance";
+import { axiosDriverInstance } from "../../axiosInstances/userInstance";
+const socket = io(dns);
 
 const UserLogin = () => {
   const [email, setemail] = useState<string>("");
@@ -22,8 +23,8 @@ const UserLogin = () => {
 
   const handlesubmit = (e: FormEvent) => {
     e.preventDefault();
-    axios
-      .post("http://localhost:3003/api/drivers/driverLogin", {
+    axiosDriverInstance
+      .post("/driverLogin", {
         email,
         password,
       })

@@ -1,11 +1,10 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { useState, FormEvent, ChangeEvent } from 'react';
-import axios from 'axios';
 import {useNavigate} from 'react-router-dom'
 import './signup.css';
 import logo from '../assets/logofinal.png';
 import { toast, ToastContainer } from 'react-toastify';
-
+import { axiosDriverInstance } from '../../axiosInstances/userInstance';
 import 'react-toastify/dist/ReactToastify.css';
 
 
@@ -50,7 +49,7 @@ const [driverphotopreview, setdriverphotopreview] = useState<string>('');
     formData.append('password', password);
 
     try {
-      const response = await axios.post('http://localhost:3003/api/drivers/driversignup', formData, {
+      const response = await axiosDriverInstance.post('/driversignup', formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }

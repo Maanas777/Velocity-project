@@ -51,10 +51,7 @@ app.get("*", function (_req, res) {
     res.sendFile(path.join(__dirname,"../../../Clientside/dist/index.html"));
   });
 
-// // Serve the React app for any other routes
-// app.get("*", (_req: Request, res: Response) => {
-//   res.sendFile(path.join(__dirname, "build", "index.html"));
-// });
+
 
 app.get("/", (_req: Request, res: Response) => {
   res.send("Hello world");

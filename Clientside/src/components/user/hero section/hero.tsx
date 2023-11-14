@@ -11,10 +11,11 @@ import Modal from "react-bootstrap/Modal";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { selectUser } from "../../../redux/userSlice";
+import { dns } from "../../../axiosInstances/userInstance";
 import axios from "axios";
 import { io } from "socket.io-client";
 
-const socket = io("http://localhost:3003");
+const socket = io(dns);
 
 const predefinedLocations = [
   { name: "Thripunithara", lat: 9.943436, lon: 76.345907 },

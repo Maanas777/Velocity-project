@@ -1,11 +1,11 @@
 import Table from "react-bootstrap/Table";
 import { useEffect, useState } from "react";
-import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import { confirmAlert } from "react-confirm-alert";
 import "react-confirm-alert/src/react-confirm-alert.css";
 import "react-toastify/dist/ReactToastify.css";
 import MoonLoader from 'react-spinners/MoonLoader';
+import { axiosAdminInstance } from "../../../axiosInstances/userInstance";
 
 
 
@@ -44,8 +44,8 @@ function ApprovedDriver() {
           {
             label: "Yes",
             onClick: () => {
-              axios
-                .put(`http://localhost:3003/api/admin/blockDriver/${userid}`)
+              axiosAdminInstance
+                .put(`/blockDriver/${userid}`)
                 .then((response) => {
                   console.log(response.data);
                   toast.success(response.data);
@@ -75,8 +75,8 @@ function ApprovedDriver() {
           {
             label: "Yes",
             onClick: () => {
-              axios
-                .put(`http://localhost:3003/api/admin/UnblockDriver/${userid}`)
+              axiosAdminInstance
+                .put(`/UnblockDriver/${userid}`)
                 .then((response) => {
                   console.log(response.data);
                   toast.success(response.data);
@@ -97,8 +97,8 @@ function ApprovedDriver() {
   };
 
   const fetchData = () => {
-    axios
-      .get("http://localhost:3003/api/admin/approvedDriver")
+    axiosAdminInstance
+      .get("/approvedDriver")
       .then((response) => {
         console.log(response.data.drivers);
         setDrivers(response.data.drivers);

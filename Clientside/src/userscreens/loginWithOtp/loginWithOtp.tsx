@@ -1,12 +1,10 @@
 import { useState } from "react";
 import { FormEvent } from "react";
-
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
 // import { Link } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-
+import { axiosInstance } from "../../axiosInstances/userInstance";
 import logo from "../assets/logofinal.png";
 import "./login.css";
 
@@ -20,7 +18,7 @@ const UserLogin = () => {
     e.preventDefault();
 
     try {
-      const res = await axios.post("http://localhost:3003/api/users/sendOtp", {
+      const res = await axiosInstance.post("/sendOtp", {
         phone,
       });
       const userdetails = res.data.existingUser;
