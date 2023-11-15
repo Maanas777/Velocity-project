@@ -15,6 +15,7 @@ export const axiosInstance = axios.create({
   export const axiosAdminInstance = axios.create({
     baseURL: "https://www.velocityy.online/api/admin",
   });
+  
 
   export const dns="https://www.velocityy.online"
   
