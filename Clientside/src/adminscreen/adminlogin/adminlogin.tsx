@@ -1,9 +1,9 @@
 import React, { useState, FormEvent } from 'react';
-import axios from 'axios';
 import {useNavigate} from 'react-router-dom'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import logo from './logofinal.png'; 
+import { axiosAdminInstance } from '../../axiosInstances/userInstance';
 
 const AdminLogin: React.FC = () => {
   const [email, setEmail] = useState<string>('');
@@ -13,7 +13,7 @@ const AdminLogin: React.FC = () => {
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
-    axios.post('http://localhost:3003/api/admin/adminlogin', {
+    axiosAdminInstance.post('/adminlogin', {
       email,
       password,
     })
