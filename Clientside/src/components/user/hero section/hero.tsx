@@ -8,11 +8,12 @@ import "react-toastify/dist/ReactToastify.css";
 import Second from "./seond.jpg";
 import Third from "./3rd.avif";
 import Modal from "react-bootstrap/Modal";
+import { axiosInstance } from "../../../axiosInstances/userInstance";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { selectUser } from "../../../redux/userSlice";
 import { dns } from "../../../axiosInstances/userInstance";
-import axios from "axios";
+// import axios from "axios";
 import { io } from "socket.io-client";
 
 const socket = io(dns);
@@ -112,27 +113,29 @@ const Hero = () => {
       if (!isRideCreated) {
         isRideCreated = true;
         const fare = data.fare;
-        const DriverId= data.driverdetails._id;
+        const DriverId = data.driverdetails._id;
 
-        console.log(DriverId,"rdiverId");
-        
-        const driver={
-          DriverName:data.driverdetails.driver?.Drivername || data.driverdetails.Drivername,
-         DriverPhone : data.driverdetails.driver?.phone || data.driverdetails.phone,
-          VehicleModel : data.driverdetails.driver?.VehicleModel || data.driverdetails.VehicleModel,
-           vehiclePhoto : data.driverdetails.driver?.vehiclePhoto || data.driverdetails.vehiclePhoto
-          
+        console.log(DriverId, "rdiverId");
 
-        }
-     
-        
-     
+        const driver = {
+          DriverName:
+            data.driverdetails.driver?.Drivername ||
+            data.driverdetails.Drivername,
+          DriverPhone:
+            data.driverdetails.driver?.phone || data.driverdetails.phone,
+          VehicleModel:
+            data.driverdetails.driver?.VehicleModel ||
+            data.driverdetails.VehicleModel,
+          vehiclePhoto:
+            data.driverdetails.driver?.vehiclePhoto ||
+            data.driverdetails.vehiclePhoto,
+        };
 
         try {
           // Send a POST request to your backend with rideData and fare
-          const response = await axios.post(
-            `http://localhost:3003/api/users/createRide/${userid}`,
-            { rideData, fare,driver,DriverId},
+          const response = await axiosInstance.post(
+            `/createRide/${userid}`,
+            { rideData, fare, driver, DriverId },
             { headers }
           );
 

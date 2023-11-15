@@ -2,12 +2,11 @@ import { useState } from "react";
 import { FormEvent } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
-// import { Link } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { login } from "../../../redux/userSlice";
 import logo from '../../assets/logofinal.png'
+import { axiosInstance } from "../../../axiosInstances/userInstance";
 import "./login.css";
 
 const UserLogin = () => {
@@ -21,8 +20,8 @@ const UserLogin = () => {
   const handlesubmit = (e: FormEvent) => {
     e.preventDefault();
   
-    axios
-      .post('http://localhost:3003/api/users/verifyOtp', {
+    axiosInstance
+      .post('/verifyOtp', {
         OTP,
         phone,
       })
