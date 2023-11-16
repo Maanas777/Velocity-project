@@ -1,5 +1,6 @@
 import Table from "react-bootstrap/Table";
 import { useEffect, useState } from "react";
+
 import { ToastContainer, toast } from "react-toastify";
 import { confirmAlert } from "react-confirm-alert";
 import "react-confirm-alert/src/react-confirm-alert.css";
@@ -24,11 +25,8 @@ function ApprovedDriver() {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    setLoading(true);
-    setTimeout(() => {
-      setLoading(false);
-      console.log("Loading set to false");
-    }, 4000);
+    setLoading(false);
+    
   }, []);
 
   useEffect(() => {

@@ -39,6 +39,7 @@ const usercontroller = {
             if (user) {
                 const isMatch = yield bcrypt_1.default.compare(password, user.password);
                 if (isMatch) {
+                    console.log("password is correct");
                     const token = (0, jwtToke_1.default)(user._id);
                     return res.json({
                         message: "logged in successfully",

@@ -121,7 +121,7 @@ function Profile() {
     axiosDriverInstance
       .get(`/driverhistory/${userId ? userId : userId2}`)
       .then((response) => {
-        console.log(response);
+        console.log(response,"trip history");
         setTrips(response?.data?.trips);
         setLoading(false);
       })

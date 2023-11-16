@@ -26,7 +26,6 @@ const getAuth = (req, res, next) => __awaiter(void 0, void 0, void 0, function* 
         const verifyToken = jsonwebtoken_1.default.verify(token, process.env.SECRET);
         console.log(verifyToken, "hejkrk");
         if (!verifyToken) {
-            console.log("whhat the fuckk");
             return res.status(401).json({ error: "unauthorized" });
         }
         const auth = yield user_1.default.findById(verifyToken.id);

@@ -1,4 +1,5 @@
-import { useState } from "react";
+ 
+ import { useState } from "react";
 // import { FormEvent } from "react";
 import "./hero.css";
 
@@ -7,6 +8,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Second from "./seond.jpg";
 import Third from "./3rd.avif";
+
 import Modal from "react-bootstrap/Modal";
 import { axiosInstance } from "../../../axiosInstances/userInstance";
 import { useSelector } from "react-redux";
@@ -17,6 +19,9 @@ import { dns } from "../../../axiosInstances/userInstance";
 import { io } from "socket.io-client";
 
 const socket = io(dns);
+
+
+
 
 const predefinedLocations = [
   { name: "Thripunithara", lat: 9.943436, lon: 76.345907 },
@@ -40,7 +45,7 @@ const Hero = () => {
   const nav = useNavigate();
 
   const user = useSelector(selectUser);
-  console.log(user._id);
+  console.log(user?._id);
 
   const userid = user?.user?._id;
   console.log(userid);
@@ -51,6 +56,19 @@ const Hero = () => {
   // const [fare, setfare] = useState(0)
 
   const [showModal, setShowModal] = useState(false);
+
+
+
+
+
+
+
+
+
+
+
+
+
 
   const handlePickupLocationSelect = (
     e: React.ChangeEvent<HTMLSelectElement>
@@ -74,6 +92,16 @@ const Hero = () => {
   ///submit function
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    if (!user || !user.user || !user.user._id) {
+      toast.error("Please log in first.");
+      setTimeout(() => {
+        nav("/userlogin");
+      }, 2000);
+      
+      return;
+    }
+
 
     // Find the selected locations from predefinedLocations
     const selectedPickupLocation = predefinedLocations.find(

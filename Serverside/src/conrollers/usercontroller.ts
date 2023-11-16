@@ -33,6 +33,8 @@ const usercontroller = {
         const isMatch = await bcrypt.compare(password, user.password);
 
         if (isMatch) {
+          console.log("password is correct");
+          
           const token = generateToken(user._id);
 
           return res.json({

@@ -35,9 +35,9 @@ function App() {
       //user
       <Route path="/usersignup" element={<Signup />}></Route>
       <Route path="/review" element={<Review />}></Route>
-      <Route path="/userhome" element={<Userhome />}></Route>
+      <Route path="/" element={<Userhome />}></Route>
       <Route path="hero" element={<Hero />}></Route>
-      <Route path="/" element={<Login />}></Route>
+      <Route path="/userlogin" element={<Login />}></Route>
       <Route path="userprofile" element={<UserProfile />}></Route>
       <Route path="/OtpPhone" element={<LoginWithOtp />}></Route>
       <Route path="/VerifyOtp" element={<VerifyOTP />}></Route>
@@ -47,8 +47,8 @@ function App() {
 
 
       //////driver
-      <Route path="driversignup" element={<Driversignup />}></Route>
-      <Route path="driverlogin" element={<DriverLogin />}></Route>
+      <Route path="/driversignup" element={<Driversignup />}></Route>
+      <Route path="/driverlogin" element={<DriverLogin />}></Route>
       {/* <Route path="drivernav" element={<DriverNav />}></Route> */}
       <Route path="/driverhome" element={<Driverhome />}></Route>
       <Route path="/driveprofile" element={<Driverprofile />}></Route>

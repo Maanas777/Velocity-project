@@ -2,8 +2,9 @@ import { useState } from "react";
 import { FormEvent } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-
+import { Link } from "react-router-dom";
 import { io } from "socket.io-client";
+import { useEffect } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { login } from "../../redux/userSlice";
@@ -46,6 +47,15 @@ const UserLogin = () => {
       });
   };
 
+
+  useEffect(() => {
+    if (localStorage.getItem("DriverData")) {
+      nav("/driverhome");
+    }
+  }, [nav]);
+
+
+
   return (
     <div className="login-container">
       <ToastContainer position="top-center" autoClose={2000} />
@@ -80,7 +90,11 @@ const UserLogin = () => {
               Login
             </button>
           </div>
-          <div className="links-container"></div>
+          <div className="links-container">
+          <p>
+              <Link to="/driversignup">Create New accout</Link>{" "}
+            </p>
+          </div>
         </form>
       </div>
     </div>

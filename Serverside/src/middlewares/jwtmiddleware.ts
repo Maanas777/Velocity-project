@@ -13,14 +13,11 @@ declare global {
   }
 }
 
-
-
-
 const getAuth = async (req:Request, res:Response, next:NextFunction) => {
     try {
       const token = req.headers.token as string;
-   
         console.log(token);
+
         if(!token){
       
             return res.status(401).json({error: "unauthorized"})
@@ -31,8 +28,7 @@ const getAuth = async (req:Request, res:Response, next:NextFunction) => {
        
 
         if(!verifyToken){
-          console.log("whhat the fuckk");
-          
+        
             return res.status(401).json({error: "unauthorized"})
         }
       

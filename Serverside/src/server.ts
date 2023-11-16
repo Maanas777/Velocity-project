@@ -45,11 +45,25 @@ app.use("/api/drivers", driverRoutes);
 app.use("/api/admin", adminRoutes);
 
 // Serve the React app as static files
-app.use(express.static(path.join(__dirname,"../../../Clientside/dist")));
+// app.use(express.static(path.join(__dirname,"../../../Clientside/dist")));
+
+// app.get("*", function (_req, res) {
+//     res.sendFile(path.join(__dirname,"../../../Clientside/dist/index.html"));
+//   });
+
+
+
+// Serve the React app as static files
+app.use(express.static(path.join(__dirname,"../../Clientside/dist")));
 
 app.get("*", function (_req, res) {
-    res.sendFile(path.join(__dirname,"../../../Clientside/dist/index.html"));
+    res.sendFile(path.join(__dirname,"../../Clientside/dist/index.html"));
   });
+
+
+
+
+
 
 
 

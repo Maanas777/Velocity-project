@@ -42,9 +42,9 @@ app.use(express_1.default.urlencoded({ extended: true }));
 app.use("/api/users", userRoutes_1.default);
 app.use("/api/drivers", driverRoutes_1.default);
 app.use("/api/admin", adminRoutes_1.default);
-app.use(express_1.default.static(path_1.default.join(__dirname, "../../../Clientside/dist")));
+app.use(express_1.default.static(path_1.default.join(__dirname, "../../Clientside/dist")));
 app.get("*", function (_req, res) {
-    res.sendFile(path_1.default.join(__dirname, "../../../Clientside/dist/index.html"));
+    res.sendFile(path_1.default.join(__dirname, "../../Clientside/dist/index.html"));
 });
 app.get("/", (_req, res) => {
     res.send("Hello world");

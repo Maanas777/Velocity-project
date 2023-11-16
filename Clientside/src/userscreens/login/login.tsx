@@ -3,6 +3,7 @@ import { FormEvent } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
+import { useEffect } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { io } from "socket.io-client";
@@ -37,14 +38,27 @@ const UserLogin = () => {
 
         dispatch(login(userdata));
 
-        nav("/userhome");
+        nav("/");
       })
       .catch((err) => {
         console.log(err);
 
         toast.error(err.response.data.message);
-      });
+      });    
   };
+
+
+  useEffect(() => {
+    if (localStorage.getItem("userData")) {
+      nav("/");
+    }
+  }, [nav]);
+
+
+
+
+
+
 
   return (
     <div className="login-container">
