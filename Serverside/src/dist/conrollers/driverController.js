@@ -163,8 +163,9 @@ const drivercontroller = {
     driverhistory: (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         const driverId = req.params.id;
         try {
-            const trips = yield trip_1.TripModel.find({ driverId: driverId }).populate("user");
-            res.json({ trips });
+            const trips = yield trip_1.TripModel.find({ driverId });
+            console.log(trips, "trip historyyyyyyy");
+            res.json(trips);
         }
         catch (error) {
             res.status(500).json({ error: "Error fetching trip data" });

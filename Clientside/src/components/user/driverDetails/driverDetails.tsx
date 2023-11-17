@@ -54,7 +54,7 @@ const DriverDetails = () => {
   const keyId = import.meta.env.VITE_RAZORPAY_KEY_ID;
 
 const homeGo=()=>{
-  nav('/userhome')
+  nav('/')
 }
 
   const feedbackButton=()=>{
@@ -94,23 +94,16 @@ useEffect(() => {
 }, [])
 
 
-
-
-  useEffect(()=>{
+ useEffect(()=>{
     const isRideStarted = localStorage.getItem('startedRide') === 'true';
  
     if (isRideStarted) {
-      console.log("hiii");
-      
+    
       setstart(true);
     }
 
 
   },[])
-
-
-
-
 
 
 
@@ -254,10 +247,6 @@ useEffect(() => {
             </div>
           </div>
         </div>
-
-
-      
-       
 
       </div>
 

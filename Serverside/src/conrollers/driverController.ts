@@ -207,30 +207,19 @@ tripcomplete: async (req: Request, res: Response) =>  {
 
 driverhistory:async (req: Request, res: Response) => {
   const driverId=req.params.id
-  
-  
   try {
-    const trips = await TripModel.find({ driverId: driverId }).populate("user");
-
-    res.json({ trips });
+    const trips= await TripModel.find({ driverId })
+    console.log(trips,"trip historyyyyyyy");
+  res.json(trips)
     
   } catch (error) {
     res.status(500).json({ error: "Error fetching trip data" });
     
   }
+
 }
-
-
-
-
-
-
-
-
-
-
-   
-     }
+ 
+}
       
     
 

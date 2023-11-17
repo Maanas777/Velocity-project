@@ -1,6 +1,7 @@
 import React, { useState, FormEvent } from 'react';
 import {useNavigate} from 'react-router-dom'
 import { ToastContainer, toast } from 'react-toastify';
+import { useEffect } from 'react';
 import 'react-toastify/dist/ReactToastify.css';
 import logo from './logofinal.png'; 
 import { axiosAdminInstance } from '../../axiosInstances/userInstance';
@@ -20,6 +21,7 @@ const AdminLogin: React.FC = () => {
     .then((res) => {
         console.log(res);   
       toast.success(res.data.message);
+      localStorage.setItem('email','email')
       nav('/dashboard')
     
     })
@@ -27,6 +29,14 @@ const AdminLogin: React.FC = () => {
       toast.error(err.response.data.message);
     });
   };
+
+  useEffect(() => {
+    if (localStorage.getItem("email")) {
+      nav("/dashboard");
+    }
+  }, [nav]);
+
+
 
   return (
     <div className="login-container">

@@ -34,7 +34,6 @@ export interface ITrip extends Document {
 }
 
 
-
 const rideSchema = new Schema<ITrip>(
   {
     user: {
