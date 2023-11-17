@@ -20,7 +20,7 @@ const Signup = () => {
   const [driverPhoto, setDriverPhoto] = useState<File | null>(null);
   const [vehiclePhotoPreview, setVehiclePhotoPreview] = useState<string>('');
 const [driverphotopreview, setdriverphotopreview] = useState<string>('');
-
+const [passwordStrength, setPasswordStrength] = useState<string>('');
   const [Drivername, setDrivername] = useState('');
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
@@ -48,6 +48,15 @@ const [driverphotopreview, setdriverphotopreview] = useState<string>('');
     formData.append('phone', phone);
     formData.append('password', password);
 
+
+
+
+
+
+
+
+
+
     try {
       const response = await axiosDriverInstance.post('/driversignup', formData, {
         headers: {
@@ -65,6 +74,55 @@ const [driverphotopreview, setdriverphotopreview] = useState<string>('');
 
     }
   };
+
+
+
+  
+
+  const checkPasswordStrength = (password: string) => {
+    // Define your password strength criteria
+    const minLength = 8;
+    const hasUpperCase = /[A-Z]/.test(password);
+    const hasLowerCase = /[a-z]/.test(password);
+    const hasDigits = /\d/.test(password);
+    const hasSpecialChars = /[!@#$%^&*(),.?":{}|<>]/.test(password);
+
+    // Calculate password strength
+    let strength = 0;
+    strength += hasUpperCase ? 1 : 0;
+    strength += hasLowerCase ? 1 : 0;
+    strength += hasDigits ? 1 : 0;
+    strength += hasSpecialChars ? 1 : 0;
+    strength += password.length >= minLength ? 1 : 0;
+
+    return strength;
+  };
+
+  const handlePasswordChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const newPassword = e.target.value;
+    const strength = checkPasswordStrength(newPassword);
+
+    // Set password strength message based on the calculated strength
+    if (strength === 5) {
+      setPasswordStrength('Your Password is Strong');
+    } else if (strength >= 3) {
+      setPasswordStrength('Your Password is Moderately Strong'); 
+    } 
+    else if (strength === 0){
+      setPasswordStrength('');
+    }
+  
+    else {
+      setPasswordStrength('Your Password is Weak');
+    }
+
+    setPassword(newPassword);
+  };
+
+
+
+
+
 
   return (
     <div className='parent'>
@@ -171,7 +229,11 @@ const [driverphotopreview, setdriverphotopreview] = useState<string>('');
             <label>Phone Number:</label>
             <input type='tel' name='phone' value={phone} onChange={(e) => setPhone(e.target.value)} required />
             <label>Password:</label>
-            <input type='password' name='password' value={password} onChange={(e) => setPassword(e.target.value)} required />
+            <input type='password' name='password' value={password} onChange={handlePasswordChange} required />
+
+            <div  className={`password-strength ${passwordStrength.toLowerCase()}`}>
+        {passwordStrength}
+      </div>
           </div>
         </div>
       </div>

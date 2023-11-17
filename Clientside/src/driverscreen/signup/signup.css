@@ -188,3 +188,19 @@ color: azure;
   .inputfile2 + label {
     cursor: pointer; 
   }
+
+  .password-strength {
+    color: black; /* Default color for the password strength text */
+  }
+  
+  .password-strength.strong {
+    color: green; /* Green color for strong passwords */
+  }
+  
+  .password-strength.moderate {
+    color: yellow; /* Yellow color for moderate passwords */
+  }
+  
+  .password-strength.weak {
+    color: red; /* Red color for weak passwords */
+  }

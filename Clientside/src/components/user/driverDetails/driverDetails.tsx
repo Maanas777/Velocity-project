@@ -88,8 +88,6 @@ useEffect(() => {
     const update=axiosDriverInstance.put(`/completeride/${id}`)
     console.log(update);
     
-
-    
   });
 
 // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -207,30 +205,33 @@ useEffect(() => {
                   <h4 style={{ fontWeight: "bold" }}>Total Distance</h4>
                   <p style={{ fontWeight: "bold" }}>{distance} kms</p>
                   <h4 style={{ fontWeight: "bold" }}>
-                    {start ? (
-                      <span style={{ color: "#b30c0ca8" }}>Ride Started....</span>
-                    ) : (
-                      "Amount to Pay"
-                    )}
-                  </h4>
-                  <p style={{ fontWeight: "bold" }}>
-                    {payment && !start ? (
-                      <span>
-                        Payment Completed, Driver will reach you soon....
-                      </span>
-                    ) : start ? null : (
-                      <>
-                        ₹{fair}
-                        <button
-                          className="payment"
-                          onClick={handlePayment}
-                          style={{ marginLeft: "2rem" }}
-                        >
-                          Pay Now
-                        </button>
-                      </>
-                    )}
-                  </p>{" "}
+                  {start ? (
+          <span style={{ color: "#b30c0ca8" }}>Ride Started....</span>
+        ) : (
+          <>
+            <h4>Amount to Pay</h4>
+             
+            <p style={{ fontWeight: "bold" }}>
+              {payment ? (
+                <span>
+                  Payment Completed, Driver will reach you soon....
+                </span>
+              ) : (
+                <>
+                  ₹{fair}
+                  <button
+                    className="payment"
+                    onClick={handlePayment}
+                    style={{ marginLeft: "2rem" }}
+                  >
+                    Pay Now
+                  </button>
+                </>
+              )}
+            </p>
+          </>
+        )}
+      </h4>
                 </div>
 
                 <div className="col-md-6">
