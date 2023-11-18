@@ -259,7 +259,7 @@ function Profile() {
                               </h4>
                             </div>
                             <div className="trip-history">
-                              {trips.map((trip) => (
+                              {trips?.map((trip) => (
                                 <div key={trip._id} className="trip-item">
                                   <div className="profile-date">
                                     <div className="trip-location">
