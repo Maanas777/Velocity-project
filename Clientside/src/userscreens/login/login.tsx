@@ -99,10 +99,10 @@ const UserLogin = () => {
             style={{ display: "flex", flexDirection: "column" }}
           >
             <p>
-              <Link to="OtpPhone">Login with OTP</Link>{" "}
+              <Link to="/OtpPhone">Login with OTP</Link>{" "}
             </p>
             <p>
-              <Link to="usersignup">Create New accout</Link>{" "}
+              <Link to="/usersignup">Create New accout</Link>{" "}
             </p>
           </div>
         </form>
