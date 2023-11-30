@@ -32,7 +32,7 @@ const UserLogin = () => {
           if (userDetails !== null) {
             dispatch(login(userDetails));
             toast.success('User verified');
-            nav('/userhome');
+            nav('/');
           } else {
             toast.error('Invalid User');
            
