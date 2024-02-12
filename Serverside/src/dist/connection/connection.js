@@ -13,9 +13,12 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const mongoose_1 = __importDefault(require("mongoose"));
+let username = 'Velocity';
+let password = 'Velocity123';
+let uri = `mongodb+srv://${username}:${password}@cluster0.4le7hci.mongodb.net/?retryWrites=true&w=majority`;
 const connectDB = () => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        yield mongoose_1.default.connect("mongodb://127.0.0.1:27017/velocity", {});
+        yield mongoose_1.default.connect(uri, {});
         console.log("Db connected");
     }
     catch (err) {
