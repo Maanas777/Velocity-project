@@ -1,10 +1,10 @@
 import mongoose from "mongoose";
 
-let username = 'velocity';
-let password = 'velocity';
+// let username = 'velocity';
+// let password = 'velocity';
 
-let uri = `mongodb+srv://${username}:${password}@cluster0.4le7hci.mongodb.net/?retryWrites=true&w=majority`;
 
+let uri = 'mongodb+srv://velocity:velocity@cluster0.xoizwhc.mongodb.net/?retryWrites=true&w=majority'
 const connectDB = async () => {
   try {
     await mongoose.connect(uri);
