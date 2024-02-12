@@ -1,17 +1,17 @@
 import axios from "axios";
 
 export const axiosInstance = axios.create({
-    baseURL: "https://www.velocityy.online/api/users",
+    baseURL: "https://velocity-2zab.onrender.com/api/users",
   });
 
-
+ 
   export const axiosDriverInstance = axios.create({
-    baseURL: "https://www.velocityy.online/api/drivers",
+    baseURL: " https://velocity-2zab.onrender.com/api/drivers",
   });
 
 
   export const axiosAdminInstance = axios.create({
-    baseURL: "https://www.velocityy.online/api/admin",
+    baseURL: " https://velocity-2zab.onrender.com/api/admin",
   });
 
   // export const axiosInstance = axios.create({
@@ -35,7 +35,7 @@ export const axiosInstance = axios.create({
 
 
 
-  export const dns="https://www.velocityy.online"
+  export const dns=" https://velocity-2zab.onrender.com"
   
 
   // export const dns="http://localhost:3003"
