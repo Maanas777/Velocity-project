@@ -20,16 +20,8 @@ const razorpay_1 = __importDefault(require("razorpay"));
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const dotenv_1 = __importDefault(require("dotenv"));
 const crypto_1 = __importDefault(require("crypto"));
-const twilio_1 = __importDefault(require("twilio"));
 dotenv_1.default.config();
 const jwtToke_1 = __importDefault(require("../utilities/jwtToke"));
-const accountSid = process.env.Account_SID;
-const authToken = process.env.Auth_Token;
-const serviceId = process.env.Service_SID;
-console.log(accountSid);
-console.log(authToken);
-console.log(accountSid);
-const client = (0, twilio_1.default)(accountSid, authToken);
 const usercontroller = {
     UserLogin: (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         console.log("userlogin");
@@ -116,66 +108,6 @@ const usercontroller = {
         catch (error) {
             console.error(error);
             res.send(error);
-        }
-    }),
-    Sentotp: (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-        const phone = req.body.phone;
-        console.log(phone, "phonenumber");
-        try {
-            const existingUser = yield user_1.default.findOne({ phone: phone });
-            if (!existingUser) {
-                console.log("User not found");
-                return res.status(404).json({ error: "Phone number not found" });
-            }
-            if (typeof serviceId === "string") {
-                yield client.verify.v2.services(serviceId).verifications.create({
-                    to: "+91" + phone,
-                    channel: "sms",
-                });
-                res.json({ msg: "OTP sent successfully", existingUser });
-            }
-            else {
-                res.json({ Error: "Invalid serviceId" });
-            }
-        }
-        catch (error) {
-            res.json({ Error: error });
-        }
-    }),
-    verifyOtp: (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-        const { OTP, phone } = req.body;
-        console.log("Received OTP:", OTP);
-        console.log("Received phone:", phone);
-        try {
-            if (typeof serviceId === "string") {
-                const formattedPhone = phone.replace(/"/g, "");
-                const verification_check = yield client.verify.v2
-                    .services(serviceId)
-                    .verificationChecks.create({
-                    to: "+91" + formattedPhone,
-                    code: OTP,
-                });
-                if (verification_check.status === "approved") {
-                    res.json({ msg: "verified user" });
-                }
-                else {
-                    res.json({ msg: "invalid user" });
-                }
-            }
-            else {
-                res.json({ Error: "Invalid serviceId" });
-            }
-        }
-        catch (error) {
-            console.error("Error:", error);
-            if (error.response &&
-                error.response.data &&
-                error.response.data.message) {
-                res.status(400).json({ error: error.response.data.message });
-            }
-            else {
-                res.status(500).json({ error: "An error occurred" });
-            }
         }
     }),
     createRide: (req, res) => __awaiter(void 0, void 0, void 0, function* () {
