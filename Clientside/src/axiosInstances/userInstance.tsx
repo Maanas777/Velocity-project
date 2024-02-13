@@ -6,12 +6,12 @@ export const axiosInstance = axios.create({
 
  
   export const axiosDriverInstance = axios.create({
-    baseURL: " https://velocity-2zab.onrender.com/api/drivers",
+    baseURL: "https://velocity-2zab.onrender.com/api/drivers",
   });
 
 
   export const axiosAdminInstance = axios.create({
-    baseURL: " https://velocity-2zab.onrender.com/api/admin",
+    baseURL: "https://velocity-2zab.onrender.com/api/admin",
   });
 
   // export const axiosInstance = axios.create({
@@ -35,7 +35,7 @@ export const axiosInstance = axios.create({
 
 
 
-  export const dns=" https://velocity-2zab.onrender.com"
+  export const dns="https://velocity-2zab.onrender.com"
   
 
   // export const dns="http://localhost:3003"
